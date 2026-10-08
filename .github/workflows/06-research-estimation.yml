@@ -86,7 +86,11 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          gretlcli -b src/gretl/estimate_ai_panel.inp 2>&1 | tee outputs/gretl_models_log.txt
+          pwd
+          test -s src/gretl/estimate_ai_panel.inp
+          test -s data/processed/model_panel.csv
+          python -c 'from pathlib import Path; p=Path("src/gretl/estimate_ai_panel.inp"); s=p.read_text(); s=s.replace("data/processed/model_panel.csv",str(Path("data/processed/model_panel.csv").resolve())); Path("/tmp/ai-panel-absolute.inp").write_text(s)'
+          gretlcli -b /tmp/ai-panel-absolute.inp 2>&1 | tee outputs/gretl_models_log.txt
       - name: Save actual gretl estimates or error logs
         if: always()
         uses: actions/upload-artifact@v4
