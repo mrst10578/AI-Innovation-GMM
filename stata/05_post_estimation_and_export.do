@@ -1,6 +1,14 @@
-* Exports: the original xtabond2 output already includes Hansen/Sargan and AB tests.
-* Difference-in-Hansen is automatic for eligible system models (gmmstyle split).
-* Do not invent unavailable returned scalars or degrees of freedom.
-display as text "POST_ESTIMATION: examine actual Stata log of each model; record test statistics and df."
-display as text "If Hansen rejects, AR(2) rejects or instrument count >= N, classify model unvalidated."
-display as text "Save Stata textual logs and .ster estimates; do not claim Stata results before licensed run."
+* Export actual e() scalars captured during real xtabond2 execution.
+version 16.0
+preserve
+capture confirm file "outputs/stata_model_summary.dta"
+if _rc {
+    restore
+    exit 601
+}
+use "outputs/stata_model_summary.dta", clear
+export delimited using "outputs/stata_model_summary.csv", replace
+count
+display as result "STATA_MODEL_ROWS=" r(N)
+list, noobs
+restore
