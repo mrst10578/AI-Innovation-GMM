@@ -1,0 +1,23 @@
+{
+  "scope": "ai",
+  "repository": "AI-Innovation-GMM",
+  "source_workbook": "AI_Balanced_Panel (1).xlsx",
+  "initial_expected_countries": 30,
+  "initial_expected_rows": 270,
+  "initial_year_min": 2016,
+  "initial_year_max": 2024,
+  "required_columns": [
+    "ISO3",
+    "Year",
+    "AI_Investment",
+    "AI_Patents",
+    "HighTech_Exports",
+    "GDP_Growth",
+    "Unemployment"
+  ],
+  "outcomes": [
+    "HighTech_Exports",
+    "Unemployment"
+  ],
+  "notes": "T=9 makes panel unit-root tests low power; audit AI patent 2024 reporting lag against source. For investment/patents with zeros consider log1p. Unemployment is not the employment rate; high-tech export share is not direct innovation."
+}
