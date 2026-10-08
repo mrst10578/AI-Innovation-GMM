@@ -11,6 +11,7 @@ on:
       - 'src/r/estimate_ai_panel.R'
       - 'src/gretl/estimate_ai_panel.inp'
       - 'MODEL_SPECIFICATION.md'
+      - 'validation/compare_R_gretl_Stata.py'
   pull_request:
   workflow_dispatch:
 permissions:
@@ -97,4 +98,32 @@ jobs:
         with:
           name: ai-real-gretl-gmm-log
           path: outputs/gretl_models_log.txt
+          if-no-files-found: warn
+
+  compare-r-gretl:
+    needs: [r-gmm, gretl-gmm]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download actual R estimator logs
+        uses: actions/download-artifact@v4
+        with:
+          name: ai-real-r-gmm-log
+          path: outputs
+      - name: Download actual gretl estimator logs
+        uses: actions/download-artifact@v4
+        with:
+          name: ai-real-gretl-gmm-log
+          path: outputs
+      - name: Compare independently estimated coefficients
+        run: |
+          python validation/compare_R_gretl_Stata.py
+          python -c 'import json; x=json.load(open("outputs/cross_engine_comparison.json")); assert all(row["status"]=="coefficients_reproduced_not_tests_certified" for row in x["comparisons"].values()), x'
+      - name: Keep real comparison report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-cross-engine-validation
+          path: outputs/cross_engine_comparison.json
           if-no-files-found: warn
