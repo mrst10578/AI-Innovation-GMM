@@ -21,8 +21,8 @@ for (v in fields) for (test in c("ips","madwu")) {
     tag <- paste(v,test,sep=":")
     tryCatch({
         u<-purtest(pfull[[v]],test=test,exo="intercept",lags=0)
-        cat("UNIT_ROOT",tag,"stat",as.numeric(u$statistic),
-            "p",as.numeric(u$p.value),"lag=0 intercept no trend\n")
+        cat("UNIT_ROOT",tag,"stat",as.numeric(unlist(u$statistic)[1]),
+            "p",as.numeric(unlist(u$p.value)[1]),"lag=0 intercept no trend\n")
     },error=function(e)cat("UNIT_ROOT_NOT_AVAILABLE",tag,conditionMessage(e),"\n"))
 }
 cat("=== Models, 2016-2024 vs 2016-2023 ===\n")
@@ -61,7 +61,7 @@ for (last_year in c(2024,2023)) {
         print(s$coefficients)
         # 'sargan' is plm's Sargan-Hansen test; no assertion of robust Hansen equivalence.
         for (w in c("onestep","twosteps")){
-          tryCatch({ j<-sargan(m,weights=w); cat("OVERID",spec,w,
+          tryCatch({ j<-sargan(m,weights=w); if (length(j$parameter)==0 || as.numeric(unlist(j$parameter)[1])<=0 || !is.finite(as.numeric(j$p.value))) {\n                       cat("OVERID_INVALID",spec,w,"degrees of freedom zero or p missing\\n")\n                   } else cat("OVERID",spec,w,
                        as.numeric(j$statistic),as.numeric(j$p.value),"df",
                        as.numeric(j$parameter),"\n")
                    },error=function(e)cat("OVERID_NOT_AVAILABLE",spec,w,conditionMessage(e),"\n"))
