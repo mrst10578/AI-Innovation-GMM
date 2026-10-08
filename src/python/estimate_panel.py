@@ -74,6 +74,9 @@ def cd_test(d,outcome,period):
 
 def main():
     d=panel()
+    # numeric panel ID for independent gretl; full data stay in Actions runner only.
+    d["panel_id"]=pd.factorize(d["ISO3"])[0]+1
+    d[["panel_id","ISO3","Year","ln1p_invest","ln1p_patent","HighTech_Exports","Unemployment","GDP_Growth"]].to_csv(ROOT/"data/processed/model_panel.csv",index=False)
     print("Python",sys.version.replace("\n"," "))
     print("Pandas",pd.__version__)
     print("Statsmodels",__import__("statsmodels").__version__)
