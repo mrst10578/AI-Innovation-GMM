@@ -1,0 +1,7 @@
+0434e5dce354b52def72e9b8cd8fe820019ca7fed7c45698849bfb5215cf7fdf  MASTER_PROMPT_AI_Research.md
+9cb5d56d71e0851374e09a4aeaffacf99a8f516816f8753cedd53e09e15699f3  sources/01_Pre_estimation_2026-10-07.png
+db28535661e6491e0679ab8cb60bef3e71215598949392c30c28343f62a594e6  sources/02_Post_estimation_2026-10-07.png
+4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434  sources/AI_Balanced_Panel (1).xlsx
+1ad29221b8aee46239fee9a4ad7149e4508f6ad9b47ef320608aa3490dd1dbd3  sources/AI_Balanced_Panel_Dictionary (1).xlsx
+76bd5d999f1e3f2e3177d75b82c5652776f6b95a42cb88c198af992e9e3c2c65  sources/EMAIL_NOTE_2026-09-30.txt
+69a5a4a096aabbcf2ed1012d1b9405cdf545ca6663f8645f1521fbf10ebd37be  sources/بررسی اثرات سرمایه گذاری و ثبت اختراعات هوش مصنوعی بر نرخ اشتغال و نوآوری با فناوری بالا (1).docx
