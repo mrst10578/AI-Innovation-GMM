@@ -14,7 +14,7 @@ def r_coeff(text):
             if len(bits)<3:continue
             key=bits[1]
             for var in ("ln1p_invest","ln1p_patent"):
-                match=re.search(re.escape(var)+r"="+VAL,bits[2])
+                match=re.search(re.escape(var)+r"=\s*"+VAL,bits[2])
                 if match:out.setdefault(key,{})[var]=float(match.group(1))
     return out
 
@@ -45,10 +45,10 @@ def main():
     results={}
     for key in MAP.values():
         rc=models_r.get(key);gc=models_g.get(key)
-        if not rc or not gc:
+        if not rc or not gc or any(v not in rc or v not in gc for v in ("ln1p_invest","ln1p_patent")):
             results[key]={"status":"not_comparable_missing_real_coefficients",
                           "R":rc,"gretl":gc};continue
-        delta={v:round(rc[v]-gc[v],8) for v in rc.keys()&gc.keys()}
+        delta={v:round(rc[v]-gc[v],8) for v in ("ln1p_invest","ln1p_patent")}
         results[key]={"status":"coefficients_reproduced_not_tests_certified"
                       if all(abs(val)<1e-4 for val in delta.values()) else "coefficients_disagree",
                       "difference_R_minus_gretl":delta,"R":rc,"gretl":gc,
