@@ -12,6 +12,7 @@ on:
       - 'src/gretl/estimate_ai_panel.inp'
       - 'MODEL_SPECIFICATION.md'
       - 'validation/compare_R_gretl_Stata.py'
+      - 'validation/scientific_gate.py'
   pull_request:
   workflow_dispatch:
 permissions:
@@ -120,10 +121,14 @@ jobs:
         run: |
           python validation/compare_R_gretl_Stata.py
           python -c 'import json; x=json.load(open("outputs/cross_engine_comparison.json")); assert all(row["status"]=="coefficients_reproduced_not_tests_certified" for row in x["comparisons"].values()), x'
+      - name: Publish independent scientific validity flags from real estimator logs
+        run: python validation/scientific_gate.py
       - name: Keep real comparison report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ai-cross-engine-validation
-          path: outputs/cross_engine_comparison.json
+          path: |
+            outputs/cross_engine_comparison.json
+            outputs/scientific_gate.json
           if-no-files-found: warn
