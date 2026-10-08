@@ -1,25 +1,24 @@
-# AI Investment, Patents and Labor Market
+# AI Investment & Patents
 
-Independent research repository. This project must **not** import data, scripts, estimates, outputs or issue workflows from the other study or Shakhsi2/3/4.
+**One research project per repository.** This repo is dedicated exclusively to high-tech exports and unemployment (30 expected countries, 2016–2024; verify before estimation). It is independent of the other study and of Shakhsi2/3/4.
 
-## Current state
-**SCAFFOLD ONLY.** No source dataset, R/Gretl/Stata estimates, p-values, Hansen/AR tests or verified findings have been generated here. The original research Excel/Word documents must be supplied in the new chat and audited before estimation.
+## Original source package imported from Dropbox
 
-## Project scope
-Country panels, 2016–2024; outcomes high-tech exports and unemployment. Expected 30 countries / 270 rows (verify from source, not guaranteed).
+The full ZIP is committed at [research-packages/AI_Research_Ready_Package.zip](research-packages/AI_Research_Ready_Package.zip). All eight source package files have been unpacked. The original Word manuscript, Excel workbook and dictionary, instructor screenshots, extra email note and SHA256 manifest are in [sources/](sources/). The full instruction prompt is in the repository root (MASTER_PROMPT*.md). The workbook is also at [data/raw/AI_Balanced_Panel (1).xlsx](data/raw/) for automated checks.
 
-Expected outcomes: `HighTech_Exports`, `Unemployment`. Expected predictors: `AI_Investment`, `AI_Patents`, `GDP_Growth`.
+**Public repository:** these supplied research inputs were explicitly authorized for publication by the user. Do not add personal credentials, hidden API keys, or licensing information.
 
-## Quick start
-1. Read the separate **MASTER_PROMPT** supplied with this study's research ZIP.
-2. Place the source Excel files under `data/raw/` **locally**, or use a private controlled artifact store. **This GitHub repository is public. Never commit raw source workbooks or personal emails.**
-3. Run the Python verification and inspect `outputs/preflight_status.json`.
-4. GitHub Actions workflows provide independent environment checks for Python, R, and gretl. Environment checks are **not** econometric estimation.
-5. A real licensed Stata session is needed tomorrow for `xtabond2` confirmation and authentic `.log` outputs. Stata results remain pending until executed.
+## Current workflow state
 
-## Install/runtime
-- GitHub Actions: Ubuntu runner, Python 3.11, R via apt `r-base r-cran-plm r-cran-lmtest r-cran-sandwich`, and `gretl` via apt. `pdynmc` is optional only after compatibility checks.
-- Python: `python -m pip install -r requirements-python.txt`.
-- Termux is a controller; commands run through GitHub Actions. Do **not** assume R/Gretl on Android ARM is equivalent to tested Linux CI.
+- Python, R/plm and gretl installation/runtime checks were configured separately in GitHub Actions.
+- [Validate imported research dataset and build Stata DTA](.github/workflows/05-validate-research-data.yml) checks the real input and creates a `stata_ready.dta` downloadable artifact (if successful).
+- The original research data are present; **econometric modeling, IPS/Fisher, GMM, Hansen, Sargan, AR(1)/AR(2), difference-in-Hansen, and genuine Stata estimates are NOT completed**.
+- Stata placeholder `stata/02_models.do` intentionally refuses to run until the new chat reviews model assumptions, endogeneity, lags and instruments.
 
-See `docs/ENVIRONMENT.md`, `docs/PROJECT_STATUS.md` and `docs/STATA_HANDOFF.md` before taking any estimates as final.
+## Tools
+
+Python: `pip install -r requirements-python.txt`. R: `r-base r-cran-plm r-cran-lmtest r-cran-sandwich`; gretl: `gretl`. The GitHub Actions workflows test the tools on Ubuntu without requiring a PC or Android installation.
+
+## Continue in a new chat
+
+Start with [MASTER_PROMPT](./) and the study's `sources/` folder; audit independently, build appropriate estimators, and preserve all unsuccessful and incompatible model specifications in reports. See `docs/STATA_HANDOFF.md`. Never mislabel R/Python results as authentic Stata output.
