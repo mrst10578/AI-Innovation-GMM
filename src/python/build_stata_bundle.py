@@ -13,6 +13,7 @@ def main():
     files += [p for p in (ROOT/"sources").iterdir() if p.suffix in (".xlsx",".docx",".png")]
     files += [ROOT/s for s in ("MODEL_SPECIFICATION.md","DEFENSE_GUIDE_FA.md",
              "reports/RESEARCH_REPORT_FA.md","STATA_START_HERE_FA.md",
+             "docs/PRE_STATA_FINAL_AUDIT_FA.md",
              "requirements-python.txt","config/project.json")]
     assert all(p.is_file() for p in files),[str(p) for p in files if not p.is_file()]
     assert (ROOT/"data/processed/stata_ready.dta") in files
