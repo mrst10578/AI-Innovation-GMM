@@ -1,30 +1,23 @@
-* Stata scaffold: not a finished estimand or validated GMM specification.
+* Execute from repository root on a licensed local Stata installation.
 version 16.0
 set more off
 capture mkdir "outputs"
+capture mkdir "data/processed"
 capture log close _all
 log using "outputs/stata_preflight.log", text replace
-display as result "STATA_RUNTIME=" c(stata_version)
-capture confirm file "data/processed/stata_ready.dta"
-if _rc {
-    display as error "Missing audited data/processed/stata_ready.dta; run conversion only after data audit."
+display as text "START STATA: " c(current_date) " " c(current_time)
+display as result "Stata version " c(stata_version)
+capture noisily do "stata/01_environment_and_data.do"
+local rc = _rc
+if `rc' {
+    display as error "Preflight failure; no estimates claimed. Return code: `rc'"
     log close
-    exit 601
+    exit `rc'
 }
-use "data/processed/stata_ready.dta", clear
-capture isid ISO3 Year
-if _rc {
-    display as error "Panel keys ISO3 and Year are not unique. Stop."
-    log close
-    exit 459
-}
-capture which xtabond2
-if _rc {
-    display as error "xtabond2 not installed: run official SSC install after verifying network and compatibility."
-    display as text "ssc install xtabond2, replace"
-    log close
-    exit 499
-}
-display as result "Preflight complete. Model specification requires scientific review."
+capture noisily do "stata/02_pre_estimation.do"
+if _rc display as error "Some short-panel diagnostics failed; inspect preflight log."
 log close
-do "stata/02_models.do"
+do "stata/03_hightech_models.do"
+do "stata/04_unemployment_models.do"
+capture noisily do "stata/05_post_estimation_and_export.do"
+display as result "Completed requested model scripts. Inspect logs for VALID/INVALID diagnostics."
