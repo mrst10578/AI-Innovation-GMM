@@ -29,9 +29,24 @@ capture noisily do "stata/04_unemployment_models.do"
 local rc_b = _rc
 if `rc_b' local failures = `failures' + 1
 postclose __audit
+* Every planned specification must be represented, including failed estimates.
+* A completed driver is NOT a successful estimation if xtabond2 failed.
+preserve
+quietly use "outputs/stata_model_summary.dta", clear
+quietly count
+local model_count = r(N)
+quietly count if status == "EXECUTION_FAILED"
+local estimation_failures = r(N)
+restore
+display as result "MODEL_ROWS=" `model_count'
+display as result "MODEL_ESTIMATION_FAILURES=" `estimation_failures'
+if `model_count' != 8 {
+    display as error "INCOMPLETE_MODEL_SUMMARY: expected 8 rows, found " `model_count'
+    local failures = `failures' + 1
+}
 capture noisily do "stata/05_post_estimation_and_export.do"
 local rc_export = _rc
 if `rc_export' local failures = `failures' + 1
 display as result "MODEL_SCRIPT_FAILURES=" `failures'
 display as text "Review outputs/stata_model_summary.csv and individual outputs/AI_*.log"
-if `failures' exit 459
+if `failures' | `estimation_failures' exit 459
