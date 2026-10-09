@@ -30,6 +30,12 @@ def main():
     assert 'local model_count = r(N)' in f["RUN_ALL.do"]
     assert 'MODEL_ESTIMATION_FAILURES=' in f["RUN_ALL.do"]
     assert "if `failures' | `estimation_failures' exit 459" in f["RUN_ALL.do"]
+    assert 'mata: mata set matafavor speed' in model
+    assert 'MATA_3301_RETRY_WITH_NOMATA' in model
+    assert 'local engine_option "nomata"' in model
+    assert 'REVIEW_ADO_FALLBACK' in model
+    assert "if `attempt' == 1 | (`attempt' == 2 & `rc' == 3301)" in model
+    assert model.count('local rc = _rc') >= 2
     for name,src in f.items():
         assert src.count("{")==src.count("}"),name
         assert "MODEL_SPEC_NOT_APPROVED" not in src,name
