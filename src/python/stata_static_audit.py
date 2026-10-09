@@ -23,7 +23,7 @@ def main():
                   "e(sarganp)","e(ar2p)","e(j)","e(N_g)","post __audit"):
         assert token in model,token
     # Regression guards for real-world Stata r(198) and silent model omissions.
-    assert not re.search(r"(?im)^\\s*scalar\\s+_n\\s*=", model), "Stata _n is reserved; use _nobs"
+    assert not re.search(r"(?im)^\s*scalar\s+_n\s*=", model), "Stata _n is reserved; use _nobs"
     assert "scalar _nobs=e(N)" in model
     assert "(0) (_nobs) (_ng)" in model
     assert "else if _a2<0.05 {" in model and "else if _hp<0.05 {" in model
