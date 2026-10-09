@@ -41,7 +41,7 @@ if `rc' {
         (`rc') (.) (.) (.) (.) (.) (.) (.) (.) (.)
 }
 else {
-    scalar _n=e(N)
+    scalar _nobs=e(N)
     scalar _ng=e(N_g)
     scalar _j=e(j)
     scalar _hd=e(hansen_df)
@@ -52,18 +52,26 @@ else {
     scalar _a2=e(ar2p)
     local status "REVIEW_REQUIRED"
     if missing(_j) | missing(_ng) | _j>=_ng local status "INVALID_INSTRUMENTS"
-    if missing(_a2) local status "INVALID_AR2_MISSING"
-    else if _a2<0.05 local status "INVALID_AR2_REJECTED"
-    if missing(_hd) | _hd<=0 | missing(_hp) local status "INVALID_HANSEN_DF"
-    else if _hp<0.05 local status "INVALID_HANSEN_REJECTED"
+    if missing(_a2) {
+        local status "INVALID_AR2_MISSING"
+    }
+    else if _a2<0.05 {
+        local status "INVALID_AR2_REJECTED"
+    }
+    if missing(_hd) | _hd<=0 | missing(_hp) {
+        local status "INVALID_HANSEN_DF"
+    }
+    else if _hp<0.05 {
+        local status "INVALID_HANSEN_REJECTED"
+    }
     display as result "AUDIT_STATUS=`status'"
-    display as text "Number of instruments=" _j " groups=" _ng " observations=" _n
+    display as text "Number of instruments=" _j " groups=" _ng " observations=" _nobs
     display as text "Hansen df=" _hd " p=" _hp " Sargan df=" _sd " p=" _sp
     display as text "AR1 p=" _a1 " AR2 p=" _a2
     display as text "System subset Difference-in-Hansen, if identifiable, appears in xtabond2 log."
     capture noisily estimates save "outputs/AI_`y'_`endyear'_`method'.ster", replace
     post __audit ("`y'") ("`endyear'") ("`method'") ("`status'") ///
-        (0) (_n) (_ng) (_j) (_hd) (_hp) (_sd) (_sp) (_a1) (_a2)
+        (0) (_nobs) (_ng) (_j) (_hd) (_hp) (_sd) (_sp) (_a1) (_a2)
 }
 log close
 restore
