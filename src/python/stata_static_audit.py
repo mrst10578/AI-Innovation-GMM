@@ -1,45 +1,45 @@
-"""Static consistency checks only: cannot parse or execute real Stata."""
+"""Structural regression gates only; not an executable Stata interpreter."""
 from pathlib import Path
-import json
-import re
-ROOT=Path(__file__).resolve().parents[2]
+import json, re
+ROOT = Path(__file__).resolve().parents[2]
+
 def main():
-    f={p.name:p.read_text() for p in (ROOT/"stata").glob("*.do")}
-    assert {"RUN_ALL.do","01_environment_and_data.do","02_pre_estimation.do",
-            "03_hightech_models.do","04_unemployment_models.do","05_post_estimation_and_export.do",
-            "06_fit_model.do"}<=set(f)
-    assert 'postfile __audit' in f["RUN_ALL.do"] and 'postclose __audit' in f["RUN_ALL.do"]
-    assert 'capture noisily do "stata/04_unemployment_models.do"' in f["RUN_ALL.do"]
-    assert 'ssc install xtabond2' in f["01_environment_and_data.do"]
-    assert 'assert _N == 270' in f["01_environment_and_data.do"]
-    assert 'isid ISO3 Year' in f["01_environment_and_data.do"]
-    for name in ("03_hightech_models.do","04_unemployment_models.do"):
-        for year in ("2023","2024"):
-            for mode in ("difference","system"):
-                assert year+" "+mode in f[name],(name,year,mode)
-    model=f["06_fit_model.do"]
-    for token in ("noleveleq","twostep robust small","lag(2 3) collapse",
-                  "lag(1 2) collapse","split","e(hansen_df)","e(hansenp)",
-                  "e(sarganp)","e(ar2p)","e(j)","e(N_g)","post __audit"):
-        assert token in model,token
-    # Regression guards for real-world Stata r(198) and silent model omissions.
-    assert not re.search(r"(?im)^\s*scalar\s+_n\s*=", model), "Stata _n is reserved; use _nobs"
-    assert "scalar _nobs=e(N)" in model
-    assert "(0) (_nobs) (_ng)" in model
-    assert "else if _a2<0.05 {" in model and "else if _hp<0.05 {" in model
-    assert 'local model_count = r(N)' in f["RUN_ALL.do"]
-    assert 'MODEL_ESTIMATION_FAILURES=' in f["RUN_ALL.do"]
-    assert "if `failures' | `estimation_failures' exit 459" in f["RUN_ALL.do"]
-    assert 'mata: mata set matafavor speed' in model
-    assert 'MATA_3301_RETRY_WITH_NOMATA' in model
-    assert 'local engine_option "nomata"' in model
-    assert 'REVIEW_ADO_FALLBACK' in model
-    assert "if `attempt' == 1 | (`attempt' == 2 & `rc' == 3301)" in model
-    assert model.count('local rc = _rc') >= 2
-    for name,src in f.items():
-        assert src.count("{")==src.count("}"),name
-        assert "MODEL_SPEC_NOT_APPROVED" not in src,name
-    print(json.dumps({"static_audit":"PASS","stata_executable_used":False,
-                      "scenario_count":8,"files":sorted(f),
-                      "warning":"Stata syntax/runtime and numerical results NOT verified."}))
-if __name__=="__main__": main()
+    f = {p.name: p.read_text(encoding="utf-8") for p in (ROOT / "stata").glob("*.do")}
+    required = {"RUN_ALL.do", "01_environment_and_data.do", "02_pre_estimation.do",
+                "03_hightech_models.do", "04_unemployment_models.do",
+                "05_post_estimation_and_export.do", "06_fit_model.do"}
+    assert required <= set(f), sorted(required - set(f))
+    model, run, env = (f[x] for x in ("06_fit_model.do", "RUN_ALL.do", "01_environment_and_data.do"))
+    assert not re.search(r"(?im)^\s*scalar\s+_n\s*=", model), "reserved Stata name _n"
+    assert "AI_GMM_FIX_ID=V3_3301_NONMATA_FIRST" in run
+    assert "AI_GMM_FIX_ID=V3_3301_NONMATA_FIRST" in model
+    assert model.count("twostep robust small nomata") == 2, "r3301 bypass absent"
+    assert model.count("capture noisily xtabond2") == 2
+    assert "xtabond2_mata()" in model
+    assert 'status "REVIEW_REQUIRED"' in model and 'local status "APPROVED"' not in model
+    assert model.count("post __audit") == 2
+    assert 'capture scalar sc_invest_b = _b[ln1p_invest]' in model
+    assert 'capture scalar sc_patent_b = _b[ln1p_patent]' in model
+    assert "HANSEN_REJECTED" in model and "AR2_REJECTED" in model
+    assert "NO_DIFFERENCE_HANSEN" in model
+    assert "_se[GDP_Growth]" in model
+    assert "forvalues attempt" not in model, "Old unverified silent fallback must be removed"
+    assert 'str244 flags' in run and 'invest_b invest_se patent_b patent_se' in run
+    assert 'foreach outcome in HighTech_Exports Unemployment' in run
+    assert 'foreach period in 2024 2023' in run
+    assert 'foreach method in difference system' in run
+    assert "MODEL_EXECUTION_FAILURES=" in run
+    assert 'postclose __audit' in run
+    assert 'import excel using "data/raw/AI_Balanced_Panel (1).xlsx", firstrow clear' in env
+    assert 'capture confirm file "data/processed/stata_ready.dta"' not in env
+    assert 'assert _N == 270' in env and 'isid ISO3 Year' in env
+    assert "UPSTREAM_SOURCE_VERSION_NOT_VERIFIED" in env
+    assert "xtabond2, version" in env
+    for name, script in f.items():
+        assert script.count("{") == script.count("}"), name
+    print(json.dumps({"status":"STATIC_PASS", "stata_executed":False,
+                     "specs":8, "engine":"nomata", "input":"original_xlsx_reimport",
+                     "warning":"No Stata runtime or causal-validation claim"}))
+
+if __name__ == "__main__":
+    main()
