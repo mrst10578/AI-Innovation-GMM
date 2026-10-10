@@ -1,0 +1,143 @@
+name: Independent AI research source audit and estimation
+on:
+  push:
+    branches:
+      - 'research/ai-innovation-*'
+    paths:
+      - '.github/workflows/06-research-estimation.yml'
+      - 'src/python/research_audit.py'
+      - 'src/python/estimate_panel.py'
+      - 'src/python/prepare_model_data.py'
+      - 'src/r/estimate_ai_panel.R'
+      - 'src/r/sensitivity_ai_china.R'
+      - 'validation/validate_r_sensitivity.py'
+      - 'src/gretl/estimate_ai_panel.inp'
+      - 'MODEL_SPECIFICATION.md'
+      - 'validation/compare_R_gretl_Stata.py'
+      - 'validation/scientific_gate.py'
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-audit-and-python:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install analysis dependencies
+        run: python -m pip install -r requirements-python.txt matplotlib
+      - name: Audit original manuscript dictionary and real data
+        run: python -m src.python.research_audit
+      - name: Run Python OLS FE pretests and time sensitivity
+        run: python -m src.python.estimate_panel
+      - name: Check original DTA conversion
+        run: python -m src.python.to_stata
+      - name: Upload aggregate-only statistical and audit results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-research-python-aggregated
+          path: |
+            outputs/research_source_audit.json
+            outputs/python_estimation.json
+            outputs/annual_aggregates.csv
+            outputs/trend_*.png
+          if-no-files-found: warn
+  r-gmm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install R and reproducible CSV prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends r-base r-cran-plm r-cran-lmtest r-cran-sandwich
+          python -m pip install "pandas>=2.1,<3" "numpy>=1.26,<3" "openpyxl>=3.1,<4"
+      - name: Transform audited original data
+        run: python -m src.python.prepare_model_data
+      - name: Run actual IPS Fisher FE and GMM in plm
+        run: Rscript src/r/estimate_ai_panel.R
+      - name: Estimate actual 32-cell country and instrument sensitivity in R
+        run: |
+          Rscript src/r/sensitivity_ai_china.R
+          python validation/validate_r_sensitivity.py
+      - name: Save actual R estimator output and failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-real-r-gmm-log
+          path: |
+            outputs/r_models_log.txt
+            outputs/r_china_instrument_sensitivity.csv
+            outputs/r_china_instrument_sensitivity_qc.json
+          if-no-files-found: warn
+  gretl-gmm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install gretl and CSV conversion dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gretl
+          python -m pip install "pandas>=2.1,<3" "numpy>=1.26,<3" "openpyxl>=3.1,<4"
+      - name: Transform audited original data
+        run: python -m src.python.prepare_model_data
+      - name: Run real gretl baselines and dynamic panel GMM
+        shell: bash
+        run: |
+          set -o pipefail
+          pwd
+          test -s src/gretl/estimate_ai_panel.inp
+          test -s data/processed/model_panel.csv
+          python -c 'from pathlib import Path; p=Path("src/gretl/estimate_ai_panel.inp"); s=p.read_text(); s=s.replace("data/processed/model_panel.csv",str(Path("data/processed/model_panel.csv").resolve())); Path("/tmp/ai-panel-absolute.inp").write_text(s)'
+          gretlcli -b /tmp/ai-panel-absolute.inp 2>&1 | tee outputs/gretl_models_log.txt
+      - name: Save actual gretl estimates or error logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-real-gretl-gmm-log
+          path: outputs/gretl_models_log.txt
+          if-no-files-found: warn
+
+  compare-r-gretl:
+    needs: [r-gmm, gretl-gmm]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download actual R estimator logs
+        uses: actions/download-artifact@v4
+        with:
+          name: ai-real-r-gmm-log
+          path: outputs
+      - name: Download actual gretl estimator logs
+        uses: actions/download-artifact@v4
+        with:
+          name: ai-real-gretl-gmm-log
+          path: outputs
+      - name: Compare independently estimated coefficients
+        run: |
+          python validation/compare_R_gretl_Stata.py
+          python -c 'import json; x=json.load(open("outputs/cross_engine_comparison.json")); assert all(row["status"]=="coefficients_reproduced_not_tests_certified" for row in x["comparisons"].values()), x'
+      - name: Publish independent scientific validity flags from real estimator logs
+        run: python validation/scientific_gate.py
+      - name: Keep real comparison report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-cross-engine-validation
+          path: |
+            outputs/cross_engine_comparison.json
+            outputs/scientific_gate.json
+          if-no-files-found: warn

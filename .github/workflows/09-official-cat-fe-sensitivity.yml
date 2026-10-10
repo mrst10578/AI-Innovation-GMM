@@ -1,0 +1,61 @@
+name: Pinned-source independent CSET association sensitivity (NOT GMM)
+on:
+  push:
+    branches:
+      - 'research/ai-innovation-estimation-20261008'
+    paths:
+      - '.github/workflows/09-official-cat-fe-sensitivity.yml'
+      - 'validation/official_cat_association_sensitivity.py'
+      - 'validation/full_official_cat_reconcile.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  official-cat-fe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install independent linear algebra and statistical inference tools
+        run: python -m pip install "numpy>=1.26,<3" "scipy>=1.11,<2"
+      - name: Download immutable 2026-09 official ETO CAT source and verify SHA256
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p references outputs
+          curl --fail -L --retry 3 --retry-delay 3 --max-time 90 \
+            'https://zenodo.org/records/22772306/files/cat.zip?download=1' \
+            -o references/cat-zenodo-22772306-v1.12.0.zip
+          echo '499647c0e1d55cdf5fca0c16ebc0d329bcbe99e1d4ca2578055d7c5c035256d5  references/cat-zenodo-22772306-v1.12.0.zip' | sha256sum -c -
+          python -m zipfile -t references/cat-zenodo-22772306-v1.12.0.zip
+      - name: Recheck raw source workbook versus pinned official CAT 30 x 9 years
+        run: python -m validation.full_official_cat_reconcile references/cat-zenodo-22772306-v1.12.0.zip
+      - name: Perform 16 real independent two-way FE noncausal sensitivities
+        run: python -m validation.official_cat_association_sensitivity
+      - name: Assert evidence source markers and model statuses, never causal approval
+        run: |
+          python - <<'PY'
+          import csv,json
+          a=json.load(open('outputs/official_cat_fe_qc.json',encoding='utf-8'))
+          rows=list(csv.DictReader(open('outputs/official_cat_fe_exploratory.csv',encoding='utf-8')))
+          assert len(rows)==16==a['n_models']
+          assert a['causal_models_approved']==0 and not a['replaces_original_data']
+          assert a['official_zip_sha256']=='499647c0e1d55cdf5fca0c16ebc0d329bcbe99e1d4ca2578055d7c5c035256d5'
+          assert all(r['identification']=='EXPLORATORY_TWO_WAY_FIXED_EFFECTS_NONCAUSAL' for r in rows)
+          assert all(int(r['patent_incomplete_rows'])==0 for r in rows if r['end_year']=='2021')
+          assert all(int(r['patent_incomplete_rows'])>0 for r in rows if r['end_year']=='2024')
+          print('ALL_16_OFFICIAL_SOURCE_ASSOCIATION_MODELS_PASS_NONCAUSAL_GATES')
+          PY
+      - name: Upload provenance-indexed aggregate FE coefficients (no substitutions)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-source-attributed-official-cat-fe
+          path: |
+            outputs/official_cat_fe_exploratory.csv
+            outputs/official_cat_fe_qc.json
+            outputs/cset_full_official_reconciliation.json
+          if-no-files-found: error
+          retention-days: 30

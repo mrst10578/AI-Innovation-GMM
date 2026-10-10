@@ -20,7 +20,13 @@ jobs:
           sudo apt-get install -y --no-install-recommends gretl
           command -v gretlcli
       - name: Check gretl runtime (NOT econometric estimation)
-        run: gretlcli -b src/gretl/healthcheck.inp | tee outputs/gretl_environment.txt
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p outputs
+          gretlcli -b "$GITHUB_WORKSPACE/src/gretl/healthcheck.inp" 2>&1 | tee outputs/gretl_environment.txt
+          grep -q 'GRETL_RUNTIME_READY=1' outputs/gretl_environment.txt
+          grep -q 'NO_GMM_ESTIMATION=1' outputs/gretl_environment.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
