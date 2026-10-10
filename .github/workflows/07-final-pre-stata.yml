@@ -17,6 +17,8 @@ on:
       - 'validation/audit_real_stata.py'
       - 'validation/cset_provenance_gate.py'
       - 'validation/check_r_sensitivity_spec.py'
+      - 'validation/check_mata_dh_static.py'
+      - 'docs/STATA_MATA_DH_RETEST_FA.md'
       - 'docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md'
       - 'docs/CSET_OFFICIAL_CROSSCHECK_RESULTS_FA.md'
       - 'validation/evidence/stata_model_summary_20261010.csv'
@@ -56,6 +58,8 @@ jobs:
           python -m src.python.to_stata
       - name: Static validation of Stata code (NOT Stata execution)
         run: python -m src.python.stata_static_audit
+      - name: Independently check optional Mata D-H diagnostic script, no licensed Stata claim
+        run: python validation/check_mata_dh_static.py
       - name: Test Stata output validator against synthetic edge cases only
         run: PYTHONPATH=. python tests/test_stata_pipeline.py
       - name: Audit actual emailed Stata results separately from simulated static checks
