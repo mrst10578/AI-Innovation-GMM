@@ -28,7 +28,9 @@ def test_stata_result_audit_protects_against_fake_success():
     assert run_case(rows)[0] == 1
     rows=fake_rows(); rows[0]['invest_b']=''
     assert run_case(rows)[0] == 1
+    rows=fake_rows(); rows[0]['invest_b']='.'
+    assert run_case(rows)[0] == 1
 
 if __name__=='__main__':
     test_stata_result_audit_protects_against_fake_success()
-    print('PASS: 5 synthetic Stata output validation cases (NOT Stata execution)')
+    print('PASS: 6 synthetic Stata output validation cases (NOT Stata execution)')
