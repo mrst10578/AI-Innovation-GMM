@@ -7,7 +7,7 @@ capture log close _all
 capture mkdir "outputs"
 capture mkdir "data/processed"
 log using "outputs/stata_preflight.log", text replace
-display as result "AI_GMM_FIX_ID=V3_3301_NONMATA_FIRST"
+display as result "AI_GMM_FIX_ID=V4_3301_198_NOMATA"
 display as text "Stata version " c(stata_version)
 display as text "WORKDIR=" c(pwd)
 capture noisily do "stata/01_environment_and_data.do"
