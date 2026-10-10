@@ -40,6 +40,8 @@ jobs:
           python -m src.python.to_stata
       - name: Static validation of Stata code (NOT Stata execution)
         run: python -m src.python.stata_static_audit
+      - name: Test Stata output validator against synthetic edge cases only
+        run: PYTHONPATH=. python tests/test_stata_pipeline.py
       - name: Build exact-source portable laptop ZIP and verify manifest
         run: |
           python -m src.python.build_stata_bundle
