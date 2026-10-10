@@ -20,7 +20,8 @@ def main(csv_path=None):
     failed = [r for r in rows if r.get('status') in {'SCRIPT_FAILED', 'EXECUTION_FAILED'}]
     flags = {':'.join((r['outcome'], r['period'], r['method'])):r.get('flags', '') for r in rows}
     coeff_absent = [r for r in rows if r.get('status') == 'REVIEW_REQUIRED'
-                    and (not r.get('invest_b') or not r.get('patent_b'))]
+                    and (r.get('invest_b', '').strip() in ('', '.', 'NA', 'NaN', 'nan')
+                         or r.get('patent_b', '').strip() in ('', '.', 'NA', 'NaN', 'nan'))]
     out = {'rows':len(rows), 'model_script_or_estimation_failures':len(failed),
            'duplicates':duplicates, 'missing':missing, 'unexpected':unknown,
            'successful_model_coefficients_absent':len(coeff_absent),
