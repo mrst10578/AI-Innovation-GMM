@@ -13,6 +13,9 @@ on:
       - 'MODEL_SPECIFICATION.md'
       - 'DEFENSE_GUIDE_FA.md'
       - 'reports/**'
+      - 'docs/POST_STATA_AUDIT_FA.md'
+      - 'validation/audit_real_stata.py'
+      - 'validation/evidence/stata_model_summary_20261010.csv'
   pull_request:
   workflow_dispatch:
 permissions:
@@ -42,6 +45,14 @@ jobs:
         run: python -m src.python.stata_static_audit
       - name: Test Stata output validator against synthetic edge cases only
         run: PYTHONPATH=. python tests/test_stata_pipeline.py
+      - name: Audit actual emailed Stata results separately from simulated static checks
+        run: python validation/audit_real_stata.py
+      - name: Upload actual Stata scientific QC (archived prior run)
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI-Innovation-Real-Stata-Scientific-QC
+          path: outputs/real_stata_20261010_qc.json
+          if-no-files-found: error
       - name: Build exact-source portable laptop ZIP and verify manifest
         run: |
           python -m src.python.build_stata_bundle

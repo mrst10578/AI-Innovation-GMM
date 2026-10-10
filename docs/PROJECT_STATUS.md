@@ -1,3 +1,7 @@
+# NEW STATUS 2026-10-10: real Stata results received and audited
+
+Full table, exact source details and non-acceptance caveats: `docs/POST_STATA_AUDIT_FA.md`. Eight genuine Stata xtabond2 nomata fits succeeded; none can be presented as established causal impact. Archived prior status below, corrected Stata rows supersede it.
+
 # AI-Innovation-GMM scientific status (2026-10-08)
 
 Branch: research/ai-innovation-estimation-20261008.
@@ -13,8 +17,8 @@ Draft Pull Request: https://github.com/mrst10578/AI-Innovation-GMM/pull/1 . **DO
 | R plm pgmm difference/system both outcomes and 2023/2024 | EXECUTED, diagnostics partly reject or invalid (zero df / NaN); NOT uniformly validated |
 | gretl pooled/FE/dpanel (v2023c) | EXECUTED, real estimates and nonrobust Sargan logged, validity conditional |
 | Cross-engine check | Automated comparison from real R and gretl artifacts; check latest Actions run |
-| Stata DO scripts | Prepared for licensed runtime, NOT executed or version-validated |
-| Robust Hansen / Difference-in-Hansen | Not independently confirmed; cannot attribute to Stata |
+| Stata DO scripts | REAL LICENSED STATA RUN RECEIVED 2026-10-10: 8/8 GMM estimations completed using nomata; see docs/POST_STATA_AUDIT_FA.md |
+| Hansen / Difference-in-Hansen | Hansen/Sargan actually printed in Stata log for all 8; Difference-in-Hansen UNAVAILABLE under nomata |
 | Iran peer country analysis | NOT performed; need PPP per capita/structure/inflation/digital comparability data |
 | Final report / teaching | reports/RESEARCH_REPORT_FA.md and DEFENSE_GUIDE_FA.md delivered; separate PDF produced in conversation |
 
