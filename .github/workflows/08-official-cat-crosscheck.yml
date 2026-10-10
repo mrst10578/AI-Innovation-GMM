@@ -1,0 +1,44 @@
+name: Independent official CSET CAT snapshot crosscheck
+on:
+  push:
+    branches:
+      - 'research/ai-innovation-estimation-20261008'
+    paths:
+      - '.github/workflows/08-official-cat-crosscheck.yml'
+      - 'validation/compare_official_cat.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pinned-vintage-reconciliation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch official DOI-versioned ETO CAT dataset snapshots, not arbitrary web tables
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p references outputs
+          curl -fSL --retry 3 --retry-delay 3 --max-time 75 -A 'AI-Innovation source-audit academic reproducibility/1.0' \
+            'https://zenodo.org/records/18865020/files/cat.zip?download=1' \
+            -o references/cat-zenodo-18865020-v1.10.0.zip
+          curl -fSL --retry 3 --retry-delay 3 --max-time 75 -A 'AI-Innovation source-audit academic reproducibility/1.0' \
+            'https://zenodo.org/records/14365284/files/cat.zip?download=1' \
+            -o references/cat-zenodo-14365284-v1.0.0.zip
+          python -m zipfile -t references/cat-zenodo-18865020-v1.10.0.zip
+          python -m zipfile -t references/cat-zenodo-14365284-v1.0.0.zip
+          sha256sum references/cat-zenodo-*.zip
+      - name: Compare original workbook aggregate values to real pinned official series
+        run: |
+          python validation/compare_official_cat.py \
+            references/cat-zenodo-18865020-v1.10.0.zip \
+            references/cat-zenodo-14365284-v1.0.0.zip
+      - name: Publish reproducible provenance observations, not merged data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-cset-official-pinned-provenance
+          path: outputs/cset_cat_official_vintage_comparison.json
+          if-no-files-found: warn
+          retention-days: 30
