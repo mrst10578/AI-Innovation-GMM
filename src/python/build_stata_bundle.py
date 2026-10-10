@@ -16,6 +16,7 @@ def main():
              "docs/PRE_STATA_FINAL_AUDIT_FA.md", "docs/POST_STATA_AUDIT_FA.md",
              "docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md",
              "docs/CSET_OFFICIAL_CROSSCHECK_RESULTS_FA.md",
+             "docs/STATA_MATA_DH_RETEST_FA.md",
              "docs/CSET_OFFICIAL_CROSSCHECK_RESULTS_FA.md",
              "docs/AUDIT_REMEDIATION_STATUS_FA.md",
              "docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md",
