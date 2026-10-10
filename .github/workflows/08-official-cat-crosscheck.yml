@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/08-official-cat-crosscheck.yml'
       - 'validation/compare_official_cat.py'
+      - 'validation/full_official_cat_reconcile.py'
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,12 +27,23 @@ jobs:
           curl -fSL --retry 3 --retry-delay 3 --max-time 75 -A 'AI-Innovation source-audit academic reproducibility/1.0' \
             'https://zenodo.org/records/14365284/files/cat.zip?download=1' \
             -o references/cat-zenodo-14365284-v1.0.0.zip
+          curl -fSL --retry 3 --retry-delay 3 --max-time 75 -A 'AI-Innovation source-audit academic reproducibility/1.0' \
+            'https://zenodo.org/records/22772306/files/cat.zip?download=1' \
+            -o references/cat-zenodo-22772306-v1.12.0.zip
+          python -m zipfile -t references/cat-zenodo-22772306-v1.12.0.zip
           python -m zipfile -t references/cat-zenodo-18865020-v1.10.0.zip
           python -m zipfile -t references/cat-zenodo-14365284-v1.0.0.zip
           sha256sum references/cat-zenodo-*.zip
       - name: Compare original workbook aggregate values to real pinned official series
         run: |
           python validation/compare_official_cat.py \
+            references/cat-zenodo-22772306-v1.12.0.zip \
+            references/cat-zenodo-18865020-v1.10.0.zip \
+            references/cat-zenodo-14365284-v1.0.0.zip
+      - name: Reconcile ALL 270 country-year observations across 3 official metrics and 3 pinned vintages
+        run: |
+          python validation/full_official_cat_reconcile.py \
+            references/cat-zenodo-22772306-v1.12.0.zip \
             references/cat-zenodo-18865020-v1.10.0.zip \
             references/cat-zenodo-14365284-v1.0.0.zip
       - name: Publish reproducible provenance observations, not merged data
@@ -39,6 +51,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ai-cset-official-pinned-provenance
-          path: outputs/cset_cat_official_vintage_comparison.json
+          path: |
+            outputs/cset_cat_official_vintage_comparison.json
+            outputs/cset_full_official_reconciliation.json
+            outputs/cset_full_official_reconciliation.csv
           if-no-files-found: warn
           retention-days: 30
