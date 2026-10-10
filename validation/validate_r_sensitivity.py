@@ -18,7 +18,14 @@ for v in rows:
  expected_countries=29 if v["exclude_CHN"].upper()=="TRUE" else 30
  if int(v["countries"])!=expected_countries:issues.append(("WRONG_COUNTRY_COUNT",v["spec"]))
  if v["status"]=="ERROR":issues.append(("RUN_ERROR",v["spec"],v["failure_detail"]))
- if v["status"].startswith("AR2_REJECTED"):issues.append(("AR2_REJECTED",v["spec"]))
+ if "AR2_REJECTED" in v["status"]:issues.append(("AR2_REJECTED",v["spec"]))
+ df=val(v["overid_df"]) if "val" in globals() else None
+ if df is None:
+  try:df=float(v["overid_df"])
+  except (ValueError,TypeError):df=None
+ if df is None or not math.isfinite(df) or df<=0:
+  assert "OVERID_NOT_TESTABLE" in v["status"], ("ZERO_DF_TEST_MUST_NOT_PASS",v["spec"])
+  assert "OVERID_REJECTED" not in v["status"], ("ZERO_DF_FALSE_REJECTION",v["spec"])
  if "OVERID_REJECTED" in v["status"]:issues.append(("OVERID_REJECTED",v["spec"]))
  if "NOT_TESTABLE" in v["status"]:issues.append(("NOT_TESTABLE",v["spec"]))
  if "TOO_MANY" in v["status"]:issues.append(("TOO_MANY_INSTRUMENTS",v["spec"]))
