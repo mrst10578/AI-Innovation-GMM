@@ -15,6 +15,7 @@ on:
       - 'reports/**'
       - 'docs/POST_STATA_AUDIT_FA.md'
       - 'validation/audit_real_stata.py'
+      - 'tests/test_real_stata_archive_integrity.py'
       - 'validation/cset_provenance_gate.py'
       - 'validation/check_r_sensitivity_spec.py'
       - 'validation/check_mata_dh_static.py'
@@ -62,6 +63,8 @@ jobs:
         run: python validation/check_mata_dh_static.py
       - name: Test Stata output validator against synthetic edge cases only
         run: PYTHONPATH=. python tests/test_stata_pipeline.py
+      - name: Verify real emailed Stata CSV and deliberately corrupt rows to prove QC blocks malformed evidence
+        run: python -m tests.test_real_stata_archive_integrity
       - name: Audit actual emailed Stata results separately from simulated static checks
         run: python validation/audit_real_stata.py
       - name: Upload actual Stata scientific QC (archived prior run)

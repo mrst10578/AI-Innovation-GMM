@@ -12,9 +12,52 @@ def fl(x):
         v=float(x)
         return v if math.isfinite(v) else None
     except (ValueError,TypeError): return None
+# Explicit 22-field source contract. DictReader alone silently accepts short rows;
+# this missing patent coefficient was found in the 2023 HighTech System archive.
+REQUIRED_COLUMNS=("outcome","period","method","status","engine","flags","rc",
+    "n","groups","instruments","hdf","hp","sdf","sp","ar1p","ar2p",
+    "invest_b","invest_se","patent_b","patent_se","gdp_b","gdp_se")
+REQUIRED_NUMERIC=("rc","n","groups","instruments","hdf","hp","sdf","sp",
+    "ar1p","ar2p","invest_b","invest_se","patent_b","patent_se","gdp_b","gdp_se")
+# Provenance: numeric values in ORIGINAL 2026-10-10 emailed stata_model_summary.csv.
+# These pin the one row known to have lost a field during manual archival.
+ORIGINAL_EMAIL_REFERENCE={
+    ("HighTech_Exports","2023","system"):{
+      "invest_b":-.1114808504696192,"invest_se":.32477009,
+      "patent_b":-.12627859,"patent_se":.19012202,
+      "gdp_b":.2001714,"gdp_se":.13848077
+    }
+}
+def load_verified_rows(path=SOURCE):
+    with path.open(newline="",encoding="utf-8") as f:
+        raw=csv.reader(f)
+        header=next(raw,None)
+        assert header==list(REQUIRED_COLUMNS),(
+            "Stata summary column schema changed: expected 22 exact named columns")
+        records=list(raw)
+    assert len(records)==8,"Eight actual licensed Stata fits are required"
+    rows=[]
+    for i,record in enumerate(records, start=2):
+        assert len(record)==len(REQUIRED_COLUMNS),(
+            f"Stata evidence malformed at CSV line {i}: "
+            f"got {len(record)} fields, expected {len(REQUIRED_COLUMNS)}")
+        row=dict(zip(REQUIRED_COLUMNS,record))
+        for col in REQUIRED_NUMERIC:
+            assert fl(row[col]) is not None,(
+                f"Non-finite or missing Stata number at line {i} column {col}")
+        for col in ("invest_se","patent_se","gdp_se"):
+            assert fl(row[col])>0, f"Nonpositive SE at line {i} column {col}"
+        key=(row["outcome"],row["period"],row["method"])
+        if key in ORIGINAL_EMAIL_REFERENCE:
+            for name,expected in ORIGINAL_EMAIL_REFERENCE[key].items():
+                assert math.isclose(fl(row[name]),expected,rel_tol=1e-11,abs_tol=1e-11),(
+                    f"Source evidence mismatch {key} {name}: "
+                    f"got {row[name]} expected {expected}")
+        rows.append(row)
+    return rows
+
 def main():
-    with SOURCE.open(newline="",encoding="utf-8") as f:
-        r=list(csv.DictReader(f))
+    r=load_verified_rows()
     assert len(r)==8, "Exactly 8 observed fits required"
     expected={(y,str(year),method) for y in ("HighTech_Exports","Unemployment")
               for year in (2023,2024) for method in ("difference","system")}
