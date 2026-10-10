@@ -25,6 +25,8 @@ display as text "Difference-in-Hansen is not available in nomata implementation.
 local engine "ADO_NOMATA"
 local model_rc = .
 
+* xtabond2_stata (nomata) rejects split inside gmmstyle() with r(198).
+* split changes Difference-in-Hansen reporting only, unavailable in nomata.
 * Keep instrument, lag, estimator and year-control specifications unchanged.
 * Substituting nomata changes computation engine, not a declaration of validity.
 if "`method'" == "difference" {
@@ -36,8 +38,6 @@ if "`method'" == "difference" {
         ivstyle(`times', equation(diff)) noleveleq twostep robust small nomata
     local model_rc = _rc
 }
-* xtabond2_stata (nomata) rejects split inside gmmstyle() with r(198).
-* split changes Difference-in-Hansen reporting only, unavailable in nomata.
 else {
     capture noisily xtabond2 `y' L.`y' ln1p_invest ln1p_patent GDP_Growth `times', ///
         gmmstyle(L.`y', lag(1 2) collapse) ///
