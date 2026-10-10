@@ -40,14 +40,23 @@ for (y in c("HighTech_Exports","Unemployment"))
           out$overid_df<-as.numeric(unlist(ov$parameter)[1])
           out$overid_twosteps_p<-as.numeric(ov$p.value)
         }
-        if(is.na(out$ar2_p)||!is.finite(out$ar2_p))out$status<-"AR2_NOT_TESTABLE"
-        if(is.na(out$overid_df)||out$overid_df<=0||!is.finite(out$overid_twosteps_p))
-            out$status<-"OVERID_NOT_TESTABLE"
-        if(!is.na(out$instrument_columns)&&out$instrument_columns>=out$countries)
-            out$status<-"INSTRUMENTS_TOO_MANY"
-        if(!is.na(out$ar2_p)&&out$ar2_p<0.05)out$status<-"AR2_REJECTED"
-        if(!is.na(out$overid_twosteps_p)&&out$overid_twosteps_p<0.05)
-            out$status<-paste0(out$status,";OVERID_REJECTED")
+        # Independent, non-overwriting flags. A zero-df over-ID test is
+        # NOT a statistically meaningful rejection even if software prints p=0.
+        reasons <- character(0)
+        if(is.na(out$ar2_p) || !is.finite(out$ar2_p)) {
+            reasons <- c(reasons,"AR2_NOT_TESTABLE")
+        } else if (out$ar2_p < 0.05) reasons <- c(reasons,"AR2_REJECTED")
+        overid_valid <- !is.na(out$overid_df) && is.finite(out$overid_df) &&
+            out$overid_df > 0 && !is.na(out$overid_twosteps_p) &&
+            is.finite(out$overid_twosteps_p)
+        if (!overid_valid) {
+            reasons <- c(reasons,"OVERID_NOT_TESTABLE")
+        } else if (out$overid_twosteps_p < 0.05) {
+            reasons <- c(reasons,"OVERID_REJECTED")
+        }
+        if (!is.na(out$instrument_columns) && out$instrument_columns>=out$countries)
+            reasons <- c(reasons,"INSTRUMENTS_TOO_MANY")
+        out$status <- paste(c("ESTIMATED_CONDITIONAL",reasons),collapse=";")
       },error=function(e){out$failure_detail<-conditionMessage(e)})
       rows[[k]]<-as.data.frame(out,stringsAsFactors=FALSE)
       cat("SENSITIVITY_REAL",spec,out$status,"N=",out$nobs,"AR2=",out$ar2_p,
