@@ -1,3 +1,7 @@
+# Updated 2026-10-10: CSET official metric semantics now researched
+
+ETO documents official CAT investment values in **million USD** for disclosed and estimated series; do **not** apply that denomination to the workbook until exact column-to-series and source version are reconciled. Official patents count **families, first-filing year and jurisdiction**, yet the current workbook source vintage/family definition is unverified and 2024 China dominates. See docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md.
+
 # MODEL SPECIFICATION | AI investment and patents (independent)
 
 ## Provenance and confirmed dataset
@@ -36,5 +40,5 @@ For `Y ∈ {HighTech_Exports, Unemployment}`:
 2. Python descriptive/pooled/FE and 2024 sensitivity: see live Actions logs; historical status not imputed.
 3. R IPS/Fisher and pgmm: provisional, inspect live logs and instrument counts.
 4. gretl dpanel: independently attempted, inspect live logs and flags.
-5. Stata xtabond2/Hansen AR(1)/AR(2)/Difference-in-Hansen: **not executed** without licensed Stata. Do not report Stata statistics.
+5. Stata xtabond2/Hansen AR(1)/AR(2): **executed on licensed Stata (8/8), 2026-10-10, using nomata**; Difference-in-Hansen not available. See docs/POST_STATA_AUDIT_FA.md. All effects unapproved for causal claims.
 6. Structural causal claims: **not established**; observational research until source and moments fully audited.

@@ -9,6 +9,8 @@ on:
       - 'src/python/estimate_panel.py'
       - 'src/python/prepare_model_data.py'
       - 'src/r/estimate_ai_panel.R'
+      - 'src/r/sensitivity_ai_china.R'
+      - 'validation/validate_r_sensitivity.py'
       - 'src/gretl/estimate_ai_panel.inp'
       - 'MODEL_SPECIFICATION.md'
       - 'validation/compare_R_gretl_Stata.py'
@@ -62,12 +64,19 @@ jobs:
         run: python -m src.python.prepare_model_data
       - name: Run actual IPS Fisher FE and GMM in plm
         run: Rscript src/r/estimate_ai_panel.R
+      - name: Estimate actual 32-cell country and instrument sensitivity in R
+        run: |
+          Rscript src/r/sensitivity_ai_china.R
+          python validation/validate_r_sensitivity.py
       - name: Save actual R estimator output and failures
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ai-real-r-gmm-log
-          path: outputs/r_models_log.txt
+          path: |
+            outputs/r_models_log.txt
+            outputs/r_china_instrument_sensitivity.csv
+            outputs/r_china_instrument_sensitivity_qc.json
           if-no-files-found: warn
   gretl-gmm:
     runs-on: ubuntu-24.04

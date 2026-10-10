@@ -1,3 +1,10 @@
+## ممیزی مستقل CSET و آزمایش حساسیت ۱۰ اکتبر ۲۰۲۶
+
+گزارش تفصیلی [CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md](CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md) حاوی تعاریف **قطعی شاخص رسمی** و نقاطی است که **دیکشنری اکسل آن‌ها را تأیید نمی‌کند**. سهم چین از پتنت‌های ۲۰۲۴ بر اساس همان اکسل بیش از ۹۲٪ است؛ کل ۲۰۱۶–۲۰۲۴ پنل ۵٬۳۱۶٬۵۵۹ مورد. این موارد هشدار می‌دهند، اما بدون تطبیق نسخه رسمی مجوز تغییر یا حذف داده نیستند. در `validation/cset_provenance_gate.py` هشدارها با محاسبه از اکسل واقعی و دروازه‌های `UNRESOLVED` ثبت می‌شوند.
+
+در GitHub Actions، `src/r/sensitivity_ai_china.R` در **۳۲ مشخصات واقعی** (۲ پیامد × ۲ دوره × ۲ روش × ۲ عمق ابزار × حذف/حفظ چین) اجرا می‌شود. `validation/validate_r_sensitivity.py` صحت تعداد سناریو، جفت‌ها و علامت تغییر ضرایب را کنترل می‌کند. این **R یک‌مرحله‌ای** است نه بازاجرای Stata دو‌مرحله‌ای، و تا اجرای موفق نباید هیچ نتیجه‌ای از خروجی آن نقل شود.
+
+---
 # NEW STATUS 2026-10-10: real Stata results received and audited
 
 Full table, exact source details and non-acceptance caveats: `docs/POST_STATA_AUDIT_FA.md`. Eight genuine Stata xtabond2 nomata fits succeeded; none can be presented as established causal impact. Archived prior status below, corrected Stata rows supersede it.

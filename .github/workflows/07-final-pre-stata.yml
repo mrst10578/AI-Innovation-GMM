@@ -15,6 +15,9 @@ on:
       - 'reports/**'
       - 'docs/POST_STATA_AUDIT_FA.md'
       - 'validation/audit_real_stata.py'
+      - 'validation/cset_provenance_gate.py'
+      - 'validation/check_r_sensitivity_spec.py'
+      - 'docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md'
       - 'validation/evidence/stata_model_summary_20261010.csv'
   pull_request:
   workflow_dispatch:
@@ -37,6 +40,10 @@ jobs:
         run: sha256sum -c sources/SHA256SUMS.txt
       - name: Real-source country-level patent concentration and provenance audit
         run: python -m src.python.patent_forensics
+      - name: Independently gate CSET source identity and time/location/metric assumptions
+        run: python validation/cset_provenance_gate.py
+      - name: Verify preregistered R China / instrument sensitivity code structure
+        run: python validation/check_r_sensitivity_spec.py
       - name: Data preflight and Excel to DTA export (NOT Stata estimation)
         run: |
           python -m src.python.preflight
@@ -71,4 +78,5 @@ jobs:
           path: |
             outputs/source_forensics.json
             outputs/preflight_status.json
+            outputs/cset_provenance_gate.json
           if-no-files-found: error
