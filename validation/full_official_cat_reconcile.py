@@ -75,7 +75,10 @@ def workbook_rows(path):
         data=[]
         for row in rows[1:]:
             data.append({"ISO3":str(row["A"]).strip(),"Year":int(row["B"]),
-                         "AI_Investment":float(row["C"]),"AI_Patents":float(row["D"])})
+                         "AI_Investment":float(row["C"]),"AI_Patents":float(row["D"]),
+                         "HighTech_Exports":float(row["E"]),
+                         "GDP_Growth":float(row["F"]),
+                         "Unemployment":float(row["G"])})
         assert len(data)==270 and len({(d["ISO3"],d["Year"]) for d in data})==270
         assert set(d["ISO3"] for d in data)==set(ALIASES)
         assert set(d["Year"] for d in data)==set(range(2016,2025))
