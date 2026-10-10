@@ -11,9 +11,12 @@ def main():
     assert required <= set(f), sorted(required - set(f))
     model, run, env = (f[x] for x in ("06_fit_model.do", "RUN_ALL.do", "01_environment_and_data.do"))
     assert not re.search(r"(?im)^\s*scalar\s+_n\s*=", model), "reserved Stata name _n"
-    assert "AI_GMM_FIX_ID=V3_3301_NONMATA_FIRST" in run
-    assert "AI_GMM_FIX_ID=V3_3301_NONMATA_FIRST" in model
+    assert "AI_GMM_FIX_ID=V4_3301_198_NOMATA" in run
+    assert "AI_GMM_FIX_ID=V4_3301_198_NOMATA" in model
     assert model.count("twostep robust small nomata") == 2, "r3301 bypass absent"
+    assert "collapse split)" not in model, "nomata rejects split in gmmstyle(): r(198)"
+    assert model.count("lag(1 2) collapse)") == 2
+    assert model.count("lag(2 3) collapse)") == 6
     assert model.count("capture noisily xtabond2") == 2
     assert "xtabond2_mata()" in model
     assert 'status "REVIEW_REQUIRED"' in model and 'local status "APPROVED"' not in model
