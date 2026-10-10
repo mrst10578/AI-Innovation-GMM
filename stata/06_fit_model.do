@@ -16,7 +16,7 @@ foreach v of varlist yrd_* {
 
 capture log close _all
 log using "outputs/AI_`y'_`endyear'_`method'.log", text replace
-display as text "AI_GMM_FIX_ID=V3_3301_NONMATA_FIRST"
+display as text "AI_GMM_FIX_ID=V4_3301_198_NOMATA"
 display as text "SPEC outcome=`y' period=2016-`endyear' method=`method'"
 display as text "NONMATA_FIRST: explicitly avoids xtabond2_mata() r(3301)."
 display as text "All regressors AI and GDP provisionally endogenous; assumptions NOT source-validated."
@@ -36,12 +36,14 @@ if "`method'" == "difference" {
         ivstyle(`times', equation(diff)) noleveleq twostep robust small nomata
     local model_rc = _rc
 }
+* xtabond2_stata (nomata) rejects split inside gmmstyle() with r(198).
+* split changes Difference-in-Hansen reporting only, unavailable in nomata.
 else {
     capture noisily xtabond2 `y' L.`y' ln1p_invest ln1p_patent GDP_Growth `times', ///
-        gmmstyle(L.`y', lag(1 2) collapse split) ///
-        gmmstyle(ln1p_invest, lag(2 3) collapse split) ///
-        gmmstyle(ln1p_patent, lag(2 3) collapse split) ///
-        gmmstyle(GDP_Growth, lag(2 3) collapse split) ///
+        gmmstyle(L.`y', lag(1 2) collapse) ///
+        gmmstyle(ln1p_invest, lag(2 3) collapse) ///
+        gmmstyle(ln1p_patent, lag(2 3) collapse) ///
+        gmmstyle(GDP_Growth, lag(2 3) collapse) ///
         ivstyle(`times') twostep robust small nomata
     local model_rc = _rc
 }
