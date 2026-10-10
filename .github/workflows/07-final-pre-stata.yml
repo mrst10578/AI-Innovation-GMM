@@ -18,6 +18,7 @@ on:
       - 'validation/cset_provenance_gate.py'
       - 'validation/check_r_sensitivity_spec.py'
       - 'docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md'
+      - 'docs/CSET_OFFICIAL_CROSSCHECK_RESULTS_FA.md'
       - 'validation/evidence/stata_model_summary_20261010.csv'
       - 'validation/source_provenance_manifest.json'
       - 'validation/source_identification_gate.py'
