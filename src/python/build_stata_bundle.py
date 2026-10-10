@@ -14,6 +14,7 @@ def main():
     files += [ROOT/s for s in ("MODEL_SPECIFICATION.md","DEFENSE_GUIDE_FA.md",
              "reports/RESEARCH_REPORT_FA.md","STATA_START_HERE_FA.md",
              "docs/PRE_STATA_FINAL_AUDIT_FA.md", "docs/POST_STATA_AUDIT_FA.md",
+             "docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md",
              "docs/AUDIT_REMEDIATION_STATUS_FA.md",
              "docs/CSET_SOURCE_AND_GMM_IDENTIFICATION_AUDIT_FA.md",
              "requirements-python.txt","config/project.json")]
