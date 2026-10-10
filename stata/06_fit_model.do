@@ -1,4 +1,5 @@
-* Exact inputs: outcome endyear difference|system. All fitted models require review.
+* AI Innovation study: explicit non-Mata recovery path for xtabond2 Mata 3301.
+* All estimates are REVIEW ONLY. No programmatic inference of causal validity.
 version 16.0
 args y endyear method
 if !inlist("`y'", "HighTech_Exports", "Unemployment") exit 198
@@ -12,91 +13,124 @@ local times
 foreach v of varlist yrd_* {
     if "`v'" != "yrd_1" local times "`times' `v'"
 }
+
 capture log close _all
 log using "outputs/AI_`y'_`endyear'_`method'.log", text replace
-display as text "SPEC: outcome=`y' years=2016-`endyear' method=`method'"
-display as text "Collapsed GMM: lagged outcome t-2:t-3; all AI and GDP t-2:t-3; year effects."
-display as text "All non-time regressors provisionally endogenous; System adds extra level moment assumptions."
-* This sample has 30 countries and at most nine years. Use dense Mata
-* to avoid the space-streaming matrix-indexing path. If it fails with 3301,
-* transparently retry the SAME GMM specification using the ado implementation.
-capture noisily mata: mata set matafavor speed
-local mata_setting_rc = _rc
-if `mata_setting_rc' display as error "MATA_SPEED_SETTING_FAILED RC=" `mata_setting_rc'
-local engine "MATA_SPEED"
-local engine_option ""
-local fallback_used = 0
-local rc = 3301
-forvalues attempt = 1/2 {
-    if `attempt' == 1 | (`attempt' == 2 & `rc' == 3301) {
-        if `attempt' == 2 {
-            local engine "ADO_NOMATA"
-            local engine_option "nomata"
-            local fallback_used = 1
-            display as error "MATA_3301_RETRY_WITH_NOMATA: results need independent review"
-            display as text "NOTE: nomata does not report Difference-in-Hansen tests."
-        }
-        display as text "ESTIMATION_ENGINE=`engine'"
-        if "`method'"=="difference" {
-            capture noisily xtabond2 `y' L.`y' ln1p_invest ln1p_patent GDP_Growth `times', ///
-                gmmstyle(L.`y', lag(1 2) collapse) ///
-                gmmstyle(ln1p_invest, lag(2 3) collapse) ///
-                gmmstyle(ln1p_patent, lag(2 3) collapse) ///
-                gmmstyle(GDP_Growth, lag(2 3) collapse) ///
-                ivstyle(`times', equation(diff)) noleveleq twostep robust small `engine_option'
-            local rc = _rc
-        }
-        else {
-            capture noisily xtabond2 `y' L.`y' ln1p_invest ln1p_patent GDP_Growth `times', ///
-                gmmstyle(L.`y', lag(1 2) collapse split) ///
-                gmmstyle(ln1p_invest, lag(2 3) collapse split) ///
-                gmmstyle(ln1p_patent, lag(2 3) collapse split) ///
-                gmmstyle(GDP_Growth, lag(2 3) collapse split) ///
-                ivstyle(`times') twostep robust small `engine_option'
-            local rc = _rc
-        }
-        display as text "ENGINE_RC=`rc' (0 means an estimate returned, not scientific validity)"
-    }
-}
-if `rc' {
-    display as error "GMM_ESTIMATION_FAILED RC=" `rc'
-    post __audit ("`y'") ("`endyear'") ("`method'") ("EXECUTION_FAILED") ///
-        (`rc') (.) (.) (.) (.) (.) (.) (.) (.) (.)
+display as text "AI_GMM_FIX_ID=V3_3301_NONMATA_FIRST"
+display as text "SPEC outcome=`y' period=2016-`endyear' method=`method'"
+display as text "NONMATA_FIRST: explicitly avoids xtabond2_mata() r(3301)."
+display as text "All regressors AI and GDP provisionally endogenous; assumptions NOT source-validated."
+display as text "NO_AUTOMATIC_MATA_FALLBACK: do NOT interpret a successful estimate as a valid GMM model."
+display as text "Difference-in-Hansen is not available in nomata implementation."
+local engine "ADO_NOMATA"
+local model_rc = .
+
+* Keep instrument, lag, estimator and year-control specifications unchanged.
+* Substituting nomata changes computation engine, not a declaration of validity.
+if "`method'" == "difference" {
+    capture noisily xtabond2 `y' L.`y' ln1p_invest ln1p_patent GDP_Growth `times', ///
+        gmmstyle(L.`y', lag(1 2) collapse) ///
+        gmmstyle(ln1p_invest, lag(2 3) collapse) ///
+        gmmstyle(ln1p_patent, lag(2 3) collapse) ///
+        gmmstyle(GDP_Growth, lag(2 3) collapse) ///
+        ivstyle(`times', equation(diff)) noleveleq twostep robust small nomata
+    local model_rc = _rc
 }
 else {
-    scalar _nobs=e(N)
-    scalar _ng=e(N_g)
-    scalar _j=e(j)
-    scalar _hd=e(hansen_df)
-    scalar _hp=e(hansenp)
-    scalar _sd=e(sar_df)
-    scalar _sp=e(sarganp)
-    scalar _a1=e(ar1p)
-    scalar _a2=e(ar2p)
+    capture noisily xtabond2 `y' L.`y' ln1p_invest ln1p_patent GDP_Growth `times', ///
+        gmmstyle(L.`y', lag(1 2) collapse split) ///
+        gmmstyle(ln1p_invest, lag(2 3) collapse split) ///
+        gmmstyle(ln1p_patent, lag(2 3) collapse split) ///
+        gmmstyle(GDP_Growth, lag(2 3) collapse split) ///
+        ivstyle(`times') twostep robust small nomata
+    local model_rc = _rc
+}
+display as result "GMM_ESTIMATION_RC=" `model_rc' " ENGINE=`engine'"
+
+if `model_rc' {
+    display as error "MODEL_ESTIMATION_FAILED: read full AI_*.log; no fabricated results."
+    post __audit ("`y'") ("`endyear'") ("`method'") ("EXECUTION_FAILED") ///
+        ("`engine'") ("ESTIMATION_FAILED") ///
+        (`model_rc') (.) (.) (.) (.) (.) (.) (.) (.) (.) ///
+        (.) (.) (.) (.) (.) (.)
+}
+else {
+    * Stata reserved _n must never be reused as a scalar name.
+    scalar sc_nobs = e(N)
+    scalar sc_ng = e(N_g)
+    scalar sc_j = e(j)
+    scalar sc_hd = e(hansen_df)
+    scalar sc_hp = e(hansenp)
+    scalar sc_sd = e(sar_df)
+    scalar sc_sp = e(sarganp)
+    scalar sc_a1 = e(ar1p)
+    scalar sc_a2 = e(ar2p)
+
+    * An omitted regressor produces missing coefficient, not a fake zero.
+    scalar sc_invest_b = .
+    scalar sc_invest_se = .
+    scalar sc_patent_b = .
+    scalar sc_patent_se = .
+    scalar sc_gdp_b = .
+    scalar sc_gdp_se = .
+    capture scalar sc_invest_b = _b[ln1p_invest]
+    capture scalar sc_invest_se = _se[ln1p_invest]
+    capture scalar sc_patent_b = _b[ln1p_patent]
+    capture scalar sc_patent_se = _se[ln1p_patent]
+    capture scalar sc_gdp_b = _b[GDP_Growth]
+    capture scalar sc_gdp_se = _se[GDP_Growth]
+
+    * Independent flags: none of these tests can overwrite another.
+    local flags "NO_DIFFERENCE_HANSEN;SOURCE_UNVERIFIED"
+    if missing(sc_j) | missing(sc_ng) | sc_j>=sc_ng {
+        local flags "`flags';INSTRUMENT_COUNT"
+    }
+    if missing(sc_a1) {
+        local flags "`flags';AR1_MISSING"
+    }
+    else if sc_a1 >= 0.05 {
+        local flags "`flags';AR1_NONREJECTION"
+    }
+    if missing(sc_a2) {
+        local flags "`flags';AR2_MISSING"
+    }
+    else if sc_a2 < 0.05 {
+        local flags "`flags';AR2_REJECTED"
+    }
+    if missing(sc_hd) | sc_hd<=0 | missing(sc_hp) {
+        local flags "`flags';HANSEN_UNTESTABLE"
+    }
+    else {
+        if sc_hp<0.05 local flags "`flags';HANSEN_REJECTED"
+        if sc_hp>0.99 local flags "`flags';HANSEN_SUSPICIOUS_HIGH"
+    }
+    if missing(sc_invest_b) | missing(sc_patent_b) {
+        local flags "`flags';AI_COEFFICIENT_MISSING"
+    }
     local status "REVIEW_REQUIRED"
-    if `fallback_used' local status "REVIEW_ADO_FALLBACK"
-    if missing(_j) | missing(_ng) | _j>=_ng local status "INVALID_INSTRUMENTS"
-    if missing(_a2) {
-        local status "INVALID_AR2_MISSING"
+    * Clearly reject models with failed essential diagnostics; otherwise still unapproved.
+    if missing(sc_j) | missing(sc_ng) | sc_j>=sc_ng | missing(sc_a2) | missing(sc_hd) | sc_hd<=0 | missing(sc_hp) {
+        local status "NOT_APPROVED"
     }
-    else if _a2<0.05 {
-        local status "INVALID_AR2_REJECTED"
+    else if sc_a2<0.05 | sc_hp<0.05 {
+        local status "NOT_APPROVED"
     }
-    if missing(_hd) | _hd<=0 | missing(_hp) {
-        local status "INVALID_HANSEN_DF"
-    }
-    else if _hp<0.05 {
-        local status "INVALID_HANSEN_REJECTED"
-    }
-    display as result "AUDIT_STATUS=`status' ENGINE=`engine'"
-    if `fallback_used' display as error "ADO_FALLBACK_NOT_EQUIVALENCE_CERTIFIED: Difference-in-Hansen unavailable"
-    display as text "Number of instruments=" _j " groups=" _ng " observations=" _nobs
-    display as text "Hansen df=" _hd " p=" _hp " Sargan df=" _sd " p=" _sp
-    display as text "AR1 p=" _a1 " AR2 p=" _a2
-    display as text "System subset Difference-in-Hansen, if identifiable, appears in xtabond2 log."
+    * NO model is ever marked APPROVED by code.
+    display as error "MODEL_REQUIRES_SCIENTIFIC_REVIEW flags=`flags'"
+    display as result "INSTRUMENTS=" sc_j " GROUPS=" sc_ng " OBS=" sc_nobs
+    display as result "HANSEN_P=" sc_hp " AR1_P=" sc_a1 " AR2_P=" sc_a2
+
+    * Check actual storage result, rather than using capture without auditing.
     capture noisily estimates save "outputs/AI_`y'_`endyear'_`method'.ster", replace
+    local save_rc = _rc
+    if `save_rc' {
+        local flags "`flags';ESTIMATES_SAVE_FAILED"
+        display as error "ESTIMATES_SAVE_FAILED RC=" `save_rc'
+    }
     post __audit ("`y'") ("`endyear'") ("`method'") ("`status'") ///
-        (0) (_nobs) (_ng) (_j) (_hd) (_hp) (_sd) (_sp) (_a1) (_a2)
+        ("`engine'") ("`flags'") ///
+        (0) (sc_nobs) (sc_ng) (sc_j) (sc_hd) (sc_hp) (sc_sd) (sc_sp) (sc_a1) (sc_a2) ///
+        (sc_invest_b) (sc_invest_se) (sc_patent_b) (sc_patent_se) (sc_gdp_b) (sc_gdp_se)
 }
 log close
 restore
