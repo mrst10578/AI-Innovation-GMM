@@ -1,0 +1,94 @@
+{
+  "audit_date": "2026-10-10",
+  "scope": "Original AI_Balanced_Panel (1).xlsx: independent AI investment, patents, high-tech export share, unemployment, 2016-2024",
+  "original_workbook_sha256": "4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434",
+  "research_data": {
+    "rows": 270,
+    "country_count": 30,
+    "year_min": 2016,
+    "year_max": 2024,
+    "rows_without_source_export_id": 270,
+    "metadata_in_workbook": {
+      "dataset_version": null,
+      "original_download_url": null,
+      "extraction_timestamp": null,
+      "investment_multiplier": null,
+      "investment_disclosed_or_estimated": null,
+      "patent_family_or_document": null,
+      "patent_country_assignment": null,
+      "patent_year_definition": null,
+      "patent_2024_complete_flag": null
+    }
+  },
+  "candidate_official_source": {
+    "name": "ETO Country AI Activity Metrics; NOT proven to be source of workbook",
+    "documentation_url": "https://eto.tech/dataset-docs/country-ai-activity-metrics/",
+    "historical_methodology_url": "https://cat.cset.tech/methodology/",
+    "dataset_version_doi": "UNMATCHED",
+    "publisher_fields": {
+      "disclosed_investment": "companies_yearly_disclosed.disclosed_investment",
+      "estimated_investment": "companies_yearly_estimated.estimated_investment",
+      "investment_unit_for_these_fields": "million USD",
+      "investment_category": "private equity investment into privately held AI-related companies, not all investment",
+      "patent_applications": "patents_yearly_applications.num_patent_applications",
+      "patent_unit": "one patent family, NOT number of patent documents",
+      "patent_geography": "first-filing jurisdiction / patent office",
+      "patent_year": "priority first-filing year",
+      "patent_recent_complete_column": "complete"
+    },
+    "note": "Publisher's fields/units cannot be transferred to unmatched original workbook."
+  },
+  "source_evidence": {
+    "investment_metric_exact_match": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "patent_metric_exact_match": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "country_year_row_level_reconciliation": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "investment_unit_and_value_type": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "patent_family_document_and_geography": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "patent_2024_complete_vintage": {
+      "verified": false,
+      "evidence_url": null
+    }
+  },
+  "system_gmm_identification": {
+    "theoretical_initial_conditions_justification": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "evidence_level_moments_valid": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "subset_difference_hansen_or_alternative": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "instrument_lags_justified": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "cross_country_error_dependence_addressed": {
+      "verified": false,
+      "evidence_url": null
+    },
+    "sensitivity_to_alternative_instrument_sets": {
+      "verified": false,
+      "evidence_url": null
+    }
+  },
+  "hard_rule": "Missing values are not inferred or imputed from public methodology; do not approve causal attribution."
+}
