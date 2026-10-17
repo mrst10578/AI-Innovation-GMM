@@ -1,0 +1,811 @@
+source_col,wdi_code,ISO3,Year,original_supplied_value,wdi_reference_value,original_minus_reference,absolute_deviation,equal_to_0.001,reference_obs_status,reference_lastupdated,reference_indicator_name
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2016,20.6275044745549,20.6275044745549,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2017,18.0967924595604,18.0967924595604,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2018,18.1371018191307,18.1371018191307,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2019,21.2199332352628,21.2199332352628,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2020,21.4757898705835,21.4757898705835,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2021,22.3940766008599,22.3940766008599,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2022,25.8318704116272,25.8318704116272,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2023,25.2582777120781,25.2582777120781,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUS,2024,25.1586416457084,25.1586416457084,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2016,14.4532591877111,14.4532591877111,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2017,12.8851997037889,12.8851997037889,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2018,11.6500759838374,11.6500759838374,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2019,11.4825348767666,11.4825348767666,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2020,12.2718957660446,12.2718957660446,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2021,11.017122140568,11.017122140568,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2022,14.9141702472602,14.9141702472602,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2023,15.9232697881169,15.9232697881169,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,AUT,2024,18.4525766859019,18.4525766859019,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2016,13.3312451633933,13.3312451633933,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2017,11.4917903557909,11.4917903557909,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2018,11.7058640594516,11.7058640594516,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2019,14.1440138847213,14.1440138847213,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2020,15.2618615789713,15.2618615789713,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2021,21.3799638763737,21.3799638763737,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2022,22.8179135173265,23.5845776233808,-0.7666641060543,0.7666641060543,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2023,18.6668227645892,18.5035274907028,0.16329527388639775,0.16329527388639775,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,BEL,2024,20.3921453422236,19.8280639799919,0.5640813622317005,0.5640813622317005,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2016,14.0996116936098,14.0996116936098,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2017,14.3488055729531,14.3488055729531,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2018,15.4222842964733,15.4222842964733,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2019,17.1309209127166,17.1309209127166,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2020,16.7587089775244,16.7587089775244,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2021,16.33762888714,16.33762888714,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2022,15.1489765380468,15.1489765380468,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2023,16.3717954388263,16.3717954388263,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CAN,2024,16.7779029827711,16.136976827953,0.6409261548181,0.6409261548181,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2016,27.335457169438,27.335457169438,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2017,14.0238568621919,14.0238568621919,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2018,13.3182169315591,13.3182169315591,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2019,12.9094936723953,12.9094936723953,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2020,12.8450867094278,12.8450867094278,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2021,14.2350632729725,14.2350632729725,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2022,29.9881397976664,29.9881397976664,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2023,29.3340286978728,29.3340286978728,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHE,2024,29.6239015157944,29.6239015157944,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2016,30.2545232296357,30.2545232296357,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2017,30.9118639785891,30.9118639785891,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2018,31.5481478595353,31.5481478595353,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2019,30.8186302968419,30.8186302968419,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2020,31.2766154241293,31.2766154241293,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2021,30.2190732796596,30.2190732796596,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2022,27.7650612563156,27.7650612563156,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2023,26.5682136542881,26.5682136542881,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,CHN,2024,26.2777380479223,26.2777380479223,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2016,18.0827014214761,18.0827014214761,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2017,15.850578794452,15.850578794452,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2018,15.7474335584013,15.7474335584013,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2019,16.3869405629417,16.3869405629417,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2020,15.5031959869375,15.5031959869375,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2021,15.3851048227765,15.3851048227765,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2022,17.4981505573659,17.4981505573659,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2023,17.7818374796623,17.9190173120617,-0.13717983239940068,0.13717983239940068,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DEU,2024,17.9772990379432,17.9772990379432,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2016,14.8833242354843,14.8833242354843,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2017,12.4279222825429,12.4279222825429,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2018,12.3547301877073,12.3547301877073,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2019,12.039996737934,12.039996737934,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2020,13.2343925466707,13.2343925466707,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2021,13.9247982031326,13.9247982031326,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2022,15.988289228272,15.0717227734779,0.9165664547941006,0.9165664547941006,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2023,17.1321575837404,17.2078913518622,-0.07573376812180044,0.07573376812180044,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,DNK,2024,17.6194498489345,17.5785320197937,0.04091782914080255,0.04091782914080255,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2016,7.80248141094868,7.80248141094868,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2017,6.99949013494316,6.99949013494316,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2018,6.76693548745416,6.76693548745416,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2019,6.84640091103014,6.84640091103014,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2020,7.76842135531122,7.76842135531122,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2021,9.39320382214351,9.39320382214351,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2022,12.5837187911388,12.5837187911388,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2023,9.56253561613111,9.56253561613111,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ESP,2024,9.28447661569937,9.28447661569937,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2016,10.052829776298,10.052829776298,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2017,9.6573147330322,9.6573147330322,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2018,9.01765355032152,9.01765355032152,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2019,9.21470120593618,9.21470120593618,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2020,9.98230025285834,9.98230025285834,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2021,10.2937538536253,10.2937538536253,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2022,9.62392843667484,9.62392843667484,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2023,9.71402259549133,9.71402259549133,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FIN,2024,9.28522659633957,9.28522659633957,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2016,27.9331801598168,27.9331801598168,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2017,26.0180218998669,26.0180218998669,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2018,25.9347849255776,25.9347849255776,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2019,26.9265976407414,26.9265976407414,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2020,21.1920405248012,22.5402419628216,-1.3482014380204,1.3482014380204,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2021,22.305003085565,21.3228806203905,0.982122465174502,0.982122465174502,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2022,21.9264611257156,21.9264611257156,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2023,22.3835449721792,22.3835449721792,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,FRA,2024,23.1371073769038,23.1371073769038,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2016,23.5591126028431,23.5591126028431,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2017,22.6194649609659,22.6194649609659,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2018,22.3331118559009,22.3331118559009,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2019,23.0942001089205,23.0942001089205,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2020,23.0073604990707,23.0073604990707,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2021,23.8654057182193,23.8654057182193,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2022,27.1597708192348,27.4235886922287,-0.2638178729939007,0.2638178729939007,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2023,28.8917146113567,28.8917146113567,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GBR,2024,29.233260009076,29.233260009076,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2016,13.7270081175833,13.7270081175833,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2017,12.1148895809545,12.1148895809545,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2018,12.9551889486437,12.9551889486437,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2019,12.5222555558252,12.5222555558252,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2020,13.2518669714424,13.2518669714424,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2021,12.2848681524393,12.2848681524393,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2022,14.4708651762207,14.4708651762207,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2023,15.1515337740903,15.1515337740903,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,GRC,2024,15.011494857431,15.011494857431,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2016,17.5764530213374,17.5764530213374,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2017,17.2630732776764,17.2630732776764,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2018,16.8209858629646,16.8209858629646,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2019,17.3787600622128,17.3787600622128,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2020,17.4648807221778,17.4648807221778,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2021,16.3975126429279,16.3975126429279,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2022,18.4048917258431,18.4048917258431,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2023,18.8624569621863,18.8624569621863,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,HUN,2024,22.5745118826045,22.5745118826045,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2016,7.66325704378624,7.66325704378624,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2017,7.36208114076572,7.36208114076572,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2018,9.04145168835151,9.04145168835151,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2019,10.2237396907979,10.2237396907979,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2020,11.0325638466576,11.0325638466576,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2021,10.2125596625118,10.2125596625118,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2022,12.6822794807287,12.6822794807287,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2023,14.9343472986716,14.9343472986716,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,IND,2024,18.5723946411049,18.5723946411049,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2016,21.8196172712291,21.8196172712291,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2017,21.0679788533896,21.0679788533896,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2018,22.5362840096475,22.5362840096475,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2019,23.0916656017552,23.0916656017552,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2020,28.197643074759,28.197643074759,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2021,29.5956758722761,29.5956758722761,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2022,29.1090540410523,29.1090540410523,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2023,34.9377735824443,34.9377735824443,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ISR,2024,37.2335173751738,37.2335173751738,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2016,8.29074616964551,8.29074616964551,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2017,7.8052686500986,7.8052686500986,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2018,7.47655885813922,7.47655885813922,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2019,7.75802459594121,7.75802459594121,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2020,8.587243012964,8.587243012964,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2021,7.77024565516253,7.77024565516253,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2022,9.15916231271025,9.15916231271025,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2023,9.9836968942283,10.1031753168903,-0.1194784226619987,0.1194784226619987,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ITA,2024,12.2827088504022,11.891145607858,0.3915632425441995,0.3915632425441995,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2016,17.620423854837,17.620423854837,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2017,17.5942774665502,17.5942774665502,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2018,17.2970528139362,17.2970528139362,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2019,17.0303844450023,17.0303844450023,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2020,18.6333487896777,18.6333487896777,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2021,18.0039913482614,18.0039913482614,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2022,18.2592615351902,18.2592615351902,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2023,17.1028060703212,17.1225767764561,-0.019770706134899285,0.019770706134899285,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,JPN,2024,17.5547415163067,17.5547415163067,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2016,30.5250266717443,30.5250266717443,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2017,32.546316460744,32.546316460744,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2018,36.3912233579129,36.3912233579129,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2019,32.4050621736765,32.4050621736765,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2020,35.6022265413283,35.6022265413283,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2021,36.014503674486,36.014503674486,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2022,36.118278931217,36.118278931217,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2023,30.2762799912651,30.2762799912651,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,KOR,2024,36.2582559366674,36.2582559366674,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2016,7.96708640448661,7.96708640448661,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2017,6.9688410293022,6.9688410293022,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2018,6.97324123677991,6.97324123677991,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2019,6.57356994288018,6.57356994288018,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2020,5.61923854995663,5.61923854995663,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2021,6.0752020682151,6.0752020682151,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2022,5.9904603893658,5.9904603893658,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2023,5.979250210644,5.979250210644,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,LUX,2024,5.0736120319212,5.0736120319212,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2016,20.6541116351274,20.6541116351274,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2017,21.1680967750153,21.1680967750153,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2018,20.8917456407643,20.8917456407643,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2019,20.4068584131191,20.4068584131191,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2020,21.5074249745377,21.5074249745377,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2021,19.8113406398377,19.8113406398377,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2022,20.5343692257849,20.4298026309373,0.10456659484760067,0.10456659484760067,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2023,17.9938785812602,17.9938785812602,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,MEX,2024,19.3037596613987,19.3037596613987,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2016,24.0087404866077,24.0087404866077,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2017,22.9219025245367,22.9219025245367,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2018,22.5132061163246,22.5132061163246,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2019,23.0482346929973,23.0482346929973,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2020,23.1639760853804,23.1639760853804,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2021,22.0023211908273,22.0023211908273,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2022,21.9578380124342,21.9578380124342,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2023,24.5106465274936,24.5106465274936,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NLD,2024,23.4680052763745,23.4680052763745,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2016,20.9563395259628,20.9563395259628,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2017,21.5970984465797,21.5970984465797,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2018,21.1178200437435,21.1178200437435,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2019,22.4920145628444,22.4920145628444,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2020,22.0688842926826,22.0688842926826,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2021,20.5863715899543,20.5863715899543,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2022,23.8849460450338,23.8849460450338,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2023,25.6746143774999,25.6746143774999,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,NOR,2024,25.4139359384172,25.3869620031133,0.02697393530390002,0.02697393530390002,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2016,10.7154228014203,10.7154228014203,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2017,10.6673187252222,10.6673187252222,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2018,10.3950333891095,10.3950333891095,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2019,9.8529348361967,9.8529348361967,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2020,9.86616548997166,9.86616548997166,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2021,9.44556514280936,9.44556514280936,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2022,11.6325877772755,11.6325877772755,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2023,12.1223189735947,12.1223189735947,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,POL,2024,13.5099699026858,13.5099699026858,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2016,5.80540001054449,5.80540001054449,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2017,5.98812595371655,5.98812595371655,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2018,5.28353269409281,5.28353269409281,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2019,6.94181475443009,6.94181475443009,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2020,7.1147115711238,7.1147115711238,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2021,6.250331404512,6.250331404512,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2022,6.99049160072585,6.99049160072585,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2023,6.71084167998399,6.71084167998399,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,PRT,2024,6.77343918950435,6.80409396359062,-0.03065477408626993,0.03065477408626993,False,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2016,10.3924513925489,10.3924513925489,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2017,9.77959738479042,9.77959738479042,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2018,10.0771915943775,10.0771915943775,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2019,11.0725693077429,11.0725693077429,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2020,11.9370424850698,11.9370424850698,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2021,11.4879408346099,11.4879408346099,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2022,11.85733755602,11.85733755602,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2023,12.6747408327123,12.6747408327123,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ROU,2024,13.4497511493721,13.4497511493721,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2016,17.8376016375053,17.8376016375053,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2017,15.1103424459526,15.1103424459526,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2018,14.1643140590828,14.1643140590828,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2019,14.5057835745267,14.5057835745267,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2020,15.1359508380239,15.1359508380239,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2021,13.9348317468926,13.9348317468926,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2022,17.2566541363702,17.2566541363702,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2023,17.6238520277113,17.6238520277113,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,SWE,2024,17.6524551082203,17.6524551082203,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2016,3.03814599740941,3.03814599740941,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2017,3.23291293505096,3.23291293505096,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2018,2.67353129854845,2.67353129854845,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2019,3.02817669225913,3.02817669225913,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2020,3.15277011329118,3.15277011329118,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2021,3.28362739970141,3.28362739970141,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2022,3.66403554879462,3.66403554879462,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2023,4.51829098986852,4.51829098986852,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,TUR,2024,5.13775956987065,5.13775956987065,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2016,22.4192942002286,22.4192942002286,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2017,19.2659699620243,19.2659699620243,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2018,18.4842699258676,18.4842699258676,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2019,18.6853939276571,18.6853939276571,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2020,19.4939761609452,19.4939761609452,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2021,19.9014614131792,19.9014614131792,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2022,20.5789833007379,20.5789833007379,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2023,21.8459878355521,21.8459878355521,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,USA,2024,24.322982844202,24.322982844202,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2016,6.65712319984824,6.65712319984824,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2017,5.67982442723305,5.67982442723305,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2018,5.27331266850248,5.27331266850248,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2019,4.89552263425361,4.89552263425361,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2020,5.62171975958479,5.62171975958479,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2021,5.54756049045268,5.54756049045268,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2022,5.52196923336353,5.52196923336353,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2023,4.95551571209936,4.95551571209936,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+HighTech_Exports,TX.VAL.TECH.MF.ZS,ZAF,2024,5.70923344153222,5.70923344153222,0.0,0.0,True,,2026-10-08,High-technology exports (% of manufactured exports)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2016,2.75564065529868,2.75564065529868,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2017,2.29331030192918,2.29331030192918,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2018,2.87417039499501,2.87417039499501,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2019,2.19401703622717,2.19401703622717,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2020,-0.133531904304775,-0.133531904304775,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2021,2.00694844335034,2.00694844335034,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2022,4.25304559238732,4.25304559238732,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2023,3.58382100798981,3.58382100798981,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUS,2024,1.37340773365975,1.37340773365975,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2016,2.11721964494312,2.11721964494312,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2017,2.27224992038207,2.27224992038207,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2018,2.48422114080024,2.48422114080024,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2019,1.75497619649288,1.75497619649288,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2020,-6.31825509209936,-6.31825509209936,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2021,4.92309171717903,4.92309171717903,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2022,5.33096379400371,5.33096379400371,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2023,-0.786244288594673,-0.786244288594673,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,AUT,2024,-0.659089573171372,-0.659089573171372,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2016,1.19350273007754,1.19350273007754,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2017,1.47446761556785,1.47446761556785,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2018,1.87796847383565,1.87796847383565,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2019,2.4428900448156,2.4428900448156,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2020,-4.7929839083518,-4.7929839083518,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2021,6.25445686466593,6.25445686466593,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2022,4.02460852835887,4.02460852835887,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2023,1.56125539542029,1.56125539542029,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,BEL,2024,1.09775383828703,1.09775383828703,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2016,1.03855091989323,1.03855091989323,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2017,3.03383491841392,3.03383491841392,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2018,2.74296341402246,2.74296341402246,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2019,1.90843193887251,1.90843193887251,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2020,-5.03823342794087,-5.03823342794087,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2021,5.95052804984759,5.95052804984759,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2022,4.69541985045903,4.69541985045903,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2023,1.95308552199025,1.95308552199025,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CAN,2024,2.04626605401701,2.04626605401701,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2016,1.91159094214852,1.91159094214852,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2017,1.42034612231261,1.42034612231261,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2018,3.32743256101493,3.32743256101493,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2019,1.11532187197474,1.11532187197474,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2020,-2.2552579425106,-2.2552579425106,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2021,6.17622836050151,6.17622836050151,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2022,3.53430286842426,3.53430286842426,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2023,0.825560934124624,0.825560934124624,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHE,2024,1.39033363875791,1.39033363875791,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2016,6.7736886867727,6.7736886867727,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2017,6.89123916636191,6.89123916636191,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2018,6.757806142324,6.757806142324,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2019,6.06737806333672,6.06737806333672,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2020,2.33950385203023,2.33950385203023,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2021,8.57038414981781,8.57038414981781,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2022,3.13385438394069,3.13385438394069,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2023,5.41600334492955,5.41600334492955,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,CHN,2024,4.95830378788091,4.95830378788091,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2016,2.22222216259371,2.22222216259371,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2017,2.797906720551,2.797906720551,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2018,1.13569604599849,1.13569604599849,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2019,0.977734697038784,0.977734697038784,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2020,-4.13191443239947,-4.13191443239947,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2021,3.90999994204108,3.90999994204108,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2022,1.8092581243061,1.8092581243061,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2023,-0.869647578573321,-0.869647578573321,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DEU,2024,-0.495851897260366,-0.495851897260366,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2016,3.07304549209093,3.07304549209093,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2017,3.05647723922718,3.05647723922718,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2018,1.8600074900921,1.8600074900921,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2019,1.71140093932736,1.71140093932736,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2020,-1.78010601831291,-1.78010601831291,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2021,6.50025445756295,6.50025445756295,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2022,0.443832614908331,0.443832614908331,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2023,0.604587766175584,0.604587766175584,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,DNK,2024,3.47783593140312,3.47783593140312,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2016,2.91515598595787,2.91515598595787,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2017,2.89604207865007,2.89604207865007,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2018,2.39541124478878,2.39541124478878,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2019,1.96117850841711,1.96117850841711,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2020,-10.9400706350371,-10.9400706350371,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2021,6.68314420473001,6.68314420473001,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2022,6.37031712129601,6.37031712129601,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2023,2.46085796805582,2.46085796805582,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ESP,2024,3.45525405630191,3.45525405630191,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2016,2.57193414898754,2.57193414898754,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2017,3.30337003591039,3.30337003591039,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2018,1.19297759742292,1.19297759742292,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2019,1.34973845741737,1.34973845741737,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2020,-2.49103605535707,-2.49103605535707,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2021,2.67634641498897,2.67634641498897,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2022,0.763041912763526,0.763041912763526,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2023,-1.28973484453397,-1.28973484453397,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FIN,2024,0.374566568538427,0.374566568538427,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2016,0.860031075424033,0.860031075424033,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2017,2.08361485997399,2.08361485997399,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2018,1.64590872395887,1.64590872395887,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2019,2.02744646419237,2.02744646419237,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2020,-7.44064589948231,-7.44064589948231,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2021,6.88233783360239,6.88233783360239,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2022,2.71676264185913,2.71676264185913,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2023,1.43921494437743,1.43921494437743,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,FRA,2024,1.19046798275883,1.19046798275883,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2016,2.20652020635357,2.20652020635357,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2017,3.02322219840339,3.02322219840339,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2018,1.55133095078786,1.55133095078786,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2019,1.25629899760824,1.25629899760824,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2020,-10.047896637362,-10.047896637362,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2021,8.5431118453255,8.5431118453255,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2022,5.14970388522993,5.14970388522993,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2023,0.271650048355255,0.271650048355255,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GBR,2024,1.08027716858781,1.08027716858781,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2016,-0.0317947678412054,-0.0317947678412054,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2017,1.47312472702352,1.47312472702352,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2018,2.06467207892409,2.06467207892409,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2019,2.27718065334808,2.27718065334808,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2020,-9.19623149726978,-9.19623149726978,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2021,8.65449786002131,8.65449786002131,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2022,5.52198580589408,5.52198580589408,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2023,2.13591131996631,2.13591131996631,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,GRC,2024,2.0865743380603,2.0865743380603,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2016,2.43864141309342,2.43864141309342,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2017,4.12418389451805,4.12418389451805,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2018,5.60613813768876,5.60613813768876,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2019,5.07718495088933,5.07718495088933,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2020,-4.33872540024058,-4.33872540024058,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2021,7.22291580811137,7.22291580811137,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2022,4.15238057779229,4.15238057779229,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2023,-0.817107370513455,-0.817107370513455,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,HUN,2024,0.709070599066038,0.709070599066038,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2016,8.25630550176662,8.25630550176662,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2017,6.79538341902422,6.79538341902422,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2018,6.45385134495295,6.45385134495295,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2019,3.87143694070524,3.87143694070524,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2020,-5.77772470687303,-5.77772470687303,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2021,9.68959249191741,9.68959249191741,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2022,7.6093649776932,7.6093649776932,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2023,7.210224629335,7.210224629335,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,IND,2024,7.09927893176518,7.09927893176518,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2016,4.53601939236572,4.53601939236572,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2017,4.34394518932547,4.34394518932547,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2018,4.05349952888294,4.05349952888294,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2019,3.57898762923605,3.57898762923605,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2020,-1.80206927953466,-1.80206927953466,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2021,9.33534690236249,9.33534690236249,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2022,6.36407234798706,6.36407234798706,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2023,2.06272504731618,2.06272504731618,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ISR,2024,0.953618469238535,0.953618469238535,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2016,1.23622108511661,1.23622108511661,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2017,1.60369995294101,1.60369995294101,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2018,0.826646712344115,0.826646712344115,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2019,0.429162533780342,0.429162533780342,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2020,-8.86822122185345,-8.86822122185345,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2021,8.93106210800055,8.93106210800055,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2022,4.82117669913565,4.82117669913565,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2023,0.922796543670316,0.922796543670316,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ITA,2024,0.783039135276795,0.783039135276795,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2016,0.704986495111257,0.704986495111257,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2017,1.62345062245441,1.62345062245441,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2018,0.834143845965585,0.834143845965585,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2019,-0.308496921143259,-0.308496921143259,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2020,-4.28327942675573,-4.28327942675573,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2021,3.56419531474475,3.56419531474475,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2022,1.33164750653741,1.33164750653741,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2023,0.720785304749811,0.720785304749811,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,JPN,2024,-0.240084236041696,-0.240084236041696,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2016,3.17152748983935,3.17152748983935,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2017,3.433191763972,3.433191763972,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2018,3.17611568177327,3.17611568177327,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2019,2.31380210595475,2.31380210595475,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2020,-0.700242317542106,-0.700242317542106,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2021,4.61296795454287,4.61296795454287,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2022,2.72756456708991,2.72756456708991,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2023,1.58301467403629,1.58301467403629,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,KOR,2024,2.00361101838986,2.00361101838986,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2016,4.97819047122638,4.97819047122638,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2017,1.31711942298405,1.31711942298405,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2018,1.61129891211624,1.61129891211624,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2019,2.74932091920692,2.74932091920692,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2020,-0.510051634039826,-0.510051634039826,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2021,6.92973270801744,6.92973270801744,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2022,-1.09741256293819,-1.09741256293819,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2023,0.0994370594039111,0.0994370594039111,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,LUX,2024,0.358614003982225,0.358614003982225,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2016,1.7724932254128,1.7724932254128,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2017,1.87172854648381,1.87172854648381,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2018,1.97208211101069,1.97208211101069,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2019,-0.392690513290532,-0.392690513290532,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2020,-8.35403459379062,-8.35403459379062,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2021,6.04848347173572,6.04848347173572,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2022,3.70975708309098,3.70975708309098,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2023,3.1067964131456,3.1067964131456,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,MEX,2024,1.35057631384696,1.35057631384696,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2016,2.42428065449427,2.42428065449427,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2017,2.78150834679987,2.78150834679987,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2018,2.25873158164956,2.25873158164956,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2019,2.3001616053659,2.3001616053659,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2020,-3.86799714191608,-3.86799714191608,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2021,6.27683593745216,6.27683593745216,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2022,5.00723453395074,5.00723453395074,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2023,-0.598061017580278,-0.598061017580278,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NLD,2024,1.07383137319854,1.07383137319854,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2016,1.29158732771135,1.29158732771135,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2017,2.66964474273466,2.66964474273466,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2018,1.1103912365576,1.1103912365576,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2019,1.46970781954143,1.46970781954143,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2020,-1.36055723261586,-1.36055723261586,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2021,4.14314688769197,4.14314688769197,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2022,4.08039770659241,4.08039770659241,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2023,0.352695581319765,0.352695581319765,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,NOR,2024,1.42372134524737,1.42372134524737,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2016,3.03117767594847,3.03117767594847,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2017,5.15245773325907,5.15245773325907,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2018,6.2458584723942,6.2458584723942,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2019,4.58045817256199,4.58045817256199,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2020,-2.03556882399977,-2.03556882399977,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2021,6.92718266052501,6.92718266052501,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2022,5.25545697386036,5.25545697386036,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2023,0.249610834017872,0.249610834017872,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,POL,2024,3.02841630700273,3.02841630700273,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2016,2.00414129666575,2.00414129666575,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2017,3.31472008175986,3.31472008175986,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2018,2.94628343449202,2.94628343449202,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2019,2.74568432648596,2.74568432648596,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2020,-8.20463159324387,-8.20463159324387,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2021,5.55875672070374,5.55875672070374,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2022,6.98584137580278,6.98584137580278,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2023,3.09998745904281,3.09998745904281,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,PRT,2024,2.21459232301109,2.21459232301109,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2016,2.85993252302089,2.85993252302089,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2017,8.19547826641261,8.19547826641261,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2018,5.39452228185675,5.39452228185675,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2019,3.96028958497598,3.96028958497598,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2020,-3.59802546034757,-3.59802546034757,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2021,5.58735072538869,5.58735072538869,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2022,4.18771305104109,4.18771305104109,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2023,2.25773416555121,2.25773416555121,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ROU,2024,0.916003764382594,0.916003764382594,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2016,2.13117914731151,2.13117914731151,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2017,1.88282184966646,1.88282184966646,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2018,1.7702553546772,1.7702553546772,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2019,2.60823012869524,2.60823012869524,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2020,-1.93379704032216,-1.93379704032216,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2021,5.2258643028773,5.2258643028773,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2022,1.25543620445816,1.25543620445816,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2023,-0.204061304891439,-0.204061304891439,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,SWE,2024,1.01779633304398,1.01779633304398,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2016,3.32366508200445,3.32366508200445,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2017,7.82585730002594,7.82585730002594,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2018,3.46815306092219,3.46815306092219,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2019,1.30162365464503,1.30162365464503,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2020,1.80306247087255,1.80306247087255,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2021,11.811094450607,11.811094450607,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2022,5.44122511322401,5.44122511322401,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2023,5.04512369812289,5.04512369812289,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,TUR,2024,3.3276230893799,3.3276230893799,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2016,1.81945147909089,1.81945147909089,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2017,2.45762230126449,2.45762230126449,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2018,2.96650506701943,2.96650506701943,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2019,2.58382533052225,2.58382533052225,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2020,-2.081375977796,-2.081375977796,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2021,6.15202247867526,6.15202247867526,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2022,2.52421385073222,2.52421385073222,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2023,2.93436322440155,2.93436322440155,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,USA,2024,2.79318715363841,2.79318715363841,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2016,0.664552307858116,0.664552307858116,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2017,1.15794695181735,1.15794695181735,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2018,1.55678384721676,1.55678384721676,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2019,0.25993557687633,0.25993557687633,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2020,-6.1689177146757,-6.1689177146757,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2021,4.85864865060148,4.85864865060148,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2022,2.05813661692193,2.05813661692193,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2023,0.80610455095804,0.80610455095804,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+GDP_Growth,NY.GDP.MKTP.KD.ZG,ZAF,2024,0.534843531905139,0.534843531905139,0.0,0.0,True,,2026-10-08,GDP growth (annual %)
+Unemployment,SL.UEM.TOTL.ZS,AUS,2016,5.711,5.711,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2017,5.592,5.592,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2018,5.345,5.345,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2019,5.143,5.143,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2020,6.394,6.394,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2021,5.022,5.022,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2022,3.728,3.728,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2023,3.668,3.668,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUS,2024,3.942,3.942,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2016,6.064,6.064,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2017,5.561,5.561,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2018,4.933,4.933,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2019,4.56,4.56,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2020,5.201,5.201,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2021,6.459,6.459,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2022,4.992,4.992,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2023,5.264,5.264,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,AUT,2024,5.2,5.2,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2016,7.83,7.83,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2017,7.09,7.09,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2018,5.941,5.941,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2019,5.364,5.364,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2020,5.545,5.545,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2021,6.248,6.248,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2022,5.57,5.57,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2023,5.547,5.547,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,BEL,2024,5.7,5.7,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2016,7.038,7.038,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2017,6.426,6.426,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2018,5.837,5.837,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2019,5.69,5.69,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2020,9.657,9.657,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2021,7.527,7.527,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2022,5.279,5.279,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2023,5.415,5.415,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CAN,2024,6.351,6.351,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2016,4.918,4.918,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2017,4.797,4.797,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2018,4.713,4.713,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2019,4.394,4.394,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2020,4.817,4.817,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2021,5.013,5.013,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2022,4.122,4.122,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2023,4.043,4.043,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHE,2024,4.343,4.343,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2016,4.56,4.56,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2017,4.47,4.47,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2018,4.31,4.31,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2019,4.56,4.56,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2020,5.0,5.0,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2021,4.55,4.55,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2022,4.98,4.98,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2023,4.67,4.67,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,CHN,2024,4.59,4.59,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2016,4.104,4.104,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2017,3.781,3.781,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2018,3.384,3.384,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2019,3.163,3.163,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2020,3.881,3.881,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2021,3.594,3.594,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2022,3.137,3.137,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2023,3.071,3.071,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DEU,2024,3.4,3.4,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2016,5.989,5.989,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2017,5.833,5.833,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2018,5.131,5.131,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2019,5.018,5.018,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2020,5.644,5.644,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2021,5.065,5.065,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2022,4.434,4.434,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2023,5.094,5.094,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,DNK,2024,5.358,5.358,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2016,19.635,19.635,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2017,17.224,17.224,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2018,15.255,15.255,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2019,14.104,14.104,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2020,15.532,15.532,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2021,14.914,14.914,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2022,13.033,13.033,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2023,12.179,12.179,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ESP,2024,11.4,11.4,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2016,8.818,8.818,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2017,8.64,8.64,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2018,7.361,7.361,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2019,6.695,6.695,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2020,7.759,7.759,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2021,7.617,7.617,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2022,6.719,6.719,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2023,7.149,7.149,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FIN,2024,8.4,8.4,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2016,10.057,10.057,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2017,9.409,9.409,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2018,9.018,9.018,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2019,8.415,8.415,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2020,8.009,8.009,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2021,7.871,7.871,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2022,7.303,7.303,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2023,7.335,7.335,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,FRA,2024,7.4,7.4,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2016,4.909,4.909,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2017,4.501,4.501,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2018,4.145,4.145,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2019,3.657,3.657,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2020,4.472,4.472,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2021,4.864,4.864,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2022,3.768,3.768,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2023,4.025,4.025,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GBR,2024,4.361,4.361,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2016,23.514,23.514,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2017,21.413,21.413,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2018,19.179,19.179,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2019,17.045,17.045,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2020,15.899,15.899,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2021,14.656,14.656,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2022,12.426,12.426,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2023,11.023,11.023,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,GRC,2024,10.02,10.02,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2016,5.115,5.115,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2017,4.156,4.156,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2018,3.667,3.667,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2019,3.411,3.411,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2020,4.248,4.248,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2021,4.021,4.021,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2022,3.583,3.583,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2023,4.096,4.096,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,HUN,2024,4.5,4.5,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2016,7.611,7.611,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2017,7.626,7.626,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2018,7.652,7.652,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2019,6.51,6.51,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2020,7.859,7.859,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2021,6.38,6.38,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2022,4.822,4.822,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2023,4.172,4.172,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,IND,2024,4.173,4.173,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2016,4.723,4.723,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2017,4.14,4.14,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2018,3.917,3.917,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2019,3.731,3.731,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2020,4.169,4.169,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2021,4.812,4.812,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2022,3.695,3.695,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2023,3.371,3.371,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ISR,2024,3.595,3.595,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2016,11.688,11.688,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2017,11.211,11.211,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2018,10.538,10.538,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2019,9.884,9.884,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2020,9.192,9.192,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2021,9.497,9.497,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2022,8.069,8.069,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2023,7.627,7.627,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ITA,2024,6.5,6.5,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2016,3.132,3.132,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2017,2.822,2.822,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2018,2.467,2.467,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2019,2.351,2.351,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2020,2.809,2.809,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2021,2.808,2.808,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2022,2.614,2.614,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2023,2.6,2.6,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,JPN,2024,2.5,2.5,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2016,3.65,3.65,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2017,3.653,3.653,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2018,3.824,3.824,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2019,3.746,3.746,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2020,3.931,3.931,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2021,3.639,3.639,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2022,2.857,2.857,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2023,2.675,2.675,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,KOR,2024,2.784,2.784,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2016,6.669,6.669,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2017,5.523,5.523,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2018,5.589,5.589,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2019,5.592,5.592,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2020,6.766,6.766,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2021,5.571,5.571,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2022,4.588,4.588,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2023,5.184,5.184,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,LUX,2024,6.4,6.4,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2016,3.853,3.853,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2017,3.419,3.419,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2018,3.275,3.275,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2019,3.477,3.477,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2020,4.44,4.44,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2021,4.019,4.019,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2022,3.256,3.256,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2023,2.765,2.765,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,MEX,2024,2.678,2.678,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2016,6.007,6.007,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2017,4.837,4.837,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2018,3.832,3.832,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2019,3.379,3.379,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2020,3.82,3.82,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2021,4.209,4.209,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2022,3.526,3.526,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2023,3.535,3.535,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NLD,2024,3.7,3.7,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2016,4.68,4.68,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2017,4.164,4.164,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2018,3.801,3.801,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2019,3.684,3.684,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2020,4.424,4.424,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2021,4.359,4.359,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2022,3.231,3.231,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2023,3.574,3.574,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,NOR,2024,4.0,4.0,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2016,6.141,6.141,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2017,4.867,4.867,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2018,3.835,3.835,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2019,3.267,3.267,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2020,3.155,3.155,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2021,3.268,3.268,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2022,2.811,2.811,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2023,2.743,2.743,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,POL,2024,2.807,2.807,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2016,11.058,11.058,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2017,8.878,8.878,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2018,6.966,6.966,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2019,6.422,6.422,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2020,6.85,6.85,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2021,6.712,6.712,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2022,6.138,6.138,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2023,6.498,6.498,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,PRT,2024,6.5,6.5,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2016,5.901,5.901,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2017,4.927,4.927,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2018,4.187,4.187,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2019,3.912,3.912,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2020,5.035,5.035,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2021,5.59,5.59,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2022,5.614,5.614,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2023,5.589,5.589,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ROU,2024,5.4,5.4,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2016,6.99,6.99,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2017,6.718,6.718,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2018,6.365,6.365,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2019,6.833,6.833,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2020,8.291,8.291,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2021,8.803,8.803,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2022,7.417,7.417,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2023,7.611,7.611,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,SWE,2024,8.4,8.4,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2016,10.899,10.899,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2017,10.919,10.919,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2018,10.956,10.956,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2019,13.73,13.73,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2020,13.148,13.148,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2021,11.969,11.969,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2022,10.465,10.465,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2023,9.388,9.388,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,TUR,2024,8.8,8.8,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2016,4.869,4.869,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2017,4.355,4.355,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2018,3.896,3.896,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2019,3.669,3.669,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2020,8.055,8.055,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2021,5.349,5.349,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2022,3.65,3.65,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2023,3.638,3.638,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,USA,2024,4.022,4.022,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2016,26.536,26.536,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2017,27.035,27.035,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2018,26.906,26.906,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2019,28.468,28.468,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2020,29.217,29.217,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2021,34.007,34.007,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2022,33.268,33.268,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2023,32.098,32.098,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
+Unemployment,SL.UEM.TOTL.ZS,ZAF,2024,32.279,32.279,0.0,0.0,True,,2026-10-08,"Unemployment, total (% of total labor force) (modeled ILO estimate)"
