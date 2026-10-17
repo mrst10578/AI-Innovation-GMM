@@ -1,0 +1,1317 @@
+------------------------------------------------------------------------------------------------------------------------
+      name:  unemployment
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/unemployment.log
+  log type:  text
+ opened on:  17 Oct 2026, 11:16:28
+
+. display as text "OUTCOME=`outcome'; independent models of unemployment and high-tech share."
+OUTCOME=Unemployment; independent models of unemployment and high-tech share.
+
+. local successful_gmm = 0
+
+. foreach cutoff in 2024 2023 {
+  2.     preserve
+  3.     keep if Year <= `cutoff'
+  4.     xtset panel_id Year
+  5.     local td "yr2017-yr2024"
+  6.     if `cutoff' == 2023 local td "yr2017-yr2023"
+  7.     display as result "======== SAMPLE END `cutoff' ========"
+  8.     quietly count
+  9.     display as result "INPUT_ROWS=" r(N)
+ 10.     * Dynamic pooled OLS and within FE are biased comparison models, not causal benchmarks.
+.     capture noisily regress `outcome' L.`outcome' ln_ai_investment ln_ai_patents GDP_Growth `td', vce(cluster panel_id
+> )
+ 11.     if !_rc {
+ 12.         estimates store `slug'_ols`cutoff'
+ 13.         estimates save "outputs/stata/`slug'_ols`cutoff'.ster", replace
+ 14.     }
+ 15.     else display as error "POOLED OLS FAILED for `slug'/`cutoff'"
+ 16.     capture noisily xtreg `outcome' L.`outcome' ln_ai_investment ln_ai_patents GDP_Growth `td', fe vce(cluster pane
+> l_id)
+ 17.     if !_rc {
+ 18.         estimates store `slug'_fe`cutoff'
+ 19.         estimates save "outputs/stata/`slug'_fe`cutoff'.ster", replace
+ 20.     }
+ 21.     else display as error "DYNAMIC FE FAILED for `slug'/`cutoff'"
+ 22.     * Collapse + a single lag depth restricts instrument proliferation at N=30.
+.     * One lag of L.y yields instruments dated no later than y_(t-2).
+.     * AI regressors are treated as endogenous, not proven exogenous.
+.     * GDP growth and year indicators are provisionally strictly exogenous: sensitivity needed.
+.     foreach system in system difference {
+ 23.         foreach steps in onestep twostep {
+ 24.             local eqopts ""
+ 25.             local stepopts ""
+ 26.             if "`steps'" == "twostep" local stepopts "twostep"
+ 27.             local instruments "ivstyle(GDP_Growth `td', equation(both))"
+ 28.             if "`system'" == "difference" {
+ 29.                 local eqopts "noleveleq"
+ 30.                 local instruments "ivstyle(GDP_Growth `td', equation(diff))"
+ 31.             }
+ 32.             local idprefix = substr("`slug'",1,2)
+ 33.             local ident "`idprefix'_`system'_`steps'_`cutoff'"
+ 34.             display as result "GMM `slug' `cutoff' `system' `steps'"
+ 35.             capture noisily xtabond2 `outcome' L.`outcome' ln_ai_investment ln_ai_patents GDP_Growth `td', ///
+>                 gmmstyle(L.`outcome', laglimits(1 1) collapse) ///
+>                 gmmstyle(ln_ai_investment ln_ai_patents, laglimits(2 2) collapse) ///
+>                 `instruments' `eqopts' `stepopts' robust small
+ 36.             local rc = _rc
+ 37.             if `rc' {
+ 38.                 display as error "MODEL_FAILED outcome=`slug' cutoff=`cutoff' system=`system' step=`steps' rc=`rc'"
+ 39.                 post ai_post ("`ident'") ("FAILED") (`rc') (.) (.) (.) (.) (.) (.) (.)
+ 40.             }
+ 41.             else {
+ 42.                 local successful_gmm = `successful_gmm' + 1
+ 43.                 local verdict "UNVALIDATED"
+ 44.                 if missing(e(j),e(N_g),e(ar2p),e(hansenp)) local verdict "DIAGNOSTIC_HOLD"
+ 45.                 if !missing(e(j),e(N_g),e(ar2p),e(hansenp)) {
+ 46.                     if e(j)>=e(N_g) | e(ar2p)<0.05 | e(hansenp)<0.05 | e(hansenp)>0.95 local verdict "DIAGNOSTIC_HO
+> LD"
+ 47.                 }
+ 48.                 post ai_post ("`ident'") ("`verdict'") (0) (e(N)) (e(N_g)) (e(j)) (e(sarganp)) (e(hansenp)) (e(ar1p
+> )) (e(ar2p))
+ 49.                 display as result "DIAGNOSTIC_STATUS=`verdict' Hansen=" e(hansenp) " AR2=" e(ar2p) " instruments=" 
+> e(j)
+ 50.                 estimates store `ident'
+ 51.                 estimates save "outputs/stata/`ident'.ster", replace
+ 52.                 display as result "MODEL_EXECUTED_BUT_NOT_YET_VALIDATED `ident'"
+ 53.                 ereturn list
+ 54.                 matrix list e(b)
+ 55.                 * Hansen/Sargan, AR(1)/AR(2), instrument count and subset tests:
+.                 * use actual xtabond2 output above; do not fabricate missing diagnostics.
+.             }
+ 56.         }
+ 57.     }
+ 58.     restore
+ 59. }
+(0 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+======== SAMPLE END 2024 ========
+INPUT_ROWS=270
+note: yr2021 omitted because of collinearity.
+
+Linear regression                               Number of obs     =        240
+                                                F(11, 29)         =     209.98
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9788
+                                                Root MSE          =     .81081
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .9843455   .0353119    27.88   0.000     .9121244    1.056566
+                 |
+ln_ai_investment |     .03054   .0315039     0.97   0.340    -.0338927    .0949727
+   ln_ai_patents |  -.0046823   .0199727    -0.23   0.816     -.045531    .0361665
+      GDP_Growth |  -.0410962   .0253786    -1.62   0.116    -.0930012    .0108088
+          yr2017 |  -.5273012    .273986    -1.92   0.064    -1.087666    .0330631
+          yr2018 |  -.5310969   .2721493    -1.95   0.061    -1.087705    .0255109
+          yr2019 |  -.1977975   .2488709    -0.79   0.433    -.7067956    .3112006
+          yr2020 |   .5148662    .487977     1.06   0.300    -.4831589    1.512891
+          yr2021 |          0  (omitted)
+          yr2022 |  -.9220565   .2454135    -3.76   0.001    -1.423983   -.4201295
+          yr2023 |  -.1594551   .3049036    -0.52   0.605     -.783053    .4641429
+          yr2024 |   .0823782   .2941695     0.28   0.781     -.519266    .6840225
+           _cons |   .0178311   .2852746     0.06   0.951     -.565621    .6012832
+----------------------------------------------------------------------------------
+file outputs/stata/unemployment_ols2024.ster saved
+note: yr2024 omitted because of collinearity.
+
+Fixed-effects (within) regression               Number of obs     =        240
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.7070                                         min =          8
+     Between = 0.9941                                         avg =        8.0
+     Overall = 0.9771                                         max =          8
+
+                                                F(11,29)          =      25.69
+corr(u_i, Xb) = 0.9280                          Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .7403953     .07862     9.42   0.000     .5795993    .9011914
+                 |
+ln_ai_investment |  -.0400307   .0432532    -0.93   0.362    -.1284934    .0484321
+   ln_ai_patents |   .0408347   .0958587     0.43   0.673    -.1552183    .2368877
+      GDP_Growth |  -.0461805   .0373661    -1.24   0.226    -.1226027    .0302418
+          yr2017 |  -.2552092   .1756925    -1.45   0.157    -.6145406    .1041223
+          yr2018 |  -.4096146   .1618952    -2.53   0.017    -.7407275   -.0785017
+          yr2019 |  -.1884557   .1881571    -1.00   0.325    -.5732803    .1963689
+          yr2020 |   .4630805   .2620309     1.77   0.088    -.0728328    .9989938
+          yr2021 |   .2351967    .320759     0.73   0.469    -.4208292    .8912226
+          yr2022 |  -.7415302   .1993174    -3.72   0.001     -1.14918   -.3338803
+          yr2023 |  -.2488848   .0976501    -2.55   0.016    -.4486016    -.049168
+          yr2024 |          0  (omitted)
+           _cons |   1.872634   .7639317     2.45   0.020     .3102179    3.435049
+-----------------+----------------------------------------------------------------
+         sigma_u |  1.4200895
+         sigma_e |   .6992004
+             rho |  .80487956   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+file outputs/stata/unemployment_fe2024.ster saved
+GMM unemployment 2024 system onestep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2021 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate robust weighting matrix for Hansen test.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, one-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       240
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 29)     =    597.60                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.116553   .2381375     4.69   0.000     .6295068    1.603598
+                 |
+ln_ai_investment |   .1779416    .345421     0.52   0.610    -.5285238    .8844069
+   ln_ai_patents |   .0419011   .1257744     0.33   0.741    -.2153364    .2991387
+      GDP_Growth |  -.0195435   .0472742    -0.41   0.682    -.1162301    .0771431
+          yr2017 |  -.2469748   .5608565    -0.44   0.663    -1.394055    .9001055
+          yr2018 |  -.2255231   .5964707    -0.38   0.708    -1.445443    .9943963
+          yr2019 |   .1453351   .5778392     0.25   0.803    -1.036479    1.327149
+          yr2020 |    .946089   .7700471     1.23   0.229    -.6288341    2.521012
+          yr2022 |  -.8300928   .2998993    -2.77   0.010    -1.443456   -.2167298
+          yr2023 |   .1531953   .5988296     0.26   0.800    -1.071549    1.377939
+          yr2024 |   .4176514   .5955613     0.70   0.489    -.8004082    1.635711
+           _cons |  -2.501774   4.269494    -0.59   0.562    -11.23387    6.230322
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.77  Pr > z =  0.006
+Arellano-Bond test for AR(2) in first differences: z =  -0.27  Pr > z =  0.790
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   2.84  Prob > chi2 =  0.417
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   2.75  Prob > chi2 =  0.432
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   2.75  Prob > chi2 =  0.432
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.71  Prob > chi2 =  0.400
+    Difference (null H = exogenous): chi2(2)    =   2.04  Prob > chi2 =  0.361
+
+DIAGNOSTIC_STATUS=UNVALIDATED Hansen=.4321488 AR2=.78962388 instruments=15
+file outputs/stata/un_system_onestep_2024.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_system_onestep_2024
+
+scalars:
+                e(ar1) =  -2.770217211127002
+              e(g_avg) =  8
+               e(df_r) =  29
+                e(F_p) =  4.49029703243e-31
+                  e(F) =  597.5985296694917
+                  e(h) =  3
+               e(df_m) =  11
+                e(N_g) =  30
+              e(g_max) =  8
+              e(g_min) =  8
+            e(artests) =  2
+              e(sigma) =  .8614587393148415
+               e(sig2) =  .742111159541916
+                  e(N) =  240
+            e(hansenp) =  .4321487992397434
+          e(hansen_df) =  3
+             e(hansen) =  2.747898020654541
+            e(sarganp) =  .4170705996202343
+             e(sar_df) =  3
+             e(sargan) =  2.83930389034199
+                 e(j0) =  16
+                  e(j) =  15
+               e(ar2p) =  .7896238785453211
+                e(ar2) =  -.2667990593449375
+               e(ar1p) =  .0056018920992945
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "system"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts2) : "_cons"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024"
+            e(vcetype) : "Robust"
+             e(robust) : "robust"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(diffgroup2) : "gmm(L.Unemployment, collapse lag(1 1))"
+         e(diffgroup1) : "GMM instruments for levels"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 12
+                  e(V) :  12 x 12
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 2
+         e(ivpassthru) :  1 x 2
+         e(ivequation) :  1 x 2
+                 e(A2) :  16 x 16
+                 e(A1) :  16 x 16
+         e(diffsargan) :  5 x 2
+                 e(Ze) :  16 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,12]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2020
+y1     1.1165527     .17794155     .04190114    -.01954348    -.24697483    -.22552313     .14533506     .94608904
+
+                                                           
+          yr2022        yr2023        yr2024         _cons
+y1     -.8300928     .15319529     .41765142    -2.5017741
+GMM unemployment 2024 system twostep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2021 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       240
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 29)     =    546.24                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.046105   .1001768    10.44   0.000     .8412209     1.25099
+                 |
+ln_ai_investment |   .0306462   .2028248     0.15   0.881    -.3841771    .4454696
+   ln_ai_patents |   .0384101   .1644487     0.23   0.817    -.2979253    .3747454
+      GDP_Growth |  -.0236465   .0507573    -0.47   0.645    -.1274568    .0801638
+          yr2017 |  -.4827576   .3878495    -1.24   0.223    -1.275999    .3104836
+          yr2018 |  -.4677782   .3577077    -1.31   0.201    -1.199373    .2638161
+          yr2019 |   .0083644   .3442509     0.02   0.981    -.6957077    .7124365
+          yr2020 |   .8515933   .6819946     1.25   0.222    -.5432423    2.246429
+          yr2022 |  -.9443719   .2885111    -3.27   0.003    -1.534443   -.3543005
+          yr2023 |   -.011205   .4454834    -0.03   0.980     -.922321    .8999109
+          yr2024 |   .2355408   .5144147     0.46   0.650    -.8165554    1.287637
+           _cons |  -.8415498   2.352541    -0.36   0.723    -5.653036    3.969936
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.18  Pr > z =  0.029
+Arellano-Bond test for AR(2) in first differences: z =  -0.02  Pr > z =  0.982
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   2.84  Prob > chi2 =  0.417
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   2.75  Prob > chi2 =  0.432
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   2.75  Prob > chi2 =  0.432
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.71  Prob > chi2 =  0.400
+    Difference (null H = exogenous): chi2(2)    =   2.04  Prob > chi2 =  0.361
+
+DIAGNOSTIC_STATUS=UNVALIDATED Hansen=.4321488 AR2=.98234907 instruments=15
+file outputs/stata/un_system_twostep_2024.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_system_twostep_2024
+
+scalars:
+                e(ar1) =  -2.179805559423843
+              e(g_avg) =  8
+               e(df_r) =  29
+                e(F_p) =  1.63971237758e-30
+                  e(F) =  546.242628335741
+                  e(h) =  3
+               e(df_m) =  11
+                e(N_g) =  30
+              e(g_max) =  8
+              e(g_min) =  8
+            e(artests) =  2
+              e(sigma) =  .8114665320145208
+               e(sig2) =  .6584779325796734
+                  e(N) =  240
+            e(hansenp) =  .4321487992397434
+          e(hansen_df) =  3
+             e(hansen) =  2.747898020654541
+            e(sarganp) =  .4170705996202343
+             e(sar_df) =  3
+             e(sargan) =  2.83930389034199
+                 e(j0) =  16
+                  e(j) =  15
+               e(ar2p) =  .9823490672387696
+                e(ar2) =  -.0221239682703063
+               e(ar1p) =  .0292718776742733
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "system"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts2) : "_cons"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024"
+            e(vcetype) : "Corrected"
+             e(robust) : "robust"
+            e(twostep) : "twostep"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(diffgroup2) : "gmm(L.Unemployment, collapse lag(1 1))"
+         e(diffgroup1) : "GMM instruments for levels"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 12
+                  e(V) :  12 x 12
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 2
+         e(ivpassthru) :  1 x 2
+         e(ivequation) :  1 x 2
+                 e(A2) :  16 x 16
+                 e(A1) :  16 x 16
+         e(diffsargan) :  5 x 2
+                 e(Ze) :  16 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,12]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2020
+y1     1.0461055     .03064624     .03841005     -.0236465    -.48275761    -.46777824      .0083644     .85159328
+
+                                                           
+          yr2022        yr2023        yr2024         _cons
+y1    -.94437193    -.01120504     .23554082    -.84154977
+GMM unemployment 2024 difference onestep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2023 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate robust weighting matrix for Hansen test.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, one-step difference GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       210
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 11                      Obs per group: min =         7
+F(10, 30)     =      0.00                                      avg =      7.00
+Prob > F      =     1.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   38.38037   11635.35     0.00   0.997    -23724.18    23800.94
+                 |
+ln_ai_investment |   10.80487   3507.742     0.00   0.998     -7152.96     7174.57
+   ln_ai_patents |   114.2476   35561.11     0.00   0.997    -72511.22    72739.72
+      GDP_Growth |   .0796384   32.32092     0.00   0.998    -65.92849    66.08777
+          yr2017 |    2.87443   1272.919     0.00   0.998    -2596.774    2602.523
+          yr2018 |  -24.68725   7367.534    -0.00   0.997     -15071.2    15021.83
+          yr2019 |   9.730133    3172.82     0.00   0.998    -6470.033    6489.493
+          yr2020 |  -9.273713   3072.869    -0.00   0.998    -6284.909    6266.362
+          yr2021 |  -55.96222   17483.29    -0.00   0.997     -35761.6    35649.68
+          yr2022 |  -41.31747   12645.72    -0.00   0.997    -25867.33    25784.69
+          yr2024 |   69.77714   21626.46     0.00   0.997    -44097.35     44236.9
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =   0.00  Pr > z =  0.997
+Arellano-Bond test for AR(2) in first differences: z =   0.00  Pr > z =  0.997
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Robust, but weakened by many instruments.)
+
+DIAGNOSTIC_STATUS=DIAGNOSTIC_HOLD Hansen=. AR2=.99732323 instruments=11
+file outputs/stata/un_difference_onestep_2024.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_difference_onestep_2024
+
+scalars:
+                e(ar1) =  .0034376872690808
+              e(g_avg) =  7
+               e(df_r) =  30
+                e(F_p) =  .9999999999912798
+                  e(F) =  .0028411626778335
+                  e(h) =  3
+               e(df_m) =  10
+                e(N_g) =  30
+              e(g_max) =  7
+              e(g_min) =  7
+            e(artests) =  2
+              e(sigma) =  52.55407787616833
+               e(sig2) =  2761.931101414365
+                  e(N) =  210
+            e(hansenp) =  .
+          e(hansen_df) =  0
+             e(hansen) =  7.25914927515e-19
+            e(sarganp) =  .
+             e(sar_df) =  0
+             e(sargan) =  1.43329135196e-19
+                 e(j0) =  12
+                  e(j) =  11
+               e(ar2p) =  .9973232264701108
+                e(ar2) =  .0033548444005097
+               e(ar1p) =  .9972571278055369
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "difference"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024"
+            e(vcetype) : "Robust"
+             e(robust) : "robust"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 11
+                  e(V) :  11 x 11
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 1
+         e(ivpassthru) :  1 x 1
+         e(ivequation) :  1 x 1
+                 e(A2) :  12 x 12
+                 e(A1) :  12 x 12
+                 e(Ze) :  12 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,11]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2020
+y1     38.380371     10.804869     114.24759     .07963836     2.8744301     -24.68725     9.7301326    -9.2737127
+
+                                             
+          yr2021        yr2022        yr2024
+y1     -55.96222    -41.317471     69.777136
+GMM unemployment 2024 difference twostep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2023 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step difference GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       210
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 11                      Obs per group: min =         7
+F(10, 30)     =      0.00                                      avg =      7.00
+Prob > F      =     1.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   38.38037   11635.35     0.00   0.997    -23724.18    23800.94
+                 |
+ln_ai_investment |   10.80487   3507.742     0.00   0.998    -7152.959    7174.569
+   ln_ai_patents |   114.2476    35561.1     0.00   0.997    -72511.22    72739.71
+      GDP_Growth |   .0796384   32.32092     0.00   0.998    -65.92848    66.08776
+          yr2017 |    2.87443   1272.919     0.00   0.998    -2596.774    2602.522
+          yr2018 |  -24.68725   7367.534    -0.00   0.997     -15071.2    15021.82
+          yr2019 |   9.730132    3172.82     0.00   0.998    -6470.032    6489.492
+          yr2020 |  -9.273712   3072.869    -0.00   0.998    -6284.909    6266.361
+          yr2021 |  -55.96222   17483.29    -0.00   0.997     -35761.6    35649.67
+          yr2022 |  -41.31747   12645.72    -0.00   0.997    -25867.33    25784.69
+          yr2024 |   69.77713   21626.46     0.00   0.997    -44097.34     44236.9
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =   0.00  Pr > z =  0.997
+Arellano-Bond test for AR(2) in first differences: z =   0.00  Pr > z =  0.997
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Robust, but weakened by many instruments.)
+
+DIAGNOSTIC_STATUS=DIAGNOSTIC_HOLD Hansen=. AR2=.99732323 instruments=11
+file outputs/stata/un_difference_twostep_2024.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_difference_twostep_2024
+
+scalars:
+                e(ar1) =  .0034376874053541
+              e(g_avg) =  7
+               e(df_r) =  30
+                e(F_p) =  .9999999999912798
+                  e(F) =  .0028411626859343
+                  e(h) =  3
+               e(df_m) =  10
+                e(N_g) =  30
+              e(g_max) =  7
+              e(g_min) =  7
+            e(artests) =  2
+              e(sigma) =  52.55407466101483
+               e(sig2) =  2761.930763475521
+                  e(N) =  210
+            e(hansenp) =  .
+          e(hansen_df) =  0
+             e(hansen) =  7.25914927515e-19
+            e(sarganp) =  .
+             e(sar_df) =  0
+             e(sargan) =  1.43329135196e-19
+                 e(j0) =  12
+                  e(j) =  11
+               e(ar2p) =  .9973232263678929
+                e(ar2) =  .0033548445286216
+               e(ar1p) =  .9972571276968072
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "difference"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024"
+            e(vcetype) : "Corrected"
+             e(robust) : "robust"
+            e(twostep) : "twostep"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 11
+                  e(V) :  11 x 11
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 1
+         e(ivpassthru) :  1 x 1
+         e(ivequation) :  1 x 1
+                 e(A2) :  12 x 12
+                 e(A1) :  12 x 12
+                 e(Ze) :  12 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,11]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2020
+y1     38.380369     10.804868     114.24758     .07963835     2.8744299    -24.687249      9.730132    -9.2737121
+
+                                             
+          yr2021        yr2022        yr2024
+y1    -55.962216    -41.317468     69.777132
+(30 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+======== SAMPLE END 2023 ========
+INPUT_ROWS=240
+note: yr2021 omitted because of collinearity.
+
+Linear regression                               Number of obs     =        210
+                                                F(10, 29)         =     138.61
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9771
+                                                Root MSE          =      .8461
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .9838747    .038142    25.80   0.000     .9058655    1.061884
+                 |
+ln_ai_investment |   .0217691     .03037     0.72   0.479    -.0403445    .0838828
+   ln_ai_patents |    .000511   .0215229     0.02   0.981    -.0435082    .0445303
+      GDP_Growth |  -.0369597   .0262006    -1.41   0.169    -.0905458    .0166265
+          yr2017 |  -.5273775   .2741079    -1.92   0.064    -1.087991    .0332362
+          yr2018 |   -.529139   .2739152    -1.93   0.063    -1.089359    .0310805
+          yr2019 |  -.1893114   .2500718    -0.76   0.455    -.7007657     .322143
+          yr2020 |    .552446   .4950969     1.12   0.274     -.460141    1.565033
+          yr2021 |          0  (omitted)
+          yr2022 |  -.9119526   .2460487    -3.71   0.001    -1.415179   -.4087264
+          yr2023 |  -.1429231    .306504    -0.47   0.644    -.7697943     .483948
+           _cons |   .0281188   .2950644     0.10   0.925    -.5753557    .6315933
+----------------------------------------------------------------------------------
+file outputs/stata/unemployment_ols2023.ster saved
+note: yr2023 omitted because of collinearity.
+
+Fixed-effects (within) regression               Number of obs     =        210
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.6652                                         min =          7
+     Between = 0.9925                                         avg =        7.0
+     Overall = 0.9733                                         max =          7
+
+                                                F(10,29)          =      31.34
+corr(u_i, Xb) = 0.9344                          Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .6864454   .0874997     7.85   0.000     .5074885    .8654023
+                 |
+ln_ai_investment |  -.0659153   .0561575    -1.17   0.250    -.1807703    .0489398
+   ln_ai_patents |   .0827238   .1038892     0.80   0.432    -.1297535    .2952011
+      GDP_Growth |  -.0462219   .0392587    -1.18   0.249    -.1265149    .0340711
+          yr2017 |   .0717405   .2220417     0.32   0.749    -.3823859    .5258668
+          yr2018 |  -.1254995   .1777857    -0.71   0.486    -.4891122    .2381131
+          yr2019 |   .0802452   .1695228     0.47   0.640    -.2664679    .4269583
+          yr2020 |   .7232795   .3015758     2.40   0.023     .1064877    1.340071
+          yr2021 |    .551974   .2820951     1.96   0.060    -.0249753    1.128923
+          yr2022 |  -.4326244   .1561106    -2.77   0.010    -.7519065   -.1133424
+          yr2023 |          0  (omitted)
+           _cons |   1.887801   .8831724     2.14   0.041     .0815104    3.694091
+-----------------+----------------------------------------------------------------
+         sigma_u |  1.7366534
+         sigma_e |  .72024713
+             rho |  .85323992   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+file outputs/stata/unemployment_fe2023.ster saved
+GMM unemployment 2023 system onestep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate robust weighting matrix for Hansen test.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, one-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       210
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 29)     =   1022.71                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.083838   .2344184     4.62   0.000     .6043987    1.563278
+                 |
+ln_ai_investment |   .0685586   .3798211     0.18   0.858    -.7082628      .84538
+   ln_ai_patents |     .06886   .0915878     0.75   0.458     -.118458    .2561781
+      GDP_Growth |  -.0170487   .0493857    -0.35   0.732    -.1180538    .0839564
+          yr2017 |  -1.281037   .5197153    -2.46   0.020    -2.343974      -.2181
+          yr2018 |  -1.255524    .489385    -2.57   0.016    -2.256429   -.2546195
+          yr2019 |  -.8539686   .4857011    -1.76   0.089    -1.847339    .1394016
+          yr2021 |   -.875684   .8786926    -1.00   0.327    -2.672812    .9214441
+          yr2022 |  -1.711932   .6243291    -2.74   0.010    -2.988828   -.4350355
+          yr2023 |  -.7862379   .3189215    -2.47   0.020    -1.438506   -.1339702
+           _cons |  -.7479732   4.114816    -0.18   0.857    -9.163716     7.66777
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.84  Pr > z =  0.005
+Arellano-Bond test for AR(2) in first differences: z =   0.23  Pr > z =  0.817
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   2.06  Prob > chi2 =  0.561
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   4.16  Prob > chi2 =  0.245
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   4.16  Prob > chi2 =  0.245
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.57  Prob > chi2 =  0.449
+    Difference (null H = exogenous): chi2(2)    =   3.58  Prob > chi2 =  0.167
+
+DIAGNOSTIC_STATUS=UNVALIDATED Hansen=.24510375 AR2=.8172755 instruments=14
+file outputs/stata/un_system_onestep_2023.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_system_onestep_2023
+
+scalars:
+                e(ar1) =  -2.838294130489989
+              e(g_avg) =  7
+               e(df_r) =  29
+                e(F_p) =  3.79088437650e-34
+                  e(F) =  1022.710147585281
+                  e(h) =  3
+               e(df_m) =  10
+                e(N_g) =  30
+              e(g_max) =  7
+              e(g_min) =  7
+            e(artests) =  2
+              e(sigma) =  .8893098415813334
+               e(sig2) =  .7908719943334164
+                  e(N) =  210
+            e(hansenp) =  .2451037482617607
+          e(hansen_df) =  3
+             e(hansen) =  4.156004489503654
+            e(sarganp) =  .5606671699736758
+             e(sar_df) =  3
+             e(sargan) =  2.056968939590962
+                 e(j0) =  15
+                  e(j) =  14
+               e(ar2p) =  .8172755049890849
+                e(ar2) =  .2310505835743361
+               e(ar1p) =  .0045355366685358
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "system"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts2) : "_cons"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023"
+            e(vcetype) : "Robust"
+             e(robust) : "robust"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(diffgroup2) : "gmm(L.Unemployment, collapse lag(1 1))"
+         e(diffgroup1) : "GMM instruments for levels"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 11
+                  e(V) :  11 x 11
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 2
+         e(ivpassthru) :  1 x 2
+         e(ivequation) :  1 x 2
+                 e(A2) :  15 x 15
+                 e(A1) :  15 x 15
+         e(diffsargan) :  5 x 2
+                 e(Ze) :  15 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,11]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2021
+y1     1.0838381      .0685586     .06886005    -.01704871    -1.2810372    -1.2555242     -.8539686    -.87568405
+
+                                             
+          yr2022        yr2023         _cons
+y1     -1.711932    -.78623787    -.74797323
+GMM unemployment 2023 system twostep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       210
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 29)     =    841.60                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.045405   .2396203     4.36   0.000     .5553266    1.535484
+                 |
+ln_ai_investment |  -.0336318   .2712773    -0.12   0.902    -.5884562    .5211926
+   ln_ai_patents |   .0915434   .1693997     0.54   0.593    -.2549179    .4380048
+      GDP_Growth |  -.0323334   .0523169    -0.62   0.541    -.1393334    .0746665
+          yr2017 |  -1.324807   .5464058    -2.42   0.022    -2.442333   -.2072819
+          yr2018 |  -1.290588   .5030083    -2.57   0.016    -2.319355   -.2618203
+          yr2019 |   -.888427   .4587415    -1.94   0.063    -1.826659    .0498048
+          yr2021 |  -.8399643   .7175521    -1.17   0.251    -2.307523    .6275945
+          yr2022 |  -1.711059   .6187244    -2.77   0.010    -2.976492   -.4456257
+          yr2023 |   -.790468   .3286713    -2.41   0.023    -1.462676   -.1182596
+           _cons |   .1342779   4.109668     0.03   0.974    -8.270937    8.539492
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.15  Pr > z =  0.032
+Arellano-Bond test for AR(2) in first differences: z =   0.38  Pr > z =  0.707
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   2.06  Prob > chi2 =  0.561
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   4.16  Prob > chi2 =  0.245
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   4.16  Prob > chi2 =  0.245
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.57  Prob > chi2 =  0.449
+    Difference (null H = exogenous): chi2(2)    =   3.58  Prob > chi2 =  0.167
+
+DIAGNOSTIC_STATUS=UNVALIDATED Hansen=.24510375 AR2=.70667053 instruments=14
+file outputs/stata/un_system_twostep_2023.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_system_twostep_2023
+
+scalars:
+                e(ar1) =  -2.149354793458861
+              e(g_avg) =  7
+               e(df_r) =  29
+                e(F_p) =  6.32857990376e-33
+                  e(F) =  841.5992554665168
+                  e(h) =  3
+               e(df_m) =  10
+                e(N_g) =  30
+              e(g_max) =  7
+              e(g_min) =  7
+            e(artests) =  2
+              e(sigma) =  .8700908018637515
+               e(sig2) =  .7570580034879061
+                  e(N) =  210
+            e(hansenp) =  .2451037482617607
+          e(hansen_df) =  3
+             e(hansen) =  4.156004489503654
+            e(sarganp) =  .5606671699736758
+             e(sar_df) =  3
+             e(sargan) =  2.056968939590962
+                 e(j0) =  15
+                  e(j) =  14
+               e(ar2p) =  .7066705334859015
+                e(ar2) =  .3763314065393977
+               e(ar1p) =  .0316062860844243
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "system"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts2) : "_cons"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023"
+            e(vcetype) : "Corrected"
+             e(robust) : "robust"
+            e(twostep) : "twostep"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(diffgroup2) : "gmm(L.Unemployment, collapse lag(1 1))"
+         e(diffgroup1) : "GMM instruments for levels"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 11
+                  e(V) :  11 x 11
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 2
+         e(ivpassthru) :  1 x 2
+         e(ivequation) :  1 x 2
+                 e(A2) :  15 x 15
+                 e(A1) :  15 x 15
+         e(diffsargan) :  5 x 2
+                 e(Ze) :  15 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,11]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2021
+y1     1.0454051    -.03363182     .09154342    -.03233344    -1.3248072    -1.2905878    -.88842699    -.83996429
+
+                                             
+          yr2022        yr2023         _cons
+y1    -1.7110591    -.79046799     .13427785
+GMM unemployment 2023 difference onestep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2021 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate robust weighting matrix for Hansen test.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, one-step difference GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       180
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 10                      Obs per group: min =         6
+F(9, 30)      =      3.64                                      avg =      6.00
+Prob > F      =     0.004                                      max =         6
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.950987   5.963971     0.33   0.746    -10.22907    14.13104
+                 |
+ln_ai_investment |   .8484719   6.312808     0.13   0.894      -12.044    13.74095
+   ln_ai_patents |   1.957432   6.172654     0.32   0.753    -10.64881    14.56367
+      GDP_Growth |  -.0033151   .1165185    -0.03   0.977    -.2412776    .2346473
+          yr2017 |   1.564564   11.28397     0.14   0.891    -21.48037     24.6095
+          yr2018 |    1.10406   10.47099     0.11   0.917    -20.28055    22.48867
+          yr2019 |   1.977381   12.30233     0.16   0.873    -23.14734     27.1021
+          yr2020 |    2.35845   9.656129     0.24   0.809      -17.362     22.0789
+          yr2022 |  -.4582744   1.754974    -0.26   0.796     -4.04241    3.125862
+          yr2023 |   1.580666   9.374153     0.17   0.867    -17.56391    20.72524
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -0.23  Pr > z =  0.819
+Arellano-Bond test for AR(2) in first differences: z =   0.16  Pr > z =  0.871
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Robust, but weakened by many instruments.)
+
+DIAGNOSTIC_STATUS=DIAGNOSTIC_HOLD Hansen=. AR2=.8709332 instruments=10
+file outputs/stata/un_difference_onestep_2023.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_difference_onestep_2023
+
+scalars:
+                e(ar1) =  -.228679979978285
+              e(g_avg) =  6
+               e(df_r) =  30
+                e(F_p) =  .003557765429086
+                  e(F) =  3.643452161810417
+                  e(h) =  3
+               e(df_m) =  9
+                e(N_g) =  30
+              e(g_max) =  6
+              e(g_min) =  6
+            e(artests) =  2
+              e(sigma) =  1.778171975374977
+               e(sig2) =  3.161895574008946
+                  e(N) =  180
+            e(hansenp) =  .
+          e(hansen_df) =  0
+             e(hansen) =  1.11846010622e-22
+            e(sarganp) =  .
+             e(sar_df) =  0
+             e(sargan) =  7.58512320693e-24
+                 e(j0) =  11
+                  e(j) =  10
+               e(ar2p) =  .8709332048471328
+                e(ar2) =  .1624732334129627
+               e(ar1p) =  .8191176561653803
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "difference"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023"
+            e(vcetype) : "Robust"
+             e(robust) : "robust"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 10
+                  e(V) :  10 x 10
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 1
+         e(ivpassthru) :  1 x 1
+         e(ivequation) :  1 x 1
+                 e(A2) :  11 x 11
+                 e(A1) :  11 x 11
+                 e(Ze) :  11 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,10]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2020
+y1     1.9509865     .84847194     1.9574322    -.00331512     1.5645638     1.1040599     1.9773813     2.3584497
+
+                               
+          yr2022        yr2023
+y1    -.45827438     1.5806665
+GMM unemployment 2023 difference twostep
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2021 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step difference GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       180
+Time variable : Year                            Number of groups   =        30
+Number of instruments = 10                      Obs per group: min =         6
+F(9, 30)      =      3.64                                      avg =      6.00
+Prob > F      =     0.004                                      max =         6
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.950987   5.963971     0.33   0.746    -10.22907    14.13104
+                 |
+ln_ai_investment |   .8484719   6.312808     0.13   0.894      -12.044    13.74095
+   ln_ai_patents |   1.957432   6.172654     0.32   0.753    -10.64881    14.56367
+      GDP_Growth |  -.0033151   .1165185    -0.03   0.977    -.2412776    .2346473
+          yr2017 |   1.564564   11.28397     0.14   0.891    -21.48037     24.6095
+          yr2018 |    1.10406   10.47099     0.11   0.917    -20.28055    22.48867
+          yr2019 |   1.977381   12.30233     0.16   0.873    -23.14734     27.1021
+          yr2020 |    2.35845   9.656129     0.24   0.809      -17.362     22.0789
+          yr2022 |  -.4582744   1.754974    -0.26   0.796     -4.04241    3.125862
+          yr2023 |   1.580666   9.374153     0.17   0.867    -17.56391    20.72524
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -0.23  Pr > z =  0.819
+Arellano-Bond test for AR(2) in first differences: z =   0.16  Pr > z =  0.871
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(0)    =   0.00  Prob > chi2 =      .
+  (Robust, but weakened by many instruments.)
+
+DIAGNOSTIC_STATUS=DIAGNOSTIC_HOLD Hansen=. AR2=.8709332 instruments=10
+file outputs/stata/un_difference_twostep_2023.ster saved
+MODEL_EXECUTED_BUT_NOT_YET_VALIDATED un_difference_twostep_2023
+
+scalars:
+                e(ar1) =  -.2286799799813012
+              e(g_avg) =  6
+               e(df_r) =  30
+                e(F_p) =  .0035577654290381
+                  e(F) =  3.643452161818117
+                  e(h) =  3
+               e(df_m) =  9
+                e(N_g) =  30
+              e(g_max) =  6
+              e(g_min) =  6
+            e(artests) =  2
+              e(sigma) =  1.778171975354314
+               e(sig2) =  3.161895573935463
+                  e(N) =  180
+            e(hansenp) =  .
+          e(hansen_df) =  0
+             e(hansen) =  1.11846010622e-22
+            e(sarganp) =  .
+             e(sar_df) =  0
+             e(sargan) =  7.58512320693e-24
+                 e(j0) =  11
+                  e(j) =  10
+               e(ar2p) =  .8709332048465528
+                e(ar2) =  .1624732334136993
+               e(ar1p) =  .8191176561630359
+
+macros:
+            e(cmdline) : "xtabond2 Unemployment L.Unemployment ln_ai_investment ln_ai_patents GDP_Growth yr2017-yr20.."
+            e(version) : "03.07.00"
+                e(cmd) : "xtabond2"
+            e(predict) : "xtab2_p"
+          e(marginsok) : "XB default"
+             e(artype) : "first differences"
+            e(esttype) : "difference"
+               e(tvar) : "Year"
+               e(ivar) : "panel_id"
+          e(gmminsts2) : "L.Unemployment"
+          e(gmminsts1) : "ln_ai_investment ln_ai_patents"
+           e(ivinsts1) : "GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023"
+            e(vcetype) : "Corrected"
+             e(robust) : "robust"
+            e(twostep) : "twostep"
+              e(small) : "small"
+          e(transform) : "first differences"
+             e(depvar) : "Unemployment"
+         e(properties) : "b V"
+
+matrices:
+                  e(b) :  1 x 10
+                  e(V) :  10 x 10
+      e(gmmorthogonal) :  1 x 2
+       e(gmmlaglimits) :  2 x 2
+        e(gmmcollapse) :  1 x 2
+        e(gmmpassthru) :  1 x 2
+        e(gmmequation) :  1 x 2
+               e(ivmz) :  1 x 1
+         e(ivpassthru) :  1 x 1
+         e(ivequation) :  1 x 1
+                 e(A2) :  11 x 11
+                 e(A1) :  11 x 11
+                 e(Ze) :  11 x 1
+
+functions:
+             e(sample)   
+
+e(b)[1,10]
+               L.                                                                                                  
+    Unemployment  ln_ai_inve~t  ln_ai_pate~s    GDP_Growth        yr2017        yr2018        yr2019        yr2020
+y1     1.9509865     .84847194     1.9574322    -.00331512     1.5645638     1.1040599     1.9773813     2.3584497
+
+                               
+          yr2022        yr2023
+y1    -.45827438     1.5806665
+
+. display as result "GMM_SUCCESSFUL_FITS=`successful_gmm' (fitness/identification STILL REQUIRES REVIEW)"
+GMM_SUCCESSFUL_FITS=8 (fitness/identification STILL REQUIRES REVIEW)
+
+. log close `slug'
+      name:  unemployment
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/unemployment.log
+  log type:  text
+ closed on:  17 Oct 2026, 11:17:00
+------------------------------------------------------------------------------------------------------------------------

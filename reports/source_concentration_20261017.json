@@ -1,0 +1,241 @@
+{
+  "input_sha256": "4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434",
+  "source": "data/raw/AI_Balanced_Panel (1).xlsx",
+  "scope": "Descriptive within-supplied-sample arithmetic only, not validated official country aggregates",
+  "n_countries": 30,
+  "n_years": 9,
+  "n_rows": 270,
+  "metrics": {
+    "AI_Patents": {
+      "by_year": {
+        "2016": {
+          "total": 118786.0,
+          "largest_country": "CHN",
+          "largest_country_value": 47363.0,
+          "largest_country_share": 0.3987254390248009,
+          "top3_country_share": 0.8460929739194855,
+          "hhi": 0.30520897550952675
+        },
+        "2017": {
+          "total": 204988.0,
+          "largest_country": "CHN",
+          "largest_country_value": 88456.0,
+          "largest_country_share": 0.4315179425137081,
+          "top3_country_share": 0.8552012800749313,
+          "hhi": 0.3167576978051182
+        },
+        "2018": {
+          "total": 324041.0,
+          "largest_country": "CHN",
+          "largest_country_value": 159113.0,
+          "largest_country_share": 0.4910273699933033,
+          "top3_country_share": 0.8586752910897077,
+          "hhi": 0.33808292306415394
+        },
+        "2019": {
+          "total": 456693.0,
+          "largest_country": "CHN",
+          "largest_country_value": 260794.0,
+          "largest_country_share": 0.5710488227321199,
+          "top3_country_share": 0.8891771934319117,
+          "hhi": 0.3901732465474885
+        },
+        "2020": {
+          "total": 614652.0,
+          "largest_country": "CHN",
+          "largest_country_value": 406681.0,
+          "largest_country_share": 0.6616443125540956,
+          "top3_country_share": 0.9124512732407931,
+          "hhi": 0.475504880257525
+        },
+        "2021": {
+          "total": 732959.0,
+          "largest_country": "CHN",
+          "largest_country_value": 527028.0,
+          "largest_country_share": 0.7190415834992134,
+          "top3_country_share": 0.9232944816831501,
+          "hhi": 0.5405945554526719
+        },
+        "2022": {
+          "total": 791614.0,
+          "largest_country": "CHN",
+          "largest_country_value": 610497.0,
+          "largest_country_share": 0.7712054107178499,
+          "top3_country_share": 0.9402764478647422,
+          "hhi": 0.6101151297162883
+        },
+        "2023": {
+          "total": 938933.0,
+          "largest_country": "CHN",
+          "largest_country_value": 783813.0,
+          "largest_country_share": 0.8347911938338518,
+          "top3_country_share": 0.9559372180975638,
+          "hhi": 0.7050181966447258
+        },
+        "2024": {
+          "total": 1133893.0,
+          "largest_country": "CHN",
+          "largest_country_value": 1044027.0,
+          "largest_country_share": 0.92074560827168,
+          "top3_country_share": 0.9792440732943938,
+          "hhi": 0.8496060482872155
+        }
+      },
+      "country_growth_2024": {
+        "CHN": 260214.0,
+        "LUX": 613.0,
+        "NLD": 109.0,
+        "ZAF": 72.0,
+        "MEX": -11.0,
+        "AUT": -13.0,
+        "BEL": -13.0,
+        "IND": -18.0,
+        "NOR": -21.0,
+        "PRT": -25.0,
+        "CHE": -27.0,
+        "DNK": -32.0,
+        "HUN": -33.0,
+        "FIN": -61.0,
+        "ROU": -61.0,
+        "GRC": -63.0,
+        "SWE": -92.0,
+        "POL": -93.0,
+        "TUR": -98.0,
+        "ESP": -99.0,
+        "GBR": -132.0,
+        "ISR": -214.0,
+        "ITA": -300.0,
+        "CAN": -592.0,
+        "FRA": -684.0,
+        "AUS": -3062.0,
+        "DEU": -3079.0,
+        "JPN": -9808.0,
+        "USA": -16459.0,
+        "KOR": -30958.0
+      },
+      "total_2023": 938933.0,
+      "total_2024": 1133893.0,
+      "net_change_2024": 194960.0,
+      "country_declines_2024": 26,
+      "country_increases_2024": 4
+    },
+    "AI_Investment": {
+      "by_year": {
+        "2016": {
+          "total": 89793.0,
+          "largest_country": "USA",
+          "largest_country_value": 46909.0,
+          "largest_country_share": 0.5224126602296393,
+          "top3_country_share": 0.8891895804795473,
+          "hhi": 0.37065809819876994
+        },
+        "2017": {
+          "total": 97140.0,
+          "largest_country": "USA",
+          "largest_country_value": 52553.0,
+          "largest_country_share": 0.5410026765493102,
+          "top3_country_share": 0.8513176858142886,
+          "hhi": 0.3717223953643273
+        },
+        "2018": {
+          "total": 259753.0,
+          "largest_country": "USA",
+          "largest_country_value": 178663.0,
+          "largest_country_share": 0.6878188124872475,
+          "top3_country_share": 0.8824036681000796,
+          "hhi": 0.4946065410011202
+        },
+        "2019": {
+          "total": 225775.0,
+          "largest_country": "USA",
+          "largest_country_value": 134555.0,
+          "largest_country_share": 0.5959694386003764,
+          "top3_country_share": 0.8196213043959694,
+          "hhi": 0.38947247683550057
+        },
+        "2020": {
+          "total": 330128.0,
+          "largest_country": "USA",
+          "largest_country_value": 127122.0,
+          "largest_country_share": 0.38506882179033586,
+          "top3_country_share": 0.7927349391751078,
+          "hhi": 0.2666667356942218
+        },
+        "2021": {
+          "total": 500380.0,
+          "largest_country": "USA",
+          "largest_country_value": 356753.0,
+          "largest_country_share": 0.7129641472480914,
+          "top3_country_share": 0.8065430272992525,
+          "hhi": 0.5167097937978504
+        },
+        "2022": {
+          "total": 346845.0,
+          "largest_country": "USA",
+          "largest_country_value": 218543.0,
+          "largest_country_share": 0.6300883680029985,
+          "top3_country_share": 0.7442632876356874,
+          "hhi": 0.41037335748860254
+        },
+        "2023": {
+          "total": 326726.0,
+          "largest_country": "USA",
+          "largest_country_value": 224516.0,
+          "largest_country_share": 0.6871690652106046,
+          "top3_country_share": 0.8087969736109156,
+          "hhi": 0.4835820910602415
+        },
+        "2024": {
+          "total": 470012.0,
+          "largest_country": "USA",
+          "largest_country_value": 336172.0,
+          "largest_country_share": 0.7152413129877535,
+          "top3_country_share": 0.8167961669063768,
+          "hhi": 0.5205791706744743
+        }
+      },
+      "country_growth_2024": {
+        "USA": 111656.0,
+        "CHN": 15343.0,
+        "ISR": 11464.0,
+        "SWE": 7278.0,
+        "FRA": 6804.0,
+        "AUS": 5353.0,
+        "FIN": 3258.0,
+        "CAN": 3149.0,
+        "DEU": 2131.0,
+        "ITA": 503.0,
+        "GBR": 489.0,
+        "NOR": 464.0,
+        "TUR": 268.0,
+        "CHE": 229.0,
+        "LUX": 165.0,
+        "NLD": 106.0,
+        "DNK": 75.0,
+        "ESP": 71.0,
+        "PRT": 66.0,
+        "POL": 31.0,
+        "ZAF": -69.0,
+        "HUN": -69.0,
+        "AUT": -80.0,
+        "ROU": -100.0,
+        "MEX": -460.0,
+        "GRC": -761.0,
+        "BEL": -839.0,
+        "JPN": -1252.0,
+        "KOR": -3341.0,
+        "IND": -18646.0
+      },
+      "total_2023": 326726.0,
+      "total_2024": 470012.0,
+      "net_change_2024": 143286.0,
+      "country_declines_2024": 10,
+      "country_increases_2024": 20
+    }
+  },
+  "scientific_warnings": [
+    "Concentration can create influential leverage in lagged GMM regressors and affects interpretation of pooled trends.",
+    "A source coverage or revision artifact is possible but not proven by this dataset.",
+    "Leave-country-out GMM tests do not establish causal identification or solve nominal measurement comparability."
+  ]
+}

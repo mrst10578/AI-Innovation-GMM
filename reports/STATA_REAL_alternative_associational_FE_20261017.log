@@ -1,0 +1,1243 @@
+------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/12_associational_fe.log
+  log type:  text
+ opened on:  17 Oct 2026, 10:31:25
+
+. capture noisily do "stata/01_environment_and_data.do"
+
+. * Read unmodified data; validate panel; create analysis variables.
+. version 16.0
+
+. set more off
+
+. capture confirm file "data/processed/stata_ready.dta"
+
+. if _rc {
+.     display as text "Stata-ready DTA not found; import the original, unchanged research workbook."
+.     capture confirm file "data/raw/AI_Balanced_Panel (1).xlsx"
+.     if _rc {
+.         display as error "Neither processed DTA nor original Excel file is present."
+.         exit 601
+.     }
+.     capture noisily import excel using "data/raw/AI_Balanced_Panel (1).xlsx", sheet("Sheet1") firstrow clear
+.     if _rc {
+.         display as error "Original Excel import failed in Stata."
+.         exit _rc
+.     }
+.     isid ISO3 Year
+.     capture mkdir "data/processed"
+.     save "data/processed/stata_ready.dta", replace
+.     display as result "STATA_WORKBOOK_IMPORT_OK"
+. }
+
+. else use "data/processed/stata_ready.dta", clear
+
+. foreach v in ISO3 Year AI_Investment AI_Patents HighTech_Exports GDP_Growth Unemployment {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         display as error "Missing required column: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. isid ISO3 Year
+
+. assert inrange(Year,2016,2024)
+
+. assert !missing(ISO3,Year,AI_Investment,AI_Patents,HighTech_Exports,GDP_Growth,Unemployment)
+
+. assert AI_Investment >= 0 & AI_Patents >= 0
+
+. assert HighTech_Exports > 0
+
+. assert inrange(Unemployment,0,100)
+
+. encode ISO3, gen(panel_id)
+
+. xtset panel_id Year
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+
+. bysort panel_id (Year): assert _N == 9
+
+. egen tag_country = tag(panel_id)
+
+. quietly count if tag_country
+
+. assert r(N) == 30
+
+. assert _N == 270
+
+. drop tag_country
+
+. gen double ln_ai_investment = ln(1 + AI_Investment)
+
+. gen double ln_ai_patents = ln(1 + AI_Patents)
+
+. label variable ln_ai_investment "ln(1 + recorded nominal AI investment)"
+
+. label variable ln_ai_patents "ln(1 + recorded AI patent applications)"
+
+. forvalues yy=2017/2024 {
+  2.     gen byte yr`yy' = Year == `yy'
+  3. }
+
+. display as result "SOURCE AUDIT PASS: 30 countries, 270 rows, 2016-2024. No imputation."
+SOURCE AUDIT PASS: 30 countries, 270 rows, 2016-2024. No imputation.
+
+. tab Year
+
+       Year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2016 |         30       11.11       11.11
+       2017 |         30       11.11       22.22
+       2018 |         30       11.11       33.33
+       2019 |         30       11.11       44.44
+       2020 |         30       11.11       55.56
+       2021 |         30       11.11       66.67
+       2022 |         30       11.11       77.78
+       2023 |         30       11.11       88.89
+       2024 |         30       11.11      100.00
+------------+-----------------------------------
+      Total |        270      100.00
+
+. xtdescribe
+
+panel_id:  1, 2, ..., 30                                     n =         30
+    Year:  2016, 2017, ..., 2024                             T =          9
+           Delta(Year) = 1 unit
+           Span(Year)  = 9 periods
+           (panel_id*Year uniquely identifies each observation)
+
+Distribution of T_i:   min      5%     25%       50%       75%     95%     max
+                         9       9       9         9         9       9       9
+
+     Freq.  Percent    Cum. |  Pattern
+ ---------------------------+-----------
+       30    100.00  100.00 |  111111111
+ ---------------------------+-----------
+       30    100.00         |  XXXXXXXXX
+
+. 
+end of do-file
+
+. if _rc {
+.     display as error "SOURCE CHECK FAILED, no alternative fits executed."
+.     log close
+.     exit 459
+. }
+
+. postfile fe_post str35 model str25 outcome str18 family str8 exclusion double cutoff rc N Ng r2 lninv_b lninv_se lninv
+> _p lnpat_b lnpat_se lnpat_p GDP_b GDP_se GDP_p lag_b lag_se lag_p using "outputs/stata/alternative_fe_models.dta", rep
+> lace
+(file outputs/stata/alternative_fe_models.dta not found)
+
+. local successes=0
+
+. local failures=0
+
+. foreach dep in HighTech_Exports Unemployment {
+  2.     local pref "hi"
+  3.     if "`dep'"=="Unemployment" local pref "un"
+  4.     foreach cutoff in 2024 2023 {
+  5.         foreach exclude in NONE CHN USA BOTH {
+  6.             preserve
+  7.             keep if Year<=`cutoff'
+  8.             if "`exclude'"=="CHN" drop if ISO3=="CHN"
+  9.             if "`exclude'"=="USA" drop if ISO3=="USA"
+ 10.             if "`exclude'"=="BOTH" drop if inlist(ISO3,"CHN","USA")
+ 11.             xtset panel_id Year
+ 12.             local dums "yr2017-yr2024"
+ 13.             if `cutoff'==2023 local dums "yr2017-yr2023"
+ 14.             local label "`pref'_`cutoff'_`exclude'_staticFE"
+ 15.             display as result "ALTERNATIVE_ATTEMPT=`label'"
+ 16.             capture noisily xtreg `dep' ln_ai_investment ln_ai_patents GDP_Growth `dums', fe vce(cluster panel_id)
+ 17.             local rc=_rc
+ 18.             if `rc' {
+ 19.                 local failures=`failures'+1
+ 20.                 display as error "ALTERNATIVE_FAILED=`label' rc=`rc'"
+ 21.                 post fe_post ("`label'") ("`dep'") ("static_twFE") ("`exclude'") (`cutoff') (`rc') (.) (.) (.) (.) 
+> (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) (.)
+ 22.             }
+ 23.             else {
+ 24.                 local successes=`successes'+1
+ 25.                 local df=e(df_r)
+ 26.                 if missing(`df') | `df'<=0 local df=e(N_g)-1
+ 27.                 scalar invp=2*ttail(`df',abs(_b[ln_ai_investment]/_se[ln_ai_investment]))
+ 28.                 scalar patp=2*ttail(`df',abs(_b[ln_ai_patents]/_se[ln_ai_patents]))
+ 29.                 scalar gdpp=2*ttail(`df',abs(_b[GDP_Growth]/_se[GDP_Growth]))
+ 30.                 post fe_post ("`label'") ("`dep'") ("static_twFE") ("`exclude'") (`cutoff') (0) (e(N)) (e(N_g)) (e(
+> r2_w)) (_b[ln_ai_investment]) (_se[ln_ai_investment]) (invp) (_b[ln_ai_patents]) (_se[ln_ai_patents]) (patp) (_b[GDP_G
+> rowth]) (_se[GDP_Growth]) (gdpp) (.) (.) (.)
+ 31.                 estimates save "outputs/stata/alternative_`label'.ster", replace
+ 32.                 display as result "ALTERNATIVE_FITTED=`label'"
+ 33.             }
+ 34.             restore
+ 35.         }
+ 36.         preserve
+ 37.         keep if Year<=`cutoff'
+ 38.         xtset panel_id Year
+ 39.         local dums "yr2018-yr2024"
+ 40.         if `cutoff'==2023 local dums "yr2018-yr2023"
+ 41.         foreach family in dynamic_FE dynamic_OLS {
+ 42.             local label "`pref'_`cutoff'_NONE_`family'"
+ 43.             display as result "ALTERNATIVE_ATTEMPT=`label'"
+ 44.             if "`family'"=="dynamic_FE" capture noisily xtreg `dep' L.`dep' ln_ai_investment ln_ai_patents GDP_Grow
+> th `dums', fe vce(cluster panel_id)
+ 45.             else capture noisily regress `dep' L.`dep' ln_ai_investment ln_ai_patents GDP_Growth `dums', vce(cluste
+> r panel_id)
+ 46.             local rc=_rc
+ 47.             if `rc' {
+ 48.                 local failures=`failures'+1
+ 49.                 post fe_post ("`label'") ("`dep'") ("`family'") ("NONE") (`cutoff') (`rc') (.) (.) (.) (.) (.) (.) 
+> (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) (.)
+ 50.             }
+ 51.             else {
+ 52.                 local successes=`successes'+1
+ 53.                 local df=e(df_r)
+ 54.                 if missing(`df') | `df'<=0 local df=29
+ 55.                 scalar invp=2*ttail(`df',abs(_b[ln_ai_investment]/_se[ln_ai_investment]))
+ 56.                 scalar patp=2*ttail(`df',abs(_b[ln_ai_patents]/_se[ln_ai_patents]))
+ 57.                 scalar gdpp=2*ttail(`df',abs(_b[GDP_Growth]/_se[GDP_Growth]))
+ 58.                 scalar lagp=2*ttail(`df',abs(_b[L.`dep']/_se[L.`dep']))
+ 59.                 local fitr2=e(r2)
+ 60.                 if "`family'"=="dynamic_FE" local fitr2=e(r2_w)
+ 61.                 post fe_post ("`label'") ("`dep'") ("`family'") ("NONE") (`cutoff') (0) (e(N)) (30) (`fitr2') (_b[l
+> n_ai_investment]) (_se[ln_ai_investment]) (invp) (_b[ln_ai_patents]) (_se[ln_ai_patents]) (patp) (_b[GDP_Growth]) (_se
+> [GDP_Growth]) (gdpp) (_b[L.`dep']) (_se[L.`dep']) (lagp)
+ 62.                 estimates save "outputs/stata/alternative_`label'.ster", replace
+ 63.                 display as result "ALTERNATIVE_FITTED=`label'"
+ 64.             }
+ 65.         }
+ 66.         restore
+ 67.     }
+ 68. }
+(0 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2024_NONE_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        270
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.2524                                         min =          9
+     Between = 0.2840                                         avg =        9.0
+     Overall = 0.0293                                         max =          9
+
+                                                F(11,29)          =       6.31
+corr(u_i, Xb) = -0.3637                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0143092   .1208429    -0.12   0.907    -.2614608    .2328423
+   ln_ai_patents |   -.368454   .3127134    -1.18   0.248    -1.008025    .2711168
+      GDP_Growth |   -.008237   .0657089    -0.13   0.901    -.1426269    .1261529
+          yr2017 |  -1.083597   .5252309    -2.06   0.048    -2.157815   -.0093793
+          yr2018 |  -.9014272   .6683599    -1.35   0.188    -2.268377    .4655222
+          yr2019 |  -.6255111   .6386907    -0.98   0.335     -1.93178    .6807581
+          yr2020 |  -.1321308   .8931829    -0.15   0.883    -1.958895    1.694633
+          yr2021 |   .0358642   .7438266     0.05   0.962    -1.485432     1.55716
+          yr2022 |   1.652173   .5509963     3.00   0.006     .5252587    2.779087
+          yr2023 |   1.764894   .6723989     2.62   0.014     .3896836    3.140104
+          yr2024 |   2.522612   .7658918     3.29   0.003     .9561874    4.089037
+           _cons |   18.42336   1.529795    12.04   0.000     15.29458    21.55215
+-----------------+----------------------------------------------------------------
+         sigma_u |  8.0951112
+         sigma_e |  2.3366391
+             rho |  .92309019   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2024_NONE_staticFE.ster not found)
+file outputs/stata/alternative_hi_2024_NONE_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2024_NONE_staticFE
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2024_CHN_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        261
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.2869                                         min =          9
+     Between = 0.2382                                         avg =        9.0
+     Overall = 0.0010                                         max =          9
+
+                                                F(11,28)          =       5.64
+corr(u_i, Xb) = -0.2296                         Prob > F          =     0.0001
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0737375   .1140217    -0.65   0.523    -.3073004    .1598255
+   ln_ai_patents |  -.2392843   .3382913    -0.71   0.485    -.9322426    .4536739
+      GDP_Growth |  -.0382371   .0647534    -0.59   0.560    -.1708784    .0944043
+          yr2017 |  -1.135655   .5293075    -2.15   0.041    -2.219892   -.0514175
+          yr2018 |  -1.022631   .6797979    -1.50   0.144    -2.415134    .3698715
+          yr2019 |  -.6885062   .6466559    -1.06   0.296    -2.013121    .6361084
+          yr2020 |  -.3906575   .9111253    -0.43   0.671    -2.257013    1.475698
+          yr2021 |   .1661656   .7669637     0.22   0.830    -1.404888    1.737219
+          yr2022 |   1.855112   .5711297     3.25   0.003     .6852055    3.025018
+          yr2023 |   1.921037    .684758     2.81   0.009     .5183739      3.3237
+          yr2024 |   2.800835   .7701659     3.64   0.001     1.223222    4.378449
+           _cons |   17.55797    1.62555    10.80   0.000     14.22818    20.88775
+-----------------+----------------------------------------------------------------
+         sigma_u |  7.5960172
+         sigma_e |  2.2991939
+             rho |  .91607164   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2024_CHN_staticFE.ster not found)
+file outputs/stata/alternative_hi_2024_CHN_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2024_CHN_staticFE
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2024_USA_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        261
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.2441                                         min =          9
+     Between = 0.2936                                         avg =        9.0
+     Overall = 0.0271                                         max =          9
+
+                                                F(11,28)          =       5.81
+corr(u_i, Xb) = -0.3510                         Prob > F          =     0.0001
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0194135   .1214193    -0.16   0.874    -.2681296    .2293026
+   ln_ai_patents |  -.3656912   .3129957    -1.17   0.253    -1.006834    .2754515
+      GDP_Growth |   -.008056   .0669458    -0.12   0.905    -.1451882    .1290762
+          yr2017 |  -1.016477   .5346387    -1.90   0.068    -2.111635    .0786806
+          yr2018 |  -.8051742   .6787231    -1.19   0.245    -2.195475     .585127
+          yr2019 |  -.5249133   .6476249    -0.81   0.424    -1.851513    .8016863
+          yr2020 |   -.038144   .9237162    -0.04   0.967    -1.930291    1.854003
+          yr2021 |   .1215142   .7582047     0.16   0.874    -1.431598    1.674626
+          yr2022 |   1.775308   .5624814     3.16   0.004      .623117    2.927499
+          yr2023 |   1.852398   .6976427     2.66   0.013     .4233414    3.281454
+          yr2024 |   2.558444   .7952175     3.22   0.003     .9295145    4.187373
+           _cons |   18.15389   1.476306    12.30   0.000     15.12981    21.17797
+-----------------+----------------------------------------------------------------
+         sigma_u |  8.1579218
+         sigma_e |  2.3699286
+             rho |  .92217407   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2024_USA_staticFE.ster not found)
+file outputs/stata/alternative_hi_2024_USA_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2024_USA_staticFE
+(0 observations deleted)
+(18 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2024_BOTH_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        252
+Group variable: panel_id                        Number of groups  =         28
+
+R-squared:                                      Obs per group:
+     Within  = 0.2790                                         min =          9
+     Between = 0.2563                                         avg =        9.0
+     Overall = 0.0003                                         max =          9
+
+                                                F(11,27)          =       5.10
+corr(u_i, Xb) = -0.2100                         Prob > F          =     0.0003
+
+                                  (Std. err. adjusted for 28 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0806012   .1141335    -0.71   0.486    -.3147838    .1535815
+   ln_ai_patents |  -.2371897    .338851    -0.70   0.490    -.9324546    .4580752
+      GDP_Growth |  -.0389441   .0661054    -0.59   0.561    -.1745812     .096693
+          yr2017 |  -1.064675   .5389187    -1.98   0.059    -2.170445    .0410945
+          yr2018 |  -.9252778   .6910557    -1.34   0.192    -2.343207    .4926514
+          yr2019 |  -.5828294    .656014    -0.89   0.382    -1.928859    .7632003
+          yr2020 |  -.2985616    .946196    -0.32   0.755    -2.239995    1.642872
+          yr2021 |    .262785   .7815931     0.34   0.739    -1.340912    1.866482
+          yr2022 |   1.994527   .5802722     3.44   0.002     .8039065    3.185147
+          yr2023 |   2.016705   .7104239     2.84   0.008     .5590352    3.474374
+          yr2024 |    2.84439   .8004753     3.55   0.001      1.20195     4.48683
+           _cons |   17.28542   1.565752    11.04   0.000     14.07276    20.49808
+-----------------+----------------------------------------------------------------
+         sigma_u |  7.6431764
+         sigma_e |  2.3329419
+             rho |  .91477368   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2024_BOTH_staticFE.ster not found)
+file outputs/stata/alternative_hi_2024_BOTH_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2024_BOTH_staticFE
+(0 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2024_NONE_dynamic_FE
+
+Fixed-effects (within) regression               Number of obs     =        240
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.5420                                         min =          8
+     Between = 0.9937                                         avg =        8.0
+     Overall = 0.9276                                         max =          8
+
+                                                F(11,29)          =      36.03
+corr(u_i, Xb) = 0.9069                          Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .6348587   .0791997     8.02   0.000     .4728771    .7968402
+                 |
+ln_ai_investment |  -.0586523   .0979798    -0.60   0.554    -.2590436    .1417389
+   ln_ai_patents |  -.1253168   .1905913    -0.66   0.516    -.5151197    .2644861
+      GDP_Growth |   .0596009   .0537781     1.11   0.277    -.0503877    .1695894
+          yr2018 |   .8982474   .2676974     3.36   0.002     .3507448     1.44575
+          yr2019 |   1.249895   .3470407     3.60   0.001     .5401169    1.959673
+          yr2020 |   1.936308   .5155151     3.76   0.001     .8819608    2.990655
+          yr2021 |    1.10936   .5075468     2.19   0.037     .0713104     2.14741
+          yr2022 |   2.884492   .8514812     3.39   0.002     1.143018    4.625967
+          yr2023 |   2.082318   .6772755     3.07   0.005     .6971336    3.467501
+          yr2024 |    2.88867   .7251052     3.98   0.000     1.405663    4.371676
+           _cons |   5.603779   1.724692     3.25   0.003     2.076388    9.131171
+-----------------+----------------------------------------------------------------
+         sigma_u |  3.0893566
+         sigma_e |  1.8545114
+             rho |  .73510564   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2024_NONE_dynamic_FE.ster not found)
+file outputs/stata/alternative_hi_2024_NONE_dynamic_FE.ster saved
+ALTERNATIVE_FITTED=hi_2024_NONE_dynamic_FE
+ALTERNATIVE_ATTEMPT=hi_2024_NONE_dynamic_OLS
+
+Linear regression                               Number of obs     =        240
+                                                F(11, 29)         =     688.81
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9424
+                                                Root MSE          =     1.9399
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .9798177   .0251245    39.00   0.000     .9284323    1.031203
+                 |
+ln_ai_investment |   .0909405   .0490469     1.85   0.074    -.0093717    .1912526
+   ln_ai_patents |  -.0660615   .0681999    -0.97   0.341    -.2055459    .0734229
+      GDP_Growth |   .1051627   .0456006     2.31   0.028      .011899    .1984265
+          yr2018 |   1.266267    .408169     3.10   0.004     .4314671    2.101066
+          yr2019 |   1.582876   .5075199     3.12   0.004     .5448812    2.620871
+          yr2020 |   2.365258   .6391357     3.70   0.001     1.058079    3.672437
+          yr2021 |   .7956628   .5294425     1.50   0.144    -.2871687    1.878494
+          yr2022 |   2.688614   .9600005     2.80   0.009     .7251928    4.652036
+          yr2023 |   1.458549   .6577588     2.22   0.035     .1132808    2.803816
+          yr2024 |   2.228329   .5760448     3.87   0.001     1.050186    3.406473
+           _cons |  -1.363912     .52057    -2.62   0.014    -2.428597   -.2992264
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2024_NONE_dynamic_OLS.ster not found)
+file outputs/stata/alternative_hi_2024_NONE_dynamic_OLS.ster saved
+ALTERNATIVE_FITTED=hi_2024_NONE_dynamic_OLS
+(30 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2023_NONE_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        240
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.1896                                         min =          8
+     Between = 0.2564                                         avg =        8.0
+     Overall = 0.0056                                         max =          8
+
+                                                F(10,29)          =       4.26
+corr(u_i, Xb) = -0.2162                         Prob > F          =     0.0010
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |    .031233   .1301658     0.24   0.812    -.2349859     .297452
+   ln_ai_patents |  -.1915115   .3220636    -0.59   0.557    -.8502056    .4671825
+      GDP_Growth |   .0281928   .0623134     0.45   0.654    -.0992524    .1556379
+          yr2017 |  -1.194676   .5346894    -2.23   0.033    -2.288238    -.101113
+          yr2018 |  -1.085389   .6978197    -1.56   0.131    -2.512591    .3418121
+          yr2019 |  -.7810445   .6720047    -1.16   0.255    -2.155448    .5933593
+          yr2020 |  -.1134895   .9651229    -0.12   0.907    -2.087387    1.860408
+          yr2021 |  -.3716843   .7727767    -0.48   0.634     -1.95219    1.208821
+          yr2022 |   1.354246   .5707431     2.37   0.025     .1869451    2.521547
+          yr2023 |   1.563645   .7072985     2.21   0.035     .1170575    3.010233
+           _cons |   17.14326   1.496945    11.45   0.000     14.08166    20.20485
+-----------------+----------------------------------------------------------------
+         sigma_u |  7.7376021
+         sigma_e |  2.2205398
+             rho |  .92390896   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2023_NONE_staticFE.ster not found)
+file outputs/stata/alternative_hi_2023_NONE_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2023_NONE_staticFE
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2023_CHN_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        232
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.2186                                         min =          8
+     Between = 0.2403                                         avg =        8.0
+     Overall = 0.0013                                         max =          8
+
+                                                F(10,28)          =       3.46
+corr(u_i, Xb) = -0.1148                         Prob > F          =     0.0046
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0220354   .1265519    -0.17   0.863    -.2812652    .2371944
+   ln_ai_patents |  -.0974398   .3493494    -0.28   0.782    -.8130497      .61817
+      GDP_Growth |  -.0036505    .060837    -0.06   0.953    -.1282695    .1209684
+          yr2017 |  -1.237792   .5397333    -2.29   0.030    -2.343385   -.1321983
+          yr2018 |   -1.18524   .7090013    -1.67   0.106    -2.637564    .2670829
+          yr2019 |  -.8298329   .6790914    -1.22   0.232    -2.220889    .5612227
+          yr2020 |   -.360576   .9822838    -0.37   0.716    -2.372693    1.651541
+          yr2021 |  -.2175117    .787052    -0.28   0.784    -1.829715    1.394691
+          yr2022 |   1.571514   .5826756     2.70   0.012     .3779573    2.765071
+          yr2023 |   1.738417   .7132957     2.44   0.021     .2772968    3.199537
+           _cons |   16.48179   1.557851    10.58   0.000     13.29067     19.6729
+-----------------+----------------------------------------------------------------
+         sigma_u |  7.2974175
+         sigma_e |   2.199085
+             rho |  .91674784   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2023_CHN_staticFE.ster not found)
+file outputs/stata/alternative_hi_2023_CHN_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2023_CHN_staticFE
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2023_USA_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        232
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.1857                                         min =          8
+     Between = 0.2637                                         avg =        8.0
+     Overall = 0.0054                                         max =          8
+
+                                                F(10,28)          =       4.07
+corr(u_i, Xb) = -0.2126                         Prob > F          =     0.0016
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |   .0269752   .1309204     0.21   0.838    -.2412031    .2951535
+   ln_ai_patents |  -.1936345    .321354    -0.60   0.552    -.8518984    .4646293
+      GDP_Growth |   .0308291   .0635449     0.49   0.631    -.0993368     .160995
+          yr2017 |  -1.128044    .543878    -2.07   0.047    -2.242128   -.0139608
+          yr2018 |  -.9848822   .7075231    -1.39   0.175    -2.434178    .4644132
+          yr2019 |  -.6751649   .6808145    -0.99   0.330     -2.06975    .7194204
+          yr2020 |   .0022458   .9976573     0.00   0.998    -2.041363    2.045854
+          yr2021 |  -.2938883     .78741    -0.37   0.712    -1.906825    1.319048
+          yr2022 |   1.472171   .5835317     2.52   0.018     .2768606    2.667482
+          yr2023 |   1.653317   .7342816     2.25   0.032     .1492096    3.157425
+           _cons |   16.92913   1.435101    11.80   0.000     13.98946     19.8688
+-----------------+----------------------------------------------------------------
+         sigma_u |  7.8294624
+         sigma_e |  2.2524167
+             rho |  .92356357   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2023_USA_staticFE.ster not found)
+file outputs/stata/alternative_hi_2023_USA_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2023_USA_staticFE
+(30 observations deleted)
+(16 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2023_BOTH_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        224
+Group variable: panel_id                        Number of groups  =         28
+
+R-squared:                                      Obs per group:
+     Within  = 0.2152                                         min =          8
+     Between = 0.2614                                         avg =        8.0
+     Overall = 0.0015                                         max =          8
+
+                                                F(10,27)          =       3.31
+corr(u_i, Xb) = -0.1105                         Prob > F          =     0.0064
+
+                                  (Std. err. adjusted for 28 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0280803   .1269436    -0.22   0.827    -.2885471    .2323866
+   ln_ai_patents |  -.0998967   .3486529    -0.29   0.777    -.8152733      .61548
+      GDP_Growth |  -.0018227   .0622199    -0.03   0.977    -.1294875     .125842
+          yr2017 |  -1.167864   .5491191    -2.13   0.043    -2.294564   -.0411648
+          yr2018 |  -1.083924   .7195544    -1.51   0.144    -2.560328    .3924793
+          yr2019 |  -.7195835   .6883342    -1.05   0.305    -2.131929    .6927617
+          yr2020 |  -.2465904     1.0191    -0.24   0.811     -2.33761    1.844429
+          yr2021 |  -.1297385   .8019465    -0.16   0.873    -1.775197     1.51572
+          yr2022 |   1.704665   .5935034     2.87   0.008      .486897    2.922434
+          yr2023 |   1.836473   .7405077     2.48   0.020     .3170768    3.355869
+           _cons |   16.25999    1.48983    10.91   0.000     13.20311    19.31687
+-----------------+----------------------------------------------------------------
+         sigma_u |  7.3742549
+         sigma_e |   2.231538
+             rho |  .91610828   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2023_BOTH_staticFE.ster not found)
+file outputs/stata/alternative_hi_2023_BOTH_staticFE.ster saved
+ALTERNATIVE_FITTED=hi_2023_BOTH_staticFE
+(30 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=hi_2023_NONE_dynamic_FE
+
+Fixed-effects (within) regression               Number of obs     =        210
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.4170                                         min =          7
+     Between = 0.9963                                         avg =        7.0
+     Overall = 0.9245                                         max =          7
+
+                                                F(10,29)          =      27.90
+corr(u_i, Xb) = 0.9311                          Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .5429383   .0837543     6.48   0.000     .3716415    .7142351
+                 |
+ln_ai_investment |  -.0187662   .1102357    -0.17   0.866    -.2442236    .2066912
+   ln_ai_patents |  -.0553345   .2288194    -0.24   0.811    -.5233226    .4126536
+      GDP_Growth |   .0720163   .0525377     1.37   0.181    -.0354352    .1794679
+          yr2018 |   .7494587    .234054     3.20   0.003     .2707646    1.228153
+          yr2019 |   1.104776   .2939287     3.76   0.001     .5036237    1.705927
+          yr2020 |   1.867559    .509128     3.67   0.001     .8262753    2.908843
+          yr2021 |   .9209339   .4931913     1.87   0.072    -.0877557    1.929623
+          yr2022 |   2.740258   .8056574     3.40   0.002     1.092504    4.388013
+          yr2023 |   2.131177   .6937813     3.07   0.005      .712235    3.550119
+           _cons |   6.438017   1.787438     3.60   0.001     2.782296    10.09374
+-----------------+----------------------------------------------------------------
+         sigma_u |  3.5677214
+         sigma_e |  1.8922411
+             rho |  .78045681   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2023_NONE_dynamic_FE.ster not found)
+file outputs/stata/alternative_hi_2023_NONE_dynamic_FE.ster saved
+ALTERNATIVE_FITTED=hi_2023_NONE_dynamic_FE
+ALTERNATIVE_ATTEMPT=hi_2023_NONE_dynamic_OLS
+
+Linear regression                               Number of obs     =        210
+                                                F(10, 29)         =     717.43
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9378
+                                                Root MSE          =     1.9857
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .9685858   .0271834    35.63   0.000     .9129895    1.024182
+                 |
+ln_ai_investment |   .1069138   .0447699     2.39   0.024      .015349    .1984786
+   ln_ai_patents |  -.0645536    .067682    -0.95   0.348    -.2029789    .0738717
+      GDP_Growth |   .1040968   .0454266     2.29   0.029     .0111888    .1970047
+          yr2018 |   1.246433   .3999893     3.12   0.004     .4283631    2.064503
+          yr2019 |     1.5564   .5028296     3.10   0.004     .5279976    2.584802
+          yr2020 |   2.328103   .6461851     3.60   0.001     1.006506      3.6497
+          yr2021 |   .7641048   .5195107     1.47   0.152    -.2984138    1.826623
+          yr2022 |   2.656297   .9552721     2.78   0.009     .7025462    4.610048
+          yr2023 |   1.447119   .6618626     2.19   0.037     .0934579     2.80078
+           _cons |  -1.275907   .5024334    -2.54   0.017    -2.303499   -.2483157
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_hi_2023_NONE_dynamic_OLS.ster not found)
+file outputs/stata/alternative_hi_2023_NONE_dynamic_OLS.ster saved
+ALTERNATIVE_FITTED=hi_2023_NONE_dynamic_OLS
+(0 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2024_NONE_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        270
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.2525                                         min =          9
+     Between = 0.0516                                         avg =        9.0
+     Overall = 0.0059                                         max =          9
+
+                                                F(11,29)          =      10.51
+corr(u_i, Xb) = -0.2557                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |   -.019981   .0833785    -0.24   0.812    -.1905092    .1505472
+   ln_ai_patents |   .3085945   .1559113     1.98   0.057      -.01028    .6274689
+      GDP_Growth |  -.0881188   .0664011    -1.33   0.195    -.2239244    .0476867
+          yr2017 |   -.654138   .1546953    -4.23   0.000    -.9705253   -.3377507
+          yr2018 |  -1.404591   .2723858    -5.16   0.000    -1.961682   -.8474994
+          yr2019 |  -1.616996   .3731421    -4.33   0.000    -2.380158   -.8538351
+          yr2020 |  -1.452672   .7558128    -1.92   0.064    -2.998483    .0931389
+          yr2021 |  -.6977341    .424085    -1.65   0.111    -1.565085    .1696172
+          yr2022 |  -1.878657   .4154802    -4.52   0.000    -2.728409   -1.028905
+          yr2023 |  -2.197408   .5134103    -4.28   0.000     -3.24745   -1.147366
+          yr2024 |  -1.873699   .5740454    -3.26   0.003    -3.047754   -.6996447
+           _cons |   6.743935   1.383712     4.87   0.000     3.913926    9.573943
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.5967673
+         sigma_e |  1.2563999
+             rho |  .95202346   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2024_NONE_staticFE.ster not found)
+file outputs/stata/alternative_un_2024_NONE_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2024_NONE_staticFE
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2024_CHN_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        261
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.2556                                         min =          9
+     Between = 0.0473                                         avg =        9.0
+     Overall = 0.0029                                         max =          9
+
+                                                F(11,28)          =      12.16
+corr(u_i, Xb) = -0.2238                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0098873   .0825625    -0.12   0.906     -.179009    .1592344
+   ln_ai_patents |   .2952855   .1672448     1.77   0.088    -.0472999     .637871
+      GDP_Growth |  -.0864397   .0683284    -1.27   0.216    -.2264041    .0535247
+          yr2017 |  -.6704165   .1590616    -4.21   0.000    -.9962393   -.3445936
+          yr2018 |  -1.431703   .2774585    -5.16   0.000    -2.000051   -.8633546
+          yr2019 |  -1.658001   .3858199    -4.30   0.000    -2.448317   -.8676849
+          yr2020 |  -1.478645   .7884702    -1.88   0.071    -3.093753    .1364625
+          yr2021 |  -.7222618   .4457106    -1.62   0.116    -1.635259     .190735
+          yr2022 |   -1.93662   .4319356    -4.48   0.000      -2.8214    -1.05184
+          yr2023 |  -2.253014   .5339531    -4.22   0.000    -3.346768   -1.159261
+          yr2024 |  -1.920748   .6049434    -3.18   0.004    -3.159919   -.6815778
+           _cons |   6.922543   1.387429     4.99   0.000     4.080524    9.764561
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.6408653
+         sigma_e |  1.2757541
+             rho |  .95133934   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2024_CHN_staticFE.ster not found)
+file outputs/stata/alternative_un_2024_CHN_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2024_CHN_staticFE
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2024_USA_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        261
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.2548                                         min =          9
+     Between = 0.0448                                         avg =        9.0
+     Overall = 0.0038                                         max =          9
+
+                                                F(11,28)          =      10.59
+corr(u_i, Xb) = -0.2352                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0122546   .0862899    -0.14   0.888    -.1890115    .1645023
+   ln_ai_patents |   .3090504   .1553314     1.99   0.056    -.0091315    .6272324
+      GDP_Growth |   -.100636   .0676952    -1.49   0.148    -.2393032    .0380313
+          yr2017 |  -.6522739   .1596469    -4.09   0.000    -.9792957   -.3252521
+          yr2018 |   -1.42001   .2775572    -5.12   0.000    -1.988561     -.85146
+          yr2019 |  -1.640409   .3866245    -4.24   0.000    -2.432373   -.8484445
+          yr2020 |  -1.691332   .7649062    -2.21   0.035    -3.258171   -.1244925
+          yr2021 |  -.7168233   .4373716    -1.64   0.112    -1.612738    .1790918
+          yr2022 |  -1.902361   .4313817    -4.41   0.000    -2.786006   -1.018715
+          yr2023 |  -2.264732   .5353294    -4.23   0.000    -3.361305    -1.16816
+          yr2024 |   -1.94617   .5947609    -3.27   0.003    -3.164483   -.7278579
+           _cons |   6.901561   1.350946     5.11   0.000     4.134273    9.668848
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.6517646
+         sigma_e |  1.2554776
+             rho |  .95297474   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2024_USA_staticFE.ster not found)
+file outputs/stata/alternative_un_2024_USA_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2024_USA_staticFE
+(0 observations deleted)
+(18 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2024_BOTH_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        252
+Group variable: panel_id                        Number of groups  =         28
+
+R-squared:                                      Obs per group:
+     Within  = 0.2582                                         min =          9
+     Between = 0.0395                                         avg =        9.0
+     Overall = 0.0012                                         max =          9
+
+                                                F(11,27)          =      11.80
+corr(u_i, Xb) = -0.1982                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 28 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0017912   .0859809    -0.02   0.984    -.1782093     .174627
+   ln_ai_patents |   .2947209   .1665725     1.77   0.088    -.0470576    .6364994
+      GDP_Growth |   -.100073   .0698394    -1.43   0.163    -.2433715    .0432256
+          yr2017 |  -.6683942   .1647175    -4.06   0.000    -1.006367   -.3304219
+          yr2018 |  -1.447775   .2829385    -5.12   0.000    -2.028317   -.8672334
+          yr2019 |  -1.683849   .4005575    -4.20   0.000    -2.505725   -.8619733
+          yr2020 |  -1.732583    .799344    -2.17   0.039    -3.372701   -.0924643
+          yr2021 |  -.7387991   .4620708    -1.60   0.121     -1.68689    .2092919
+          yr2022 |  -1.959787   .4499426    -4.36   0.000    -2.882993   -1.036581
+          yr2023 |  -2.324805   .5573622    -4.17   0.000    -3.468417   -1.181192
+          yr2024 |  -1.997286   .6271633    -3.18   0.004    -3.284119   -.7104534
+           _cons |   7.097158    1.35121     5.25   0.000     4.324704    9.869613
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.6954988
+         sigma_e |  1.2753519
+             rho |  .95225271   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2024_BOTH_staticFE.ster not found)
+file outputs/stata/alternative_un_2024_BOTH_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2024_BOTH_staticFE
+(0 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2024_NONE_dynamic_FE
+
+Fixed-effects (within) regression               Number of obs     =        240
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.7070                                         min =          8
+     Between = 0.9941                                         avg =        8.0
+     Overall = 0.9771                                         max =          8
+
+                                                F(11,29)          =      25.69
+corr(u_i, Xb) = 0.9280                          Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .7403953     .07862     9.42   0.000     .5795993    .9011914
+                 |
+ln_ai_investment |  -.0400307   .0432532    -0.93   0.362    -.1284934    .0484321
+   ln_ai_patents |   .0408347   .0958587     0.43   0.673    -.1552183    .2368877
+      GDP_Growth |  -.0461805   .0373661    -1.24   0.226    -.1226027    .0302418
+          yr2018 |  -.1544054   .0865084    -1.78   0.085    -.3313349     .022524
+          yr2019 |   .0667535   .1491827     0.45   0.658    -.2383595    .3718664
+          yr2020 |   .7182897   .3513548     2.04   0.050    -.0003117    1.436891
+          yr2021 |   .4904059   .2880103     1.70   0.099    -.0986414    1.079453
+          yr2022 |   -.486321   .1673866    -2.91   0.007     -.828665    -.143977
+          yr2023 |   .0063243   .1829319     0.03   0.973    -.3678134    .3804621
+          yr2024 |   .2552092   .1756925     1.45   0.157    -.1041223    .6145406
+           _cons |   1.617424   .8017893     2.02   0.053    -.0224187    3.257268
+-----------------+----------------------------------------------------------------
+         sigma_u |  1.4200895
+         sigma_e |   .6992004
+             rho |  .80487956   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2024_NONE_dynamic_FE.ster not found)
+file outputs/stata/alternative_un_2024_NONE_dynamic_FE.ster saved
+ALTERNATIVE_FITTED=un_2024_NONE_dynamic_FE
+ALTERNATIVE_ATTEMPT=un_2024_NONE_dynamic_OLS
+
+Linear regression                               Number of obs     =        240
+                                                F(11, 29)         =     209.98
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9788
+                                                Root MSE          =     .81081
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .9843455   .0353119    27.88   0.000     .9121244    1.056566
+                 |
+ln_ai_investment |     .03054   .0315039     0.97   0.340    -.0338927    .0949727
+   ln_ai_patents |  -.0046823   .0199727    -0.23   0.816     -.045531    .0361665
+      GDP_Growth |  -.0410962   .0253786    -1.62   0.116    -.0930012    .0108088
+          yr2018 |  -.0037957   .0753098    -0.05   0.960    -.1578216    .1502302
+          yr2019 |   .3295037   .1388223     2.37   0.024     .0455803    .6134271
+          yr2020 |   1.042167   .3110753     3.35   0.002      .405947    1.678388
+          yr2021 |   .5273012    .273986     1.92   0.064    -.0330631    1.087666
+          yr2022 |  -.3947553   .1629236    -2.42   0.022    -.7279715    -.061539
+          yr2023 |   .3678461    .162677     2.26   0.031     .0351343     .700558
+          yr2024 |   .6096794   .1515615     4.02   0.000     .2997013    .9196575
+           _cons |  -.5094701    .273633    -1.86   0.073    -1.069112    .0501723
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2024_NONE_dynamic_OLS.ster not found)
+file outputs/stata/alternative_un_2024_NONE_dynamic_OLS.ster saved
+ALTERNATIVE_FITTED=un_2024_NONE_dynamic_OLS
+(30 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2023_NONE_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        240
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.2649                                         min =          8
+     Between = 0.0584                                         avg =        8.0
+     Overall = 0.0104                                         max =          8
+
+                                                F(10,29)          =      11.71
+corr(u_i, Xb) = -0.2839                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0461595   .1163052    -0.40   0.694    -.2840303    .1917113
+   ln_ai_patents |    .347967   .1493134     2.33   0.027     .0425867    .6533472
+      GDP_Growth |  -.0740925   .0602455    -1.23   0.229    -.1973084    .0491235
+          yr2017 |  -.6610902   .1569254    -4.21   0.000    -.9820387   -.3401417
+          yr2018 |  -1.413824   .2749818    -5.14   0.000    -1.976225   -.8514226
+          yr2019 |  -1.601504   .3484527    -4.60   0.000     -2.31417   -.8888383
+          yr2020 |  -1.344287   .6404989    -2.10   0.045    -2.654254   -.0343199
+          yr2021 |  -.7220395   .4386644    -1.65   0.111    -1.619209      .17513
+          yr2022 |  -1.866553   .3679866    -5.07   0.000     -2.61917   -1.113936
+          yr2023 |  -2.160802   .4271707    -5.06   0.000    -3.034464    -1.28714
+           _cons |   6.627439   1.496623     4.43   0.000     3.566502    9.688377
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.6581467
+         sigma_e |  1.2032839
+             rho |  .95673092   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2023_NONE_staticFE.ster not found)
+file outputs/stata/alternative_un_2023_NONE_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2023_NONE_staticFE
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2023_CHN_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        232
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.2681                                         min =          8
+     Between = 0.0534                                         avg =        8.0
+     Overall = 0.0059                                         max =          8
+
+                                                F(10,28)          =      13.60
+corr(u_i, Xb) = -0.2488                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0370435   .1155943    -0.32   0.751    -.2738277    .1997406
+   ln_ai_patents |   .3329003   .1553332     2.14   0.041     .0147146    .6510861
+      GDP_Growth |   -.071953   .0625612    -1.15   0.260    -.2001038    .0561977
+          yr2017 |  -.6758371   .1612744    -4.19   0.000    -1.006193   -.3454816
+          yr2018 |  -1.437477   .2792437    -5.15   0.000    -2.009481   -.8654719
+          yr2019 |  -1.637042   .3591586    -4.56   0.000    -2.372745   -.9013388
+          yr2020 |  -1.359568   .6702681    -2.03   0.052     -2.73255     .013414
+          yr2021 |  -.7411552    .459663    -1.61   0.118    -1.682732    .2004218
+          yr2022 |  -1.919073   .3835068    -5.00   0.000    -2.704651   -1.133495
+          yr2023 |  -2.207729   .4422645    -4.99   0.000    -3.113667   -1.301792
+           _cons |   6.823557   1.476277     4.62   0.000      3.79954    9.847574
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.6949925
+         sigma_e |  1.2215489
+             rho |  .95601543   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2023_CHN_staticFE.ster not found)
+file outputs/stata/alternative_un_2023_CHN_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2023_CHN_staticFE
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2023_USA_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        232
+Group variable: panel_id                        Number of groups  =         29
+
+R-squared:                                      Obs per group:
+     Within  = 0.2679                                         min =          8
+     Between = 0.0516                                         avg =        8.0
+     Overall = 0.0077                                         max =          8
+
+                                                F(10,28)          =      11.33
+corr(u_i, Xb) = -0.2650                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 29 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0370569   .1178989    -0.31   0.756    -.2785618     .204448
+   ln_ai_patents |   .3500036   .1490707     2.35   0.026     .0446461     .655361
+      GDP_Growth |  -.0866615    .060927    -1.42   0.166    -.2114647    .0381418
+          yr2017 |  -.6599378   .1610049    -4.10   0.000    -.9897414   -.3301342
+          yr2018 |  -1.431572   .2784786    -5.14   0.000     -2.00201   -.8611347
+          yr2019 |  -1.626581   .3597526    -4.52   0.000    -2.363501   -.8896615
+          yr2020 |  -1.584924   .6376284    -2.49   0.019    -2.891047   -.2788015
+          yr2021 |  -.7452817   .4478832    -1.66   0.107    -1.662729    .1721654
+          yr2022 |  -1.894776   .3807882    -4.98   0.000    -2.674785   -1.114767
+          yr2023 |  -2.231932   .4450273    -5.02   0.000    -3.143529   -1.320335
+           _cons |   6.771909   1.455065     4.65   0.000     3.791344    9.752475
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.7139949
+         sigma_e |  1.1976858
+             rho |  .95791447   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2023_USA_staticFE.ster not found)
+file outputs/stata/alternative_un_2023_USA_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2023_USA_staticFE
+(30 observations deleted)
+(16 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2023_BOTH_staticFE
+
+Fixed-effects (within) regression               Number of obs     =        224
+Group variable: panel_id                        Number of groups  =         28
+
+R-squared:                                      Obs per group:
+     Within  = 0.2715                                         min =          8
+     Between = 0.0458                                         avg =        8.0
+     Overall = 0.0034                                         max =          8
+
+                                                F(10,27)          =      12.81
+corr(u_i, Xb) = -0.2247                         Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 28 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+ln_ai_investment |  -.0275654   .1174917    -0.23   0.816    -.2686385    .2135078
+   ln_ai_patents |   .3338752    .154949     2.15   0.040     .0159461    .6518042
+      GDP_Growth |  -.0856427   .0634106    -1.35   0.188    -.2157506    .0444651
+          yr2017 |  -.6744742   .1659849    -4.06   0.000    -1.015047   -.3339012
+          yr2018 |  -1.455823   .2829223    -5.15   0.000    -2.036332   -.8753143
+          yr2019 |  -1.664412   .3715769    -4.48   0.000    -2.426825   -.9019988
+          yr2020 |  -1.615202   .6685566    -2.42   0.023    -2.986967   -.2434371
+          yr2021 |  -.7616753   .4715418    -1.62   0.118    -1.729199    .2058485
+          yr2022 |  -1.946638   .3983712    -4.89   0.000    -2.764028   -1.129247
+          yr2023 |  -2.283038   .4614168    -4.95   0.000    -3.229787   -1.336288
+           _cons |   6.985444   1.431175     4.88   0.000     4.048916    9.921971
+-----------------+----------------------------------------------------------------
+         sigma_u |  5.7498954
+         sigma_e |  1.2163698
+             rho |  .95716506   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2023_BOTH_staticFE.ster not found)
+file outputs/stata/alternative_un_2023_BOTH_staticFE.ster saved
+ALTERNATIVE_FITTED=un_2023_BOTH_staticFE
+(30 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+ALTERNATIVE_ATTEMPT=un_2023_NONE_dynamic_FE
+
+Fixed-effects (within) regression               Number of obs     =        210
+Group variable: panel_id                        Number of groups  =         30
+
+R-squared:                                      Obs per group:
+     Within  = 0.6652                                         min =          7
+     Between = 0.9925                                         avg =        7.0
+     Overall = 0.9733                                         max =          7
+
+                                                F(10,29)          =      31.34
+corr(u_i, Xb) = 0.9344                          Prob > F          =     0.0000
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .6864454   .0874997     7.85   0.000     .5074885    .8654023
+                 |
+ln_ai_investment |  -.0659153   .0561575    -1.17   0.250    -.1807703    .0489398
+   ln_ai_patents |   .0827238   .1038892     0.80   0.432    -.1297535    .2952011
+      GDP_Growth |  -.0462219   .0392587    -1.18   0.249    -.1265149    .0340711
+          yr2018 |    -.19724   .1018702    -1.94   0.063    -.4055879    .0111079
+          yr2019 |   .0085047   .1651876     0.05   0.959    -.3293418    .3463513
+          yr2020 |    .651539   .3862302     1.69   0.102    -.1383905    1.441469
+          yr2021 |   .4802335   .2914389     1.65   0.110     -.115826    1.076293
+          yr2022 |  -.5043649   .1848733    -2.73   0.011    -.8824733   -.1262565
+          yr2023 |  -.0717405   .2220417    -0.32   0.749    -.5258668    .3823859
+           _cons |   1.959541   .8680697     2.26   0.032     .1841392    3.734943
+-----------------+----------------------------------------------------------------
+         sigma_u |  1.7366534
+         sigma_e |  .72024713
+             rho |  .85323992   (fraction of variance due to u_i)
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2023_NONE_dynamic_FE.ster not found)
+file outputs/stata/alternative_un_2023_NONE_dynamic_FE.ster saved
+ALTERNATIVE_FITTED=un_2023_NONE_dynamic_FE
+ALTERNATIVE_ATTEMPT=un_2023_NONE_dynamic_OLS
+
+Linear regression                               Number of obs     =        210
+                                                F(10, 29)         =     138.61
+                                                Prob > F          =     0.0000
+                                                R-squared         =     0.9771
+                                                Root MSE          =      .8461
+
+                                  (Std. err. adjusted for 30 clusters in panel_id)
+----------------------------------------------------------------------------------
+                 |               Robust
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   .9838747    .038142    25.80   0.000     .9058655    1.061884
+                 |
+ln_ai_investment |   .0217691     .03037     0.72   0.479    -.0403445    .0838828
+   ln_ai_patents |    .000511   .0215229     0.02   0.981    -.0435082    .0445303
+      GDP_Growth |  -.0369597   .0262006    -1.41   0.169    -.0905458    .0166265
+          yr2018 |  -.0017615   .0753758    -0.02   0.982    -.1559223    .1523993
+          yr2019 |   .3380661   .1385111     2.44   0.021     .0547791    .6213532
+          yr2020 |   1.079823   .3183322     3.39   0.002     .4287611    1.730886
+          yr2021 |   .5273775   .2741079     1.92   0.064    -.0332362    1.087991
+          yr2022 |  -.3845751   .1598701    -2.41   0.023    -.7115462    -.057604
+          yr2023 |   .3844544   .1615966     2.38   0.024     .0539523    .7149564
+           _cons |  -.4992587   .2924465    -1.71   0.098    -1.097379    .0988617
+----------------------------------------------------------------------------------
+(note: file outputs/stata/alternative_un_2023_NONE_dynamic_OLS.ster not found)
+file outputs/stata/alternative_un_2023_NONE_dynamic_OLS.ster saved
+ALTERNATIVE_FITTED=un_2023_NONE_dynamic_OLS
+
+. postclose fe_post
+
+. preserve
+
+. use "outputs/stata/alternative_fe_models.dta", clear
+
+. export delimited using "outputs/stata/alternative_fe_models.csv", replace
+(file outputs/stata/alternative_fe_models.csv not found)
+file outputs/stata/alternative_fe_models.csv saved
+
+. quietly count
+
+. display as result "ALTERNATIVE_ROWS=" r(N)
+ALTERNATIVE_ROWS=24
+
+. restore
+
+. display as result "ALTERNATIVE_SUCCESS_COUNT=" `successes'
+ALTERNATIVE_SUCCESS_COUNT=24
+
+. display as result "ALTERNATIVE_FAILURE_COUNT=" `failures'
+ALTERNATIVE_FAILURE_COUNT=0
+
+. display as text "STATIC FE ASSOCIATION: not causal. Dynamic FE Nickell biased with T<=9. OLS biased with endogenous la
+> g."
+STATIC FE ASSOCIATION: not causal. Dynamic FE Nickell biased with T<=9. OLS biased with endogenous lag.
+
+. log close
+      name:  <unnamed>
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/12_associational_fe.log
+  log type:  text
+ closed on:  17 Oct 2026, 10:32:20
+------------------------------------------------------------------------------------------------------------------------

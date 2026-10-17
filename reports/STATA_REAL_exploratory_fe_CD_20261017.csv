@@ -1,0 +1,5 @@
+outcome,end_year,years,groups,pairs,avg_pair_rho,cd_stat,p_value
+HighTech_Exports,2024,9,30,435,-.0004637673,-.029017901,.97685033
+HighTech_Exports,2023,8,30,435,.017747741,1.0469663,.29511511
+Unemployment,2024,9,30,435,.0082329856,.51513755,.60645688
+Unemployment,2023,8,30,435,-.0018041231,-.10642797,.91524279

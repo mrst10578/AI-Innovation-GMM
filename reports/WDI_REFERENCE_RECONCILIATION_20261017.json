@@ -1,0 +1,196 @@
+{
+  "audit_time_utc": "2026-10-17T10:51:58.572435+00:00",
+  "original_sha256": "4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434",
+  "original_rows": 270,
+  "countries": [
+    "AUS",
+    "AUT",
+    "BEL",
+    "CAN",
+    "CHE",
+    "CHN",
+    "DEU",
+    "DNK",
+    "ESP",
+    "FIN",
+    "FRA",
+    "GBR",
+    "GRC",
+    "HUN",
+    "IND",
+    "ISR",
+    "ITA",
+    "JPN",
+    "KOR",
+    "LUX",
+    "MEX",
+    "NLD",
+    "NOR",
+    "POL",
+    "PRT",
+    "ROU",
+    "SWE",
+    "TUR",
+    "USA",
+    "ZAF"
+  ],
+  "reference_api": "https://api.worldbank.org/v2",
+  "method": "read_only; exact 30-country/9-year ISO3 matching; tolerance absolute 0.001; no data replacement",
+  "email_received": "2026-09-30",
+  "special_notice": "WDI online latest update can postdate original sender's email. Numeric discrepancies may represent revision OR original error: cause not established.",
+  "source_results": {
+    "HighTech_Exports": {
+      "wdi_indicator": "TX.VAL.TECH.MF.ZS",
+      "reference_lastupdated": "2026-10-08",
+      "wdi_observations_in_scope": 270,
+      "original_rows": 270,
+      "matches_within_0.001": 253,
+      "differences_above_0.001": 17,
+      "missing_reference_observations": 0,
+      "max_abs_difference": 1.3482014380204,
+      "differences": [
+        {
+          "ISO3": "BEL",
+          "Year": 2022,
+          "original": 22.8179135173265,
+          "updated_WDI_reference": 23.5845776233808,
+          "absolute_deviation": 0.7666641060543
+        },
+        {
+          "ISO3": "BEL",
+          "Year": 2023,
+          "original": 18.6668227645892,
+          "updated_WDI_reference": 18.5035274907028,
+          "absolute_deviation": 0.16329527388639775
+        },
+        {
+          "ISO3": "BEL",
+          "Year": 2024,
+          "original": 20.3921453422236,
+          "updated_WDI_reference": 19.8280639799919,
+          "absolute_deviation": 0.5640813622317005
+        },
+        {
+          "ISO3": "CAN",
+          "Year": 2024,
+          "original": 16.7779029827711,
+          "updated_WDI_reference": 16.136976827953,
+          "absolute_deviation": 0.6409261548181
+        },
+        {
+          "ISO3": "DEU",
+          "Year": 2023,
+          "original": 17.7818374796623,
+          "updated_WDI_reference": 17.9190173120617,
+          "absolute_deviation": 0.13717983239940068
+        },
+        {
+          "ISO3": "DNK",
+          "Year": 2022,
+          "original": 15.988289228272,
+          "updated_WDI_reference": 15.0717227734779,
+          "absolute_deviation": 0.9165664547941006
+        },
+        {
+          "ISO3": "DNK",
+          "Year": 2023,
+          "original": 17.1321575837404,
+          "updated_WDI_reference": 17.2078913518622,
+          "absolute_deviation": 0.07573376812180044
+        },
+        {
+          "ISO3": "DNK",
+          "Year": 2024,
+          "original": 17.6194498489345,
+          "updated_WDI_reference": 17.5785320197937,
+          "absolute_deviation": 0.04091782914080255
+        },
+        {
+          "ISO3": "FRA",
+          "Year": 2020,
+          "original": 21.1920405248012,
+          "updated_WDI_reference": 22.5402419628216,
+          "absolute_deviation": 1.3482014380204
+        },
+        {
+          "ISO3": "FRA",
+          "Year": 2021,
+          "original": 22.305003085565,
+          "updated_WDI_reference": 21.3228806203905,
+          "absolute_deviation": 0.982122465174502
+        },
+        {
+          "ISO3": "GBR",
+          "Year": 2022,
+          "original": 27.1597708192348,
+          "updated_WDI_reference": 27.4235886922287,
+          "absolute_deviation": 0.2638178729939007
+        },
+        {
+          "ISO3": "ITA",
+          "Year": 2023,
+          "original": 9.9836968942283,
+          "updated_WDI_reference": 10.1031753168903,
+          "absolute_deviation": 0.1194784226619987
+        },
+        {
+          "ISO3": "ITA",
+          "Year": 2024,
+          "original": 12.2827088504022,
+          "updated_WDI_reference": 11.891145607858,
+          "absolute_deviation": 0.3915632425441995
+        },
+        {
+          "ISO3": "JPN",
+          "Year": 2023,
+          "original": 17.1028060703212,
+          "updated_WDI_reference": 17.1225767764561,
+          "absolute_deviation": 0.019770706134899285
+        },
+        {
+          "ISO3": "MEX",
+          "Year": 2022,
+          "original": 20.5343692257849,
+          "updated_WDI_reference": 20.4298026309373,
+          "absolute_deviation": 0.10456659484760067
+        },
+        {
+          "ISO3": "NOR",
+          "Year": 2024,
+          "original": 25.4139359384172,
+          "updated_WDI_reference": 25.3869620031133,
+          "absolute_deviation": 0.02697393530390002
+        },
+        {
+          "ISO3": "PRT",
+          "Year": 2024,
+          "original": 6.77343918950435,
+          "updated_WDI_reference": 6.80409396359062,
+          "absolute_deviation": 0.03065477408626993
+        }
+      ]
+    },
+    "GDP_Growth": {
+      "wdi_indicator": "NY.GDP.MKTP.KD.ZG",
+      "reference_lastupdated": "2026-10-08",
+      "wdi_observations_in_scope": 270,
+      "original_rows": 270,
+      "matches_within_0.001": 270,
+      "differences_above_0.001": 0,
+      "missing_reference_observations": 0,
+      "max_abs_difference": 0,
+      "differences": []
+    },
+    "Unemployment": {
+      "wdi_indicator": "SL.UEM.TOTL.ZS",
+      "reference_lastupdated": "2026-10-08",
+      "wdi_observations_in_scope": 270,
+      "original_rows": 270,
+      "matches_within_0.001": 270,
+      "differences_above_0.001": 0,
+      "missing_reference_observations": 0,
+      "max_abs_difference": 0,
+      "differences": []
+    }
+  }
+}
