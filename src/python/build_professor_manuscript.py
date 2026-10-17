@@ -305,7 +305,6 @@ def create_docx():
              pnum(r["joint_AI_Wald_p"])] for r in subset],font_size=8)
         add_p(doc,"پنل "+pname+"؛ شناسه‌های D و S به‌ترتیب تفاضلی و سیستمی‌اند؛ X برون‌زایی موقت GDP و E ابزارگذاری GDP با وقفه را نشان می‌دهد.",size=8.6,color=GREY)
     add_p(doc,"در این جدول هر «p بزرگ» صرفاً نشان‌دهنده عدم رد فرض صفر آزمون متناظر است؛ AR(2)، Hansen و Difference-in-Hansen به تنهایی شناسایی علّی را تأیید نمی‌کنند.")
-    doc.add_page_break()  # Start a cohesive two-table appendix on a fresh page.
     heading(doc,"پیوست ب. حساسیت مدل اثرات ثابت به حذف کشور و سال")
     for pname,prefix in [("صادرات فناوری پیشرفته","hi"),("نرخ بیکاری","un")]:
         records=[r for r in fe if r["family"]=="static_twFE" and r["model"].startswith(prefix+"_")]
