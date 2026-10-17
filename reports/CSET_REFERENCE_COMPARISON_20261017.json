@@ -1,0 +1,155 @@
+{
+  "reference_version": "1.11.0",
+  "reference_publication_date": "2026-03-19",
+  "reference_zenodo_url": "https://zenodo.org/records/19103157",
+  "reference_doi": "10.5281/zenodo.19103157",
+  "reference_zip_sha256": "ce36ddfddf511caa92ac845ccf5663233158945acfb31446195e1ba4088b192f",
+  "original_source_sha256": "4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434",
+  "comparison_kind": "DEFINITION_AND_VERSION_AUDIT_NOT_IDENTICAL_METRIC_ASSERTION",
+  "findings": [
+    {
+      "country": "CHN",
+      "year": 2023,
+      "metric": "patent_applications",
+      "supplied_column": "AI_Patents",
+      "supplied_value": 783813.0,
+      "cset_reference_value": 120006.0,
+      "reference_complete": false,
+      "absolute_difference": 663807.0,
+      "ratio_supplied_to_reference": 6.531448427578621
+    },
+    {
+      "country": "CHN",
+      "year": 2023,
+      "metric": "estimated_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 17598.0,
+      "cset_reference_value": 10593.0,
+      "reference_complete": true,
+      "absolute_difference": 7005.0,
+      "ratio_supplied_to_reference": 1.6612857547436988
+    },
+    {
+      "country": "CHN",
+      "year": 2023,
+      "metric": "disclosed_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 17598.0,
+      "cset_reference_value": 5294.0,
+      "reference_complete": true,
+      "absolute_difference": 12304.0,
+      "ratio_supplied_to_reference": 3.324140536456366
+    },
+    {
+      "country": "CHN",
+      "year": 2024,
+      "metric": "patent_applications",
+      "supplied_column": "AI_Patents",
+      "supplied_value": 1044027.0,
+      "cset_reference_value": 131117.0,
+      "reference_complete": false,
+      "absolute_difference": 912910.0,
+      "ratio_supplied_to_reference": 7.962560156196374
+    },
+    {
+      "country": "CHN",
+      "year": 2024,
+      "metric": "estimated_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 32941.0,
+      "cset_reference_value": 15233.0,
+      "reference_complete": true,
+      "absolute_difference": 17708.0,
+      "ratio_supplied_to_reference": 2.1624762029803715
+    },
+    {
+      "country": "CHN",
+      "year": 2024,
+      "metric": "disclosed_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 32941.0,
+      "cset_reference_value": 9345.0,
+      "reference_complete": true,
+      "absolute_difference": 23596.0,
+      "ratio_supplied_to_reference": 3.5249866238630285
+    },
+    {
+      "country": "USA",
+      "year": 2023,
+      "metric": "patent_applications",
+      "supplied_column": "AI_Patents",
+      "supplied_value": 45742.0,
+      "cset_reference_value": 3510.0,
+      "reference_complete": false,
+      "absolute_difference": 42232.0,
+      "ratio_supplied_to_reference": 13.031908831908831
+    },
+    {
+      "country": "USA",
+      "year": 2023,
+      "metric": "estimated_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 224516.0,
+      "cset_reference_value": 90680.0,
+      "reference_complete": true,
+      "absolute_difference": 133836.0,
+      "ratio_supplied_to_reference": 2.475915306572563
+    },
+    {
+      "country": "USA",
+      "year": 2023,
+      "metric": "disclosed_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 224516.0,
+      "cset_reference_value": 56634.0,
+      "reference_complete": true,
+      "absolute_difference": 167882.0,
+      "ratio_supplied_to_reference": 3.9643323798424976
+    },
+    {
+      "country": "USA",
+      "year": 2024,
+      "metric": "patent_applications",
+      "supplied_column": "AI_Patents",
+      "supplied_value": 29283.0,
+      "cset_reference_value": 162.0,
+      "reference_complete": false,
+      "absolute_difference": 29121.0,
+      "ratio_supplied_to_reference": 180.75925925925927
+    },
+    {
+      "country": "USA",
+      "year": 2024,
+      "metric": "estimated_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 336172.0,
+      "cset_reference_value": 176531.0,
+      "reference_complete": true,
+      "absolute_difference": 159641.0,
+      "ratio_supplied_to_reference": 1.9043227535107148
+    },
+    {
+      "country": "USA",
+      "year": 2024,
+      "metric": "disclosed_private_equity_investment_musd",
+      "supplied_column": "AI_Investment",
+      "supplied_value": 336172.0,
+      "cset_reference_value": 122672.0,
+      "reference_complete": true,
+      "absolute_difference": 213500.0,
+      "ratio_supplied_to_reference": 2.7404134602843353
+    }
+  ],
+  "blocking_questions": [
+    "Which named version/release, CSET table, field, raw column, country mapping and transform produced the 270 supplied AI rows?",
+    "For patents, are the observations annual patent families, patent application documents, cumulative counts, AI subfields, or another source?",
+    "For investment, does the source measure estimated or disclosed equity into privately held firms, how are USD-million units converted, and are fields double counted?",
+    "What is the official source completeness/revision flag for each country-year, especially 2024?",
+    "World Bank outcome/control country-year source pulls and download dates must also be documented independently."
+  ],
+  "do_not_infer": [
+    "Mismatched numeric values do not prove fabrication or an error, since definitions and releases could differ.",
+    "Do not splice reference data into the original 30-country panel without explicit approval and a new analysis branch.",
+    "Do not certify causal GMM conclusions until this provenance gate and identification assumptions are defensible."
+  ]
+}
