@@ -17,3 +17,11 @@ Project: `AI-Innovation-GMM`. Dataset scope is restricted to this study.
 | Final paper/report | NOT GENERATED |
 
 Do not treat an installation smoke test, workbook import, or DTA conversion as a statistical estimation. The research manuscript must be studied in full before defining the GMM equations.
+
+## Update 2026-10-17 (isolated feature branch)
+
+- Reviewed original manuscript and dataset; 270 rows, 30 countries, 2016–2024, fully balanced, 0 missing, 0 duplicate, no Iran; 2024 patent decline in 26 countries.
+- Authored Stata 01–05 scripts and shared model script; real GMM code replaces previous protective placeholder, but has **not** been executed in licensed Stata.
+- Ubuntu source audit + DTA conversion and 7 Python tests succeeded; 16 independent R pgmm fits ran with recorded output and critical validity limitations. See `reports/STATA_EXECUTION_STATUS_20261017.md`.
+- Licensed Stata was not present on connected Ubuntu or Android devices; genuine Stata logs, Hansen/AR(2)/difference-in-Hansen status remain pending.
+- Branch is intentionally not merged into main until audited run in Stata and scientific review.
