@@ -1,0 +1,45 @@
+name: Independent econometrics QA (not licensed Stata)
+on:
+  workflow_dispatch:
+  push:
+    branches: [feat/stata-estimation-audit-20261017]
+    paths:
+      - 'stata/**'
+      - 'src/**'
+      - 'tests/**'
+      - '.github/workflows/06-econometrics-reproducibility.yml'
+      - 'config/**'
+jobs:
+  audit-and-r:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-python.txt
+      - name: Python unit tests on original AI panel
+        run: python -m pytest -q
+      - name: Source audit, Stata DTA and R CSV
+        run: |
+          python -m src.python.preflight
+          python -m src.python.to_stata
+          python -m src.python.research_audit
+      - name: Install R plm from Ubuntu packages
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y r-base r-cran-plm r-cran-lmtest r-cran-sandwich
+      - name: Independent one- and two-step R pgmm sensitivity
+        run: Rscript --vanilla src/r/run_pgmm.R
+      - name: Publish data audit, Stata-ready DTA and actual R outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-gmm-econometrics-audit-non-stata
+          path: |
+            outputs/research_data_audit.json
+            outputs/r/
+            data/processed/stata_ready.dta
+          if-no-files-found: warn
+          retention-days: 14
