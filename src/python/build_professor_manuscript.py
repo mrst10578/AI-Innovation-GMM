@@ -262,7 +262,27 @@ def create_docx():
         "سال ۲۰۲۴ برای پتنت‌ها ممکن است مشمول تأخیر گزارش باشد؛ از داده خام امکان اثبات علت نوسانات وجود ندارد.",
         "رد نسخه قدیمی توسط استاد دلیل دقیق و مکتوب ندارد؛ نباید ادعا کرد صرف اجرای آزمون‌های این نسخه همه اعتراض‌های احتمالی را رفع کرده است."
     ]: bullet(doc,item)
-    heading(doc,"۱۱. منابع و بازتولید")
+    heading(doc,"پیوست الف. جدول کامل ۱۶ مشخصه اصلاحی GMM")
+    add_p(doc,"همه اعداد جدول‌های زیر از خروجی واقعی xtabond2 استخراج شده‌اند. نماد «—» به معنای آزمون مربوط‌نبودن به مشخصه تفاضلی است؛ ناموجودبودن آزمون نباید با صفر جایگزین شود.")
+    for pname,pref in [("صادرات فناوری پیشرفته","hi_"),("نرخ بیکاری","un_")]:
+        subset=[r for r in csv_rows("PROFESSOR_POST_ESTIMATION_20261017.csv") if r["model"].startswith(pref)]
+        tab(doc,["شناسه","ابزار","AR(1)","AR(2)","Hansen","درجه آزادی سطح","Diff-Hansen","p مشترک AI"],[
+            [r["model"].replace("hi_","").replace("un_","").replace("_"," "),
+             num(r["instrument_count"]), fnum(r["AR1_p"]),fnum(r["AR2_p"]),
+             fnum(r["Hansen_robust_p"]),num(r["level_exclusion_hansen_df"]) if r["level_exclusion_hansen_df"] else "—",
+             fnum(r["level_instrument_diff_Hansen_p"]) if r["level_instrument_diff_Hansen_p"] else "—",
+             fnum(r["joint_AI_Wald_p"])] for r in subset],font_size=7.2)
+        add_p(doc,"پنل "+pname+"؛ شناسه‌های D و S به‌ترتیب تفاضلی و سیستمی‌اند؛ X برون‌زایی موقت GDP و E ابزارگذاری GDP با وقفه را نشان می‌دهد.",size=8.6,color=GREY)
+    add_p(doc,"در این جدول هر «p بزرگ» صرفاً نشان‌دهنده عدم رد فرض صفر آزمون متناظر است؛ AR(2)، Hansen و Difference-in-Hansen به تنهایی شناسایی علّی را تأیید نمی‌کنند.")
+    heading(doc,"پیوست ب. حساسیت مدل اثرات ثابت به حذف کشور و سال")
+    for pname,prefix in [("صادرات فناوری پیشرفته","hi"),("نرخ بیکاری","un")]:
+        records=[r for r in fe if r["family"]=="static_twFE" and r["model"].startswith(prefix+"_")]
+        tab(doc,["تا سال","حذف کشور","گروه‌ها","β سرمایه AI (p)","β پتنت AI (p)"],[
+            [num(r["cutoff"]),{"NONE":"هیچ","CHN":"چین","USA":"آمریکا","BOTH":"هر دو"}[r["exclusion"]],
+             num(r["Ng"]),fnum(r["lninv_b"])+" ("+fnum(r["lninv_p"])+")",
+             fnum(r["lnpat_b"])+" ("+fnum(r["lnpat_p"])+")"] for r in records],font_size=8)
+        add_p(doc,"پیامد "+pname+"؛ اثرات ثابت کشور و سال و خطاهای خوشه‌ای به تفکیک کشور؛ تحلیل اکتشافی، نه علّی.",size=8.5,color=GREY)
+    heading(doc,"۱۳. منابع و بازتولید")
     for item in [
         "بهاره، ایمیل ۳۰ سپتامبر ۲۰۲۶: AI_Balanced_Panel (1).xlsx، AI_Balanced_Panel_Dictionary (1).xlsx و فایل روش تحقیق همراه.",
         "بانک جهانی، کدهای TX.VAL.TECH.MF.ZS، NY.GDP.MKTP.KD.ZG و SL.UEM.TOTL.ZS؛ تاریخ برداشت نسخه اصلی در داده اولیه نامشخص است.",
