@@ -301,6 +301,15 @@ def create_docx():
         "Roodman, D. (2009). How to do xtabond2: An Introduction to Difference and System GMM in Stata. Stata Journal, 9(1), 86–136.",
         "Nickell, S. (1981). Biases in Dynamic Models with Fixed Effects. Econometrica, 49(6), 1417–1426."
     ]: bullet(doc,item)
+    heading(doc,"پیوست پ. اختلاف‌های ثبت‌شده با نسخه فعلی بانک جهانی",level=2)
+    wd=[r for r in csv_rows("WDI_REFERENCE_ROW_COMPARISON_20261017.csv")
+        if r["source_col"]=="HighTech_Exports" and r["equal_to_0.001"]=="False"]
+    if len(wd)!=17: raise RuntimeError("Unexpected official WDI discrepancy count")
+    tab(doc,["کشور","سال","مقدار فایل بهاره","مرجع WDI فعلی","قدر مطلق اختلاف"],[
+        [r["ISO3"],num(r["Year"]),fnum(r["original_supplied_value"]),
+         fnum(r["wdi_reference_value"]),fnum(r["absolute_deviation"])] for r in wd],font_size=7.9)
+    add_p(doc,"همه ۱۷ مورد اختلاف در شاخص TX.VAL.TECH.MF.ZS مشاهده شده‌اند. تاریخ آخرین به‌روزرسانی مرجع ۸ اکتبر ۲۰۲۶ است؛ این جدول درباره منشأ اختلاف قضاوت نمی‌کند و مبنای تخمین همچنان مقادیر اصلی بهاره است.",size=9,color=GREY)
+
     add_p(doc,"پیوست‌های داده، do-fileها، فایل‌های خروجی واقعی Stata، آزمون‌های تشخیصی و گزارش کامل ممیزی در مخزن AI-Innovation-GMM، شاخه feat/stata-estimation-audit-20261017 نگهداری می‌شوند. فایل اصلی داده بدون تغییر حفظ شده و برای ادعاهای جدید از داده جایگزین استفاده نشده است.",size=9)
     add_p(doc,"حکم نهایی کنترل کیفیت: آماده ارائه برای بازبینی روش‌شناختی استاد؛ هنوز فاقد تأیید مستقلِ اعتبار علّی و زنجیره کامل منشأ داده AI.",size=10,bold=True,color=BLUE)
     output=DIST/"AI_GMM_Professor_Review_FA.docx"
