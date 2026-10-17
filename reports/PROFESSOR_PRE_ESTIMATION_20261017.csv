@@ -1,0 +1,6 @@
+variable,N_groups,T_years,lag,IPS_W_t_bar,IPS_p,Fisher_ADF_P,Fisher_ADF_P_p,first_generation_caveat,source
+HighTech_Exports,30,9,1,4.2618,1.0000,43.4025,0.9474,short T; cross-sectional dependence may violate assumptions,STATA_REAL_master_20261017.log
+Unemployment,30,9,1,-4.0929,0.0000,156.1460,0.0000,short T; cross-sectional dependence may violate assumptions,STATA_REAL_master_20261017.log
+ln_ai_investment,30,9,1,-1.3149,0.0943,92.8591,0.0042,short T; cross-sectional dependence may violate assumptions,STATA_REAL_master_20261017.log
+ln_ai_patents,30,9,1,1.0571,0.8548,73.8933,0.1072,short T; cross-sectional dependence may violate assumptions,STATA_REAL_master_20261017.log
+GDP_Growth,30,9,1,-5.0495,0.0000,140.1372,0.0000,short T; cross-sectional dependence may violate assumptions,STATA_REAL_master_20261017.log
