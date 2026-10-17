@@ -1,4 +1,11 @@
 * Model-specific logs and .ster files are saved by _run_one_model.do.
+postclose ai_post
+preserve
+use "outputs/stata/gmm_diagnostics.dta", clear
+export delimited using "outputs/stata/gmm_diagnostics.csv", replace
+count
+display as result "STATA_DIAGNOSTIC_RECORDS=" r(N)
+restore
 * Post-estimation diagnostics printed by xtabond2 must be inspected per specification.
 * Do not treat statistical insignificance of AR(2) or Hansen alone as proof of validity.
 display as text "OUTPUT: outputs/stata/hightech.log and outputs/stata/unemployment.log"
