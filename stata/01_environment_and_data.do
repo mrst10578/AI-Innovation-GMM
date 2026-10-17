@@ -3,10 +3,23 @@ version 16.0
 set more off
 capture confirm file "data/processed/stata_ready.dta"
 if _rc {
-    display as error "DTA missing. From repo root run: python -m src.python.to_stata"
-    exit 601
+    display as text "Stata-ready DTA not found; import the original, unchanged research workbook."
+    capture confirm file "data/raw/AI_Balanced_Panel (1).xlsx"
+    if _rc {
+        display as error "Neither processed DTA nor original Excel file is present."
+        exit 601
+    }
+    capture noisily import excel using "data/raw/AI_Balanced_Panel (1).xlsx", sheet("Sheet1") firstrow clear
+    if _rc {
+        display as error "Original Excel import failed in Stata."
+        exit _rc
+    }
+    isid ISO3 Year
+    capture mkdir "data/processed"
+    save "data/processed/stata_ready.dta", replace
+    display as result "STATA_WORKBOOK_IMPORT_OK"
 }
-use "data/processed/stata_ready.dta", clear
+else use "data/processed/stata_ready.dta", clear
 foreach v in ISO3 Year AI_Investment AI_Patents HighTech_Exports GDP_Growth Unemployment {
     capture confirm variable `v'
     if _rc {
