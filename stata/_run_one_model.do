@@ -77,4 +77,7 @@ foreach cutoff in 2024 2023 {
 }
 display as result "GMM_SUCCESSFUL_FITS=`successful_gmm' (fitness/identification STILL REQUIRES REVIEW)"
 log close `slug'
-if `successful_gmm' == 0 exit 459
+if `successful_gmm' != 8 {
+    display as error "INCOMPLETE_GMM_OUTCOME_BUNDLE: `slug' produced `successful_gmm'/8 required estimates"
+    exit 459
+}
