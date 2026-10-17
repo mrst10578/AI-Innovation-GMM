@@ -1,5 +1,7 @@
 # AI Investment & Patents
 
+**CURRENT 2026-10-17:** Stata/MP 17 genuinely executed: 16 GMM fits, 64 coefficients, real diagnostic CSVs and logs. Scientific validity remains under review. [See verified Stata report](reports/STATA_REAL_EXECUTION_FINAL_20261017_FA.md). The older workflow-status notes below are superseded.
+
 **One research project per repository.** This repo is dedicated exclusively to high-tech exports and unemployment (30 expected countries, 2016–2024; verify before estimation). It is independent of the other study and of Shakhsi2/3/4.
 
 ## Original source package imported from Dropbox
