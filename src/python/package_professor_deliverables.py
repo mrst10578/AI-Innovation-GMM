@@ -26,6 +26,11 @@ files=[
  "reports/STATA_REAL_alternative_associational_FE_20261017.csv",
  "reports/STATA_REAL_exploratory_fe_CD_20261017.csv",
  "reports/STATA_REAL_master_20261017.log",
+ "reports/STATA_STRICT_master_20261017.log",
+ "reports/STATA_STRICT_hightech_20261017.log",
+ "reports/STATA_STRICT_unemployment_20261017.log",
+ "reports/STATA_STRICT_TABLET_FINISH_20261017.log",
+ "reports/STRICT_STATA_RERUN_RECEIPT_20261017.json",
  "reports/STATA_REAL_instrument_stress_v2_20261017.log",
  "reports/STATA_REAL_influence_CHN_USA_20261017.log",
  "reports/STATA_REAL_alternative_associational_FE_20261017.log",
@@ -55,6 +60,7 @@ files=[
  "stata/TABLET_RUN.do",
  "config/project.json",
  "src/python/verify_wdi_reference.py",
+ "src/python/verify_stata_strict_rerun.py",
 ]
 READ_ME="""پوشه تحویل پژوهش | مخصوص بازبینی استاد
 
@@ -66,7 +72,8 @@ READ_ME="""پوشه تحویل پژوهش | مخصوص بازبینی استاد
 ۵) SHA256SUMS.txt: هش تمام فایل‌های بسته.
 
 یادداشت علمی مهم: فایل‌های اولیه استاد عمداً دست‌کاری یا با انتشارهای دیگر CSET جایگزین نشده‌اند.
-گزارش سیاست منبع استاد و گزارش کامل ممیزی علمی در پوشه docs قرار دارند.
+گزارش سیاست منبع استاد، معیار مشخصات مرجع و گزارش ممیزی علمی در پوشه docs قرار دارند.
+گواهی اجرای سخت‌گیرانه جدید Stata و سه لاگ کامل تازه در پوشه reports قرار دارند.
 
 تمام ۴۴ تخمین GMM و ۲۴ تخمین مقایسه‌ای Stata اجرا شده‌اند؛
 این به معنی اثبات فروض علیت یا رفع تمام محدودیت‌های منبع داده نیست.
