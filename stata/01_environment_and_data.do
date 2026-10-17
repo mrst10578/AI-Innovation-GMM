@@ -21,7 +21,7 @@ assert AI_Investment >= 0 & AI_Patents >= 0
 assert HighTech_Exports > 0
 assert inrange(Unemployment,0,100)
 encode ISO3, gen(panel_id)
-xtset panel_id Year, yearly
+xtset panel_id Year
 bysort panel_id (Year): assert _N == 9
 egen tag_country = tag(panel_id)
 quietly count if tag_country
