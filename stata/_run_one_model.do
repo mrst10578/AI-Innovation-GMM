@@ -42,6 +42,8 @@ foreach cutoff in 2024 2023 {
                 local eqopts "noleveleq"
                 local instruments "ivstyle(GDP_Growth `td', equation(diff))"
             }
+            local idprefix = substr("`slug'",1,2)
+            local ident "`idprefix'_`system'_`steps'_`cutoff'"
             display as result "GMM `slug' `cutoff' `system' `steps'"
             capture noisily xtabond2 `outcome' L.`outcome' ln_ai_investment ln_ai_patents GDP_Growth `td', ///
                 gmmstyle(L.`outcome', laglimits(1 1) collapse) ///
@@ -50,11 +52,15 @@ foreach cutoff in 2024 2023 {
             local rc = _rc
             if `rc' {
                 display as error "MODEL_FAILED outcome=`slug' cutoff=`cutoff' system=`system' step=`steps' rc=`rc'"
+                post ai_post ("`ident'") ("FAILED") (`rc') (.) (.) (.) (.) (.) (.) (.)
             }
             else {
                 local successful_gmm = `successful_gmm' + 1
-                local idprefix = substr("`slug'",1,2)
-                local ident "`idprefix'_`system'_`steps'_`cutoff'"
+                local verdict "UNVALIDATED"
+                if missing(e(j),e(N_g),e(ar2p),e(hansenp)) local verdict "DIAGNOSTIC_HOLD"
+                else if e(j)>=e(N_g) | e(ar2p)<0.05 | e(hansenp)<0.05 | e(hansenp)>0.95 local verdict "DIAGNOSTIC_HOLD"
+                post ai_post ("`ident'") ("`verdict'") (0) (e(N)) (e(N_g)) (e(j)) (e(sarganp)) (e(hansenp)) (e(ar1p)) (e(ar2p))
+                display as result "DIAGNOSTIC_STATUS=`verdict' Hansen=" e(hansenp) " AR2=" e(ar2p) " instruments=" e(j)
                 estimates store `ident'
                 estimates save "outputs/stata/`ident'.ster", replace
                 display as result "MODEL_EXECUTED_BUT_NOT_YET_VALIDATED `ident'"
