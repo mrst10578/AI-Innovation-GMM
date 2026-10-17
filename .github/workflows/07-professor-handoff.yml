@@ -9,6 +9,9 @@ on:
       - 'src/python/package_professor_deliverables.py'
       - 'src/python/professor_diagnostics_tables.py'
       - 'reports/**'
+      - 'docs/FINAL_HANDOFF_STATUS_FA.md'
+      - 'docs/SCIENTIFIC_RELEASE_GATES_20261017.md'
+      - 'README.md'
       - 'stata/12_associational_fe.do'
       - '.github/workflows/07-professor-handoff.yml'
 jobs:
