@@ -9,7 +9,7 @@ local successful_gmm = 0
 foreach cutoff in 2024 2023 {
     preserve
     keep if Year <= `cutoff'
-    xtset panel_id Year, yearly
+    xtset panel_id Year
     local td "yr2017-yr2024"
     if `cutoff' == 2023 local td "yr2017-yr2023"
     display as result "======== SAMPLE END `cutoff' ========"
