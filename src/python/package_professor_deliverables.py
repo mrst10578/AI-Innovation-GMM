@@ -34,6 +34,8 @@ files=[
  "reports/CSET_REFERENCE_COMPARISON_20261017.json",
  "docs/PROFESSOR_RERUN_RUBRIC_AND_SOURCE_FREEZE_20261017.md",
  "docs/SCIENTIFIC_RELEASE_GATES_20261017.md",
+ "docs/PROFESSOR_SUPPLIED_DATA_POLICY_FA.md",
+ "docs/ADVERSARIAL_FINAL_REVIEW_FA_20261017.md",
  "docs/FINAL_HANDOFF_STATUS_FA.md",
  "stata/01_environment_and_data.do",
  "stata/02_pre_estimation.do",
@@ -55,14 +57,16 @@ files=[
 ]
 READ_ME="""پوشه تحویل پژوهش | مخصوص بازبینی استاد
 
-این مجموعه فقط از داده‌های اولیه ارسال‌شده در ۳۰ سپتامبر ۲۰۲۶ استفاده می‌کند.
+این مجموعه فقط از داده‌های ارائه‌شده توسط استاد، ارسال‌شده از طریق بهاره در ۳۰ سپتامبر ۲۰۲۶ استفاده می‌کند.
 ۱) AI_GMM_Professor_Review_FA.pdf / docx: متن پژوهش فارسی با فونت میخک.
 ۲) reports: خروجی‌های عددی و لاگ‌های واقعی Stata، بدون اعداد ساختگی.
 ۳) stata: do-fileهای بازتولید و تحلیل حساسیت.
 ۴) data/raw + sources: فایل‌های اصلی پژوهش، بدون تغییر.
 ۵) SHA256SUMS.txt: هش تمام فایل‌های بسته.
 
-یادداشت علمی مهم:
+یادداشت علمی مهم: فایل‌های اولیه استاد عمداً دست‌کاری یا با انتشارهای دیگر CSET جایگزین نشده‌اند.
+گزارش سیاست منبع استاد و گزارش کامل ممیزی علمی در پوشه docs قرار دارند.
+
 تمام ۴۴ تخمین GMM و ۲۴ تخمین مقایسه‌ای Stata اجرا شده‌اند؛
 این به معنی اثبات فروض علیت یا رفع تمام محدودیت‌های منبع داده نیست.
 نتیجه‌گیری‌ها باید با برچسب تحلیل اکتشافی و ارتباط شرطی ارائه شوند.
