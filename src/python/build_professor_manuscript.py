@@ -256,8 +256,8 @@ def create_docx():
     for outcome,prefix in [("سهم صادرات فناوری","hi"),("نرخ بیکاری","un")]:
         for end in (2024,2023):
             x=lookup[f"{prefix}_{end}_NONE_staticFE"]
-            fe_rows.append([outcome,num(end),fnum(x["lninv_b"])+" ("+fnum(x["lninv_p"])+")",
-                             fnum(x["lnpat_b"])+" ("+fnum(x["lnpat_p"])+")",
+            fe_rows.append([outcome,num(end),fnum(x["lninv_b"])+" ("+pnum(x["lninv_p"])+")",
+                             fnum(x["lnpat_b"])+" ("+pnum(x["lnpat_p"])+")",
                              fnum(x["r2"])])
     tab(doc,["پیامد","تا سال","β سرمایه AI (p)","β پتنت AI (p)","R² درون"],fe_rows,font_size=8.2)
     add_p(doc,"این مدل‌ها با اثر ثابت کشور و سال و خطای استاندارد خوشه‌ای در کشور اجرا شدند. اثرات ثابت ایستا برای تفسیر ارتباط شرطی مناسب‌تر از ادعای علّیت هستند، ولی تورش ناشی از درون‌زایی متغیرهای اصلی و خطاهای اندازه‌گیری را حذف نمی‌کنند. نسخه‌های دارای وقفه پاسخ با FE و OLS نیز به عنوان مقایسه محاسبه شدند؛ FE پویا به دلیل T کوتاه دارای تورش Nickell و OLS پویا دارای مشکل درون‌زایی است.")
@@ -304,8 +304,8 @@ def create_docx():
         records=[r for r in fe if r["family"]=="static_twFE" and r["model"].startswith(prefix+"_")]
         tab(doc,["تا سال","حذف کشور","گروه‌ها","β سرمایه AI (p)","β پتنت AI (p)"],[
             [num(r["cutoff"]),{"NONE":"هیچ","CHN":"چین","USA":"آمریکا","BOTH":"هر دو"}[r["exclusion"]],
-             num(r["Ng"]),fnum(r["lninv_b"])+" ("+fnum(r["lninv_p"])+")",
-             fnum(r["lnpat_b"])+" ("+fnum(r["lnpat_p"])+")"] for r in records],font_size=8)
+             num(r["Ng"]),fnum(r["lninv_b"])+" ("+pnum(r["lninv_p"])+")",
+             fnum(r["lnpat_b"])+" ("+pnum(r["lnpat_p"])+")"] for r in records],font_size=8)
         add_p(doc,"پیامد "+pname+"؛ اثرات ثابت کشور و سال و خطاهای خوشه‌ای به تفکیک کشور؛ تحلیل اکتشافی، نه علّی.",size=8.5,color=GREY)
     heading(doc,"۱۳. منابع و بازتولید")
     for item in [
@@ -326,7 +326,7 @@ def create_docx():
     add_p(doc,"همه ۱۷ مورد اختلاف در شاخص TX.VAL.TECH.MF.ZS مشاهده شده‌اند. تاریخ آخرین به‌روزرسانی مرجع ۸ اکتبر ۲۰۲۶ است؛ این جدول درباره منشأ اختلاف قضاوت نمی‌کند و مبنای تخمین همچنان مقادیر اصلی بهاره است.",size=9,color=GREY)
 
     add_p(doc,"پیوست‌های داده، do-fileها، فایل‌های خروجی واقعی Stata، آزمون‌های تشخیصی و گزارش کامل ممیزی در مخزن AI-Innovation-GMM، شاخه feat/stata-estimation-audit-20261017 نگهداری می‌شوند. فایل اصلی داده بدون تغییر حفظ شده و برای ادعاهای جدید از داده جایگزین استفاده نشده است.",size=9)
-    add_p(doc,"حکم نهایی کنترل کیفیت: آماده ارائه برای بازبینی روش‌شناختی استاد؛ هنوز فاقد تأیید مستقلِ اعتبار علّی و زنجیره کامل منشأ داده AI.",size=10,bold=True,color=BLUE)
+    add_p(doc,"حکم نهایی کنترل کیفیت: گزارش پژوهش براساس داده‌های ارائه‌شده توسط استاد آماده تحویل و بازبینی اوست؛ نتیجه‌گیری صرفاً ارتباطی و اکتشافی است و اثبات علّیت از آزمون‌های انجام‌شده حاصل نشده است.",size=10,bold=True,color=BLUE)
     output=DIST/"AI_GMM_Professor_Review_FA.docx"
     doc.save(output)
     print("DOCX_CREATED",output,output.stat().st_size)
