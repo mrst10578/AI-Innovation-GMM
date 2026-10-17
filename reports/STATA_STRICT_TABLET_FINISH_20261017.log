@@ -1,0 +1,30 @@
+------------------------------------------------------------------------------------------------------------------------
+      name:  ai_final
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/TABLET_FINISH_STATUS.log
+  log type:  text
+ opened on:  17 Oct 2026, 11:17:01
+
+. display as result "AI_STATA_REAL_EXECUTION_RETURN_CODE=`result_rc'"
+AI_STATA_REAL_EXECUTION_RETURN_CODE=0
+
+. capture confirm file "outputs/stata/hightech.log"
+
+. display as result "HIGHTECH_LOG_PRESENT=" (_rc==0)
+HIGHTECH_LOG_PRESENT=1
+
+. capture confirm file "outputs/stata/unemployment.log"
+
+. display as result "UNEMPLOYMENT_LOG_PRESENT=" (_rc==0)
+UNEMPLOYMENT_LOG_PRESENT=1
+
+. if `result_rc' display as error "AI_STATA_RUN_FAILED; do NOT publish partial model results."
+
+. else display as result "AI_STATA_ALL_BASELINE_EXECUTED; causal interpretation remains conditional."
+AI_STATA_ALL_BASELINE_EXECUTED; causal interpretation remains conditional.
+
+. log close ai_final
+      name:  ai_final
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/TABLET_FINISH_STATUS.log
+  log type:  text
+ closed on:  17 Oct 2026, 11:17:01
+------------------------------------------------------------------------------------------------------------------------
