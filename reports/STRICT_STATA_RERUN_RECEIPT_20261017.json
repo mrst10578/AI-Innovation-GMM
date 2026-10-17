@@ -1,0 +1,143 @@
+{
+  "status": "STRICT_STATA_BASELINE_RERUN_VERIFIED",
+  "verified_at_utc": "2026-10-17T11:18:30.813653+00:00",
+  "actual_finish_modified_at_utc": "2026-10-17T11:17:01.413380+00:00",
+  "research_source": "instructor-supplied Bahar workbook, 30 countries, 2016-2024",
+  "source_sha256": "4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434",
+  "mandatory_pretests_complete": true,
+  "baseline_gmm_estimates": 16,
+  "baseline_gmm_failed": 0,
+  "real_stata_ester_files": 16,
+  "exit_code": 0,
+  "checklist": {
+    "original Excel reimported": true,
+    "all mandatory pretests completed": true,
+    "all 16 baseline fits completed": true,
+    "both outcomes have eight fits": true,
+    "postestimation produced 16 status records": true,
+    "tablet process returned zero": true,
+    "no fatal runtime marker": true
+  },
+  "output_evidence_sha256": {
+    "00_master.log": "fe0eca64e4b305050deed75f10a844d06625f0e9ab803838849a554874f4b6ea",
+    "hightech.log": "a994e5eeed2071d06a5ecab9be0b93801291ebba9ca88b2e8601dedcb63833b6",
+    "unemployment.log": "b74faf3f7ab385c8f25e0d098519af226e7969d78bf5eb87d97961978b5085f9",
+    "TABLET_FINISH_STATUS.log": "ef1a0d6079b62e3d2d7a827eff3018c036ea352092a7dc25b2f8263ff6ab625b",
+    "gmm_diagnostics.csv": "5dcd8880f6d1c154064f2596d037e6c1220f9c9fd077b69c8f6f92507c12063b"
+  },
+  "model_instruments_and_diagnostic_status": [
+    {
+      "model": "hi_system_onestep_2024",
+      "status": "UNVALIDATED",
+      "N": 240,
+      "groups": 30,
+      "instruments": 15
+    },
+    {
+      "model": "hi_system_twostep_2024",
+      "status": "UNVALIDATED",
+      "N": 240,
+      "groups": 30,
+      "instruments": 15
+    },
+    {
+      "model": "hi_difference_onestep_2024",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 210,
+      "groups": 30,
+      "instruments": 11
+    },
+    {
+      "model": "hi_difference_twostep_2024",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 210,
+      "groups": 30,
+      "instruments": 11
+    },
+    {
+      "model": "hi_system_onestep_2023",
+      "status": "UNVALIDATED",
+      "N": 210,
+      "groups": 30,
+      "instruments": 14
+    },
+    {
+      "model": "hi_system_twostep_2023",
+      "status": "UNVALIDATED",
+      "N": 210,
+      "groups": 30,
+      "instruments": 14
+    },
+    {
+      "model": "hi_difference_onestep_2023",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 180,
+      "groups": 30,
+      "instruments": 10
+    },
+    {
+      "model": "hi_difference_twostep_2023",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 180,
+      "groups": 30,
+      "instruments": 10
+    },
+    {
+      "model": "un_system_onestep_2024",
+      "status": "UNVALIDATED",
+      "N": 240,
+      "groups": 30,
+      "instruments": 15
+    },
+    {
+      "model": "un_system_twostep_2024",
+      "status": "UNVALIDATED",
+      "N": 240,
+      "groups": 30,
+      "instruments": 15
+    },
+    {
+      "model": "un_difference_onestep_2024",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 210,
+      "groups": 30,
+      "instruments": 11
+    },
+    {
+      "model": "un_difference_twostep_2024",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 210,
+      "groups": 30,
+      "instruments": 11
+    },
+    {
+      "model": "un_system_onestep_2023",
+      "status": "UNVALIDATED",
+      "N": 210,
+      "groups": 30,
+      "instruments": 14
+    },
+    {
+      "model": "un_system_twostep_2023",
+      "status": "UNVALIDATED",
+      "N": 210,
+      "groups": 30,
+      "instruments": 14
+    },
+    {
+      "model": "un_difference_onestep_2023",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 180,
+      "groups": 30,
+      "instruments": 10
+    },
+    {
+      "model": "un_difference_twostep_2023",
+      "status": "DIAGNOSTIC_HOLD",
+      "N": 180,
+      "groups": 30,
+      "instruments": 10
+    }
+  ],
+  "scientific_limit": "Software completion does not establish causal identification or validity of GMM level moment restrictions."
+}
