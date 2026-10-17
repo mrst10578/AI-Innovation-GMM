@@ -276,6 +276,8 @@ def create_docx():
     add_p(doc,"در این جدول هر «p بزرگ» صرفاً نشان‌دهنده عدم رد فرض صفر آزمون متناظر است؛ AR(2)، Hansen و Difference-in-Hansen به تنهایی شناسایی علّی را تأیید نمی‌کنند.")
     heading(doc,"پیوست ب. حساسیت مدل اثرات ثابت به حذف کشور و سال")
     for pname,prefix in [("صادرات فناوری پیشرفته","hi"),("نرخ بیکاری","un")]:
+        if prefix=="un":
+            doc.add_page_break()  # Keep the complete unemployment comparison table together.
         records=[r for r in fe if r["family"]=="static_twFE" and r["model"].startswith(prefix+"_")]
         tab(doc,["تا سال","حذف کشور","گروه‌ها","β سرمایه AI (p)","β پتنت AI (p)"],[
             [num(r["cutoff"]),{"NONE":"هیچ","CHN":"چین","USA":"آمریکا","BOTH":"هر دو"}[r["exclusion"]],
