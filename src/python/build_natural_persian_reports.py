@@ -115,10 +115,34 @@ def validate_public_language(doc):
         raise RuntimeError("Unexpected header/footer")
     return words
 
-def markdown_doc(path, sections):
-    text="\n\n".join(sections).strip()+"\n"
-    if any(z in text for z in AVOID):raise RuntimeError("Markdown language review flagged: "+path.name)
-    path.write_text(text,encoding="utf-8")
+def markdown_doc(path, doc):
+    # Preserve the true text/table order, useful on phones and in Markdown readers.
+    from docx.table import Table
+    from docx.text.paragraph import Paragraph
+    lines=[]
+    for block in doc.element.body:
+        if block.tag==qn("w:p"):
+            p=Paragraph(block,doc)
+            txt=p.text.strip()
+            if not txt:continue
+            is_heading=bool(p.paragraph_format.keep_with_next)
+            if is_heading:
+                lines.append("## "+txt)
+            else:
+                lines.append(txt)
+        elif block.tag==qn("w:tbl"):
+            t=Table(block,doc)
+            rows=[[c.text.replace("|","/").replace("\n","؛ ").strip() for c in r.cells] for r in t.rows]
+            if not rows:continue
+            lines.append("| "+" | ".join(rows[0])+" |")
+            lines.append("| "+" | ".join(["---"]*len(rows[0]))+" |")
+            for r in rows[1:]:
+                lines.append("| "+" | ".join(r)+" |")
+        else:continue
+        lines.append("")
+    txt="\n".join(lines).strip()+"\n"
+    if any(z in txt for z in AVOID):raise RuntimeError("Markdown language review flagged: "+path.name)
+    path.write_text(txt,encoding="utf-8")
 
 def introduction(doc):
     H(doc,"چکیده پژوهش")
@@ -257,9 +281,6 @@ def build_brief(e):
     H(doc,"چه کارهایی انجام شد؟")
     P(doc,"ابتدا وضعیت زمانی متغیرها با آزمون‌های IPS و Fisher سنجیده شد. سپس رابطه میان متغیرها با روش‌های GMM و اثرات ثابت کشور و سال برآورد شد. آزمون‌های Hansen، Sargan، AR(1)، AR(2) و Difference-in-Hansen و همچنین مقایسه دوره‌ها و ترکیب کشورها، مجموعه نتایج را کامل کردند.")
     ref_coeff_table(doc,e,short=True)
-    P(doc,"در همه ۱۶ مشخصه اصلاحی، مقدار احتمال آزمون مشترک دو متغیر هوش مصنوعی بیش از ۰٫۰۵ بود. این نتیجه همراه با ضرایب و انحراف معیار ضرایب هر شاخص در گزارش کامل ثبت شده است.")
-    H(doc,"برداشت کلی از پژوهش")
-    P(doc,"گزارش حاضر با کنار هم گذاشتن داده‌های استاد و خروجی‌های واقعی Stata، تصویری منظم از ارتباط‌های آماری مشاهده‌شده ارائه می‌دهد. جدول‌های گزارش کامل، جزئیات روش تخمین، آزمون‌های انجام‌شده و مقایسه مشخصات را در اختیار خواننده قرار می‌دهند.")
     return doc
 
 def export(doc,stem):
@@ -269,8 +290,7 @@ def export(doc,stem):
     doc.save(source)
     markdown=(DIST/(stem+".md"))
     # Short unstyled text companion for lightweight mobile reading.
-    lines=[TITLE,SAMPLE,"",text]
-    markdown_doc(markdown,lines)
+    markdown_doc(markdown,doc)
     return [source,markdown]
 
 def main():
