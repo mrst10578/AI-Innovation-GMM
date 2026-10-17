@@ -15,6 +15,8 @@ files=[
  "sources/بررسی اثرات سرمایه گذاری و ثبت اختراعات هوش مصنوعی بر نرخ اشتغال و نوآوری با فناوری بالا (1).docx",
  "reports/PROFESSOR_PRE_ESTIMATION_20261017.csv",
  "reports/PROFESSOR_POST_ESTIMATION_20261017.csv",
+ "reports/WDI_REFERENCE_RECONCILIATION_20261017.json",
+ "reports/WDI_REFERENCE_ROW_COMPARISON_20261017.csv",
  "reports/STATA_REAL_gmm_diagnostics_20261017.csv",
  "reports/STATA_REAL_coefficients_20261017.csv",
  "reports/STATA_REAL_stress_v2_20261017.csv",
@@ -48,6 +50,7 @@ files=[
  "stata/RUN_ALL.do",
  "stata/TABLET_RUN.do",
  "config/project.json",
+ "src/python/verify_wdi_reference.py",
 ]
 READ_ME="""پوشه تحویل پژوهش | مخصوص بازبینی استاد
 
@@ -62,6 +65,7 @@ READ_ME="""پوشه تحویل پژوهش | مخصوص بازبینی استاد
 تمام ۴۴ تخمین GMM و ۲۴ تخمین مقایسه‌ای Stata اجرا شده‌اند؛
 این به معنی اثبات فروض علیت یا رفع تمام محدودیت‌های منبع داده نیست.
 نتیجه‌گیری‌ها باید با برچسب تحلیل اکتشافی و ارتباط شرطی ارائه شوند.
+سه متغیر منتسب به بانک جهانی در ۸۱۰ ردیف با API بررسی شدند: رشد اقتصادی و بیکاری ۲۷۰/۲۷۰، صادرات فناوری پیشرفته ۲۵۳/۲۷۰؛ علت ۱۷ اختلاف ثابت نشده است.
 آرشیو .sterهای واقعی به دلیل قرار داشتن در حافظه تبلت، بخشی از این ZIP تولیدشده در GitHub نیست.
 نسخه ZIP با فایل‌های .ster در تبلت با نام AI_STATA_REAL_OUTPUTS_20261017.zip باقی مانده است.
 هیچ فایل فونتی داخل این بسته توزیع نشده است.
