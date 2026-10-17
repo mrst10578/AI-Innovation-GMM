@@ -9,13 +9,24 @@ estat vif
 regress Unemployment ln_ai_investment ln_ai_patents GDP_Growth i.Year
 estat vif
 * T=9: unit-root tests have very limited power; cross-country dependence may invalidate first-generation tests.
+local mandatory_pretest_failed = 0
 foreach v in HighTech_Exports Unemployment ln_ai_investment ln_ai_patents GDP_Growth {
     display as text "IPS unit root test, intercept, 1 ADF lag: `v'"
     capture noisily xtunitroot ips `v', lags(1)
-    if _rc display as error "IPS failed for `v' (return code " _rc ")"
+    if _rc {
+        display as error "MANDATORY_IPS_FAILED for `v' rc=" _rc
+        local mandatory_pretest_failed = 1
+    }
     display as text "Fisher ADF unit root test, 1 lag: `v'"
     capture noisily xtunitroot fisher `v', dfuller lags(1)
-    if _rc display as error "Fisher failed for `v' (return code " _rc ")"
+    if _rc {
+        display as error "MANDATORY_FISHER_ADF_FAILED for `v' rc=" _rc
+        local mandatory_pretest_failed = 1
+    }
+}
+if `mandatory_pretest_failed' {
+    display as error "MANDATORY_PRE_ESTIMATION_TEST_FAILURE: stop, do not report a fully tested model."
+    exit 459
 }
 * Pesaran CD only if xtcsd is installed. Missing tool is not a successful test.
 capture which xtcsd
