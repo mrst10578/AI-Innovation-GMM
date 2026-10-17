@@ -44,6 +44,15 @@ def fnum(v, digits=3):
 def num(v):
     return str(v).translate(FA)
 
+def pnum(v):
+    if v is None or str(v).strip() in ("", "."):
+        return "ناموجود"
+    try:
+        value=float(v)
+        return "کمتر از ۰٫۰۰۱" if value < 0.001 else fnum(value,3)
+    except (TypeError,ValueError):
+        return "ناموجود"
+
 def csv_rows(filename):
     with (REP / filename).open(encoding="utf-8-sig", newline="") as f:
         return list(csv.DictReader(f))
@@ -183,11 +192,11 @@ def create_docx():
     add_p(doc,"موضوع فایل اولیه «اشتغال و نوآوری» است، اما داده‌های قابل دسترس، مستقیماً نرخ بیکاری و سهم صادرات فناوری پیشرفته را اندازه می‌گیرند؛ بنابراین عنوان و فرضیه‌ها در این گزارش به شاخص‌های مشاهده‌شده محدود شده‌اند. افزایش نرخ بیکاری معادل کاهش عدد اشتغال و افزایش سهم صادرات فناوری پیشرفته معادل افزایش تعداد اختراعات نیست.")
     add_p(doc,"فرضیه اول: ضرایب شرطی لگاریتم سرمایه‌گذاری و پتنت AI در معادله سهم صادرات فناوری پیشرفته با صفر تفاوت دارند. فرضیه دوم: همین ضرایب در معادله نرخ بیکاری با صفر تفاوت دارند. فرضیه مشترک در هر معادله نیز برابر صفر بودن هم‌زمان دو ضریب AI است.")
     heading(doc,"۲. منشأ، نمونه و متغیرها")
-    add_p(doc,"داده‌های این نسخه از سه پیوست ایمیل بهاره در ۳۰ سپتامبر ۲۰۲۶ شامل فایل Excel پنل، فرهنگ داده و متن روش تحقیق به دست آمده است. فایل اصلی ۱۹٬۹۰۱ بایت، بدون تغییر و با هش ثبت‌شده در پیوست بازتولید حفظ شده است. ۳۰ کشور و ۹ سال به‌صورت متوازن حضور دارند و داده گمشده و ردیف تکراری کشور–سال مشاهده نشد.")
+    add_p(doc,"داده‌های این نسخه طبق تأیید صاحب پروژه توسط استاد ارائه و از طریق بهاره در سه پیوست ایمیل ۳۰ سپتامبر ۲۰۲۶ شامل فایل Excel پنل، فرهنگ داده و متن روش تحقیق ارسال شده‌اند. فایل اصلی ۱۹٬۹۰۱ بایت، بدون تغییر و با هش ثبت‌شده در پیوست بازتولید حفظ شده است. ۳۰ کشور و ۹ سال به‌صورت متوازن حضور دارند و داده گمشده و ردیف تکراری کشور–سال مشاهده نشد.")
     tab(doc,["متغیر","تعریف عملیاتی و واحد","نقش"],[
         ["HighTech_Exports","درصد صادرات محصولات فناوری‌بالا از صادرات صنعتی (بانک جهانی: TX.VAL.TECH.MF.ZS)","پیامد اول"],
         ["Unemployment","نرخ بیکاری، درصد نیروی کار (SL.UEM.TOTL.ZS)","پیامد دوم"],
-        ["AI_Investment","ارزش اسمی ثبت‌شده سرمایه‌گذاری AI؛ واحد دقیق نیازمند تأیید منبع اولیه","توضیحی اصلی"],
+        ["AI_Investment","ارزش اسمی سرمایه‌گذاری AI در فایل استاد؛ واحد/سری بالادستی مشخص نشده","توضیحی اصلی"],
         ["AI_Patents","تعداد درخواست‌های ثبت اختراع مرتبط با AI","توضیحی اصلی"],
         ["GDP_Growth","نرخ رشد حقیقی GDP، درصد سالانه (NY.GDP.MKTP.KD.ZG)","کنترل"],
         ["ISO3 / Year","شناسه کشور / سال ۲۰۱۶–۲۰۲۴","شاخص پنل"]
@@ -206,11 +215,11 @@ def create_docx():
     add_p(doc,"برای هر یک از دو پیامد Y، مشخصه پویا به صورت زیر است:")
     add_p(doc,"Y(i,t) = αY(i,t−1) + β۱ ln(1+Investment(i,t)) + β۲ ln(1+Patents(i,t)) + γ GDP_Growth(i,t) + μ(i) + τ(t) + ε(i,t)",size=9.5,bold=True)
     add_p(doc,"مقادیر صفر سرمایه‌گذاری با تبدیل ln(1+x) حفظ شده‌اند. چون پیامدها در واحد درصد و متغیرهای اصلی در لگاریتم (۱+مقدار) هستند، ضرایب AI تغییرات برحسب «واحد درصدی پیامد» در پاسخ به تغییر لگاریتم متغیر را نشان می‌دهند و نباید بی‌قیدوشرط به‌عنوان کشش درصدی تفسیر شوند.")
-    add_p(doc,"مدل GMM سیستمی و تفاضلی با xtabond2، ابزارهای فروکاسته‌شده collapse، خطاهای robust، اثرات سال و پنجره‌های محدود وقفه برآورد شده است. در دور اصلاحی، رشد اقتصادی در یک گروه از مشخصات با وقفه‌های ۲ تا ۳ درون‌زا در نظر گرفته شد. انتخاب یک نسخه براساس معنی‌داری ضرایب مجاز نیست.")
+    add_p(doc,"مدل GMM سیستمی و تفاضلی با xtabond2، ابزارهای فروکاسته‌شده collapse، خطاهای robust، اثرات سال و پنجره‌های محدود وقفه برآورد شده است. در دور اصلاحی، رشد اقتصادی در یک گروه از مشخصات با وقفه‌های ۲ تا ۳ درون‌زا در نظر گرفته شد. انتخاب یک نسخه براساس معنی‌داری ضرایب مجاز نیست. فروض لحظه‌ای در معادله تفاضلی مستلزم نبود همبستگی ابزارهای گذشته با شوک فعلی‌اند؛ System GMM علاوه‌برآن محدودیت‌های مربوط به ابزارهای معادله سطح می‌خواهد. اعتبار اقتصادی این فروض صرفاً از آزمون Hansen نتیجه نمی‌شود.")
     heading(doc,"۴. آزمون‌های پیش از تخمین")
     pre=csv_rows("PROFESSOR_PRE_ESTIMATION_20261017.csv")
     tab(doc,["متغیر","IPS p","Fisher p","توضیح"],[
-        [v["variable"],fnum(v["IPS_p"],4),fnum(v["Fisher_ADF_P_p"],4),
+        [v["variable"],pnum(v["IPS_p"]),pnum(v["Fisher_ADF_P_p"]),
          "شواهد مانایی" if float(v["IPS_p"])<.05 and float(v["Fisher_ADF_P_p"])<.05 else
          "ناسازگاری دو آزمون" if (float(v["IPS_p"])<.05)!=(float(v["Fisher_ADF_P_p"])<.05) else "عدم رد ریشه واحد"]
         for v in pre],font_size=8.5)
@@ -221,8 +230,8 @@ def create_docx():
     keys=["hi_2024_S23_E","hi_2023_S23_E","un_2024_S23_E","un_2023_S23_E"]
     tab(doc,["مدل","ابزار/کشور","AR(1) p","AR(2) p","Hansen p","Diff-Hansen p"],[
         [k.replace("_"," "),f'{num(diag[k]["instrument_count"])}/{num(diag[k]["groups"])}',
-         fnum(diag[k]["AR1_p"]),fnum(diag[k]["AR2_p"]),fnum(diag[k]["Hansen_robust_p"]),
-         fnum(diag[k]["level_instrument_diff_Hansen_p"])] for k in keys],font_size=8.2)
+         pnum(diag[k]["AR1_p"]),pnum(diag[k]["AR2_p"]),pnum(diag[k]["Hansen_robust_p"]),
+         pnum(diag[k]["level_instrument_diff_Hansen_p"])] for k in keys],font_size=8.2)
     add_p(doc,"در مجموع ۱۶ مشخصه دور دوم، تعداد ابزارها در همه موارد از ۳۰ کشور کمتر بود؛ هر ۱۶ آزمون AR(2) مقدار احتمال بالاتر از ۰٫۰۵ داشتند؛ تنها ۷ مورد از ۱۶ آزمون AR(1) در سطح ۵٪ معنادار بود؛ در ۱۴ مورد p آزمون Hansen بین ۰٫۰۵ و ۰٫۹۵ قرار داشت. برای هشت مدل سیستمی، آزمون حذف ابزارهای معادله سطوح ۳ یا ۴ درجه آزادی داشت. به‌هیچ‌وجه نمی‌توان از «عدم رد Hansen» نتیجه گرفت ابزارها قطعاً برون‌زا هستند.")
     add_p(doc,"در مشخصات اولیه و آزمون‌های حذف چین/آمریکا هشدار تکین‌بودن ماتریس گشتاورها وجود داشت. در ۱۶ مدل اصلاحی این هشدار مشاهده نشد؛ این بهبود عددی است، نه اثبات شناسایی.")
     heading(doc,"۶. ضرایب منتخب GMM: مدل‌های سیستمی دومرحله‌ای با GDP درون‌زا")
@@ -236,9 +245,9 @@ def create_docx():
         patent=cindex[(m,"ln_ai_patents")]
         ar=cindex[(m,lagterm)]
         data.append([k.replace("_"," "),fnum(ar["estimate"]),
-          fnum(ai["estimate"])+" ("+fnum(ai["p_value"])+")",
-          fnum(patent["estimate"])+" ("+fnum(patent["p_value"])+")"])
-    tab(doc,["مدل","ضریب وقفه","β سرمایه AI (p)","β پتنت AI (p)"],data,font_size=8.2)
+          fnum(ai["estimate"])+" (SE "+fnum(ai["se"])+"؛ p "+pnum(ai["p_value"])+")",
+          fnum(patent["estimate"])+" (SE "+fnum(patent["se"])+"؛ p "+pnum(patent["p_value"])+")"])
+    tab(doc,["مدل","ضریب وقفه","β سرمایه AI (SE؛ p)","β پتنت AI (SE؛ p)"],data,font_size=7.7)
     add_p(doc,"در این چهار مشخصه ازپیش‌تعیین‌شده، ضرایب سرمایه‌گذاری و پتنت در سطح ۵٪ به‌طور منفرد معنادار نیستند. ضریب وقفه در برخی نمونه‌ها نزدیک یا بالاتر از یک است. این نتیجه نه اثبات «نبود اثر AI» است و نه مجوز گزارش اثر علّی.")
     heading(doc,"۷. برآورد جایگزین: اثرات ثابت دوطرفه با خوشه‌بندی کشوری")
     fe=csv_rows("STATA_REAL_alternative_associational_FE_20261017.csv")
@@ -275,12 +284,18 @@ def create_docx():
     add_p(doc,"همه اعداد جدول‌های زیر از خروجی واقعی xtabond2 استخراج شده‌اند. نماد «—» به معنای آزمون مربوط‌نبودن به مشخصه تفاضلی است؛ ناموجودبودن آزمون نباید با صفر جایگزین شود.")
     for pname,pref in [("صادرات فناوری پیشرفته","hi_"),("نرخ بیکاری","un_")]:
         subset=[r for r in csv_rows("PROFESSOR_POST_ESTIMATION_20261017.csv") if r["model"].startswith(pref)]
-        tab(doc,["شناسه","ابزار","AR(1)","AR(2)","Hansen","درجه آزادی سطح","Diff-Hansen","p مشترک AI"],[
+        tab(doc,["شناسه مدل","مشاهده","ابزار","AR(1) p","AR(2) p","Sargan p","Hansen p"],[
             [r["model"].replace("hi_","").replace("un_","").replace("_"," "),
-             num(r["instrument_count"]), fnum(r["AR1_p"]),fnum(r["AR2_p"]),
-             fnum(r["Hansen_robust_p"]),num(r["level_exclusion_hansen_df"]) if r["level_exclusion_hansen_df"] else "—",
-             fnum(r["level_instrument_diff_Hansen_p"]) if r["level_instrument_diff_Hansen_p"] else "—",
-             fnum(r["joint_AI_Wald_p"])] for r in subset],font_size=7.2)
+             num(240 if r["sample_end"]=="2024" and r["GMM_type"]=="system" else
+                 210 if (r["sample_end"]=="2024" and r["GMM_type"]=="difference") or
+                         (r["sample_end"]=="2023" and r["GMM_type"]=="system") else 180),
+             num(r["instrument_count"]), pnum(r["AR1_p"]),pnum(r["AR2_p"]),
+             pnum(r["Sargan_nonrobust_p"]),pnum(r["Hansen_robust_p"])] for r in subset],font_size=7.5)
+        tab(doc,["مدل","درجه آزادی حذف ابزار سطح","Difference-in-Hansen p","آزمون مشترک AI p"],[
+            [r["model"].replace("hi_","").replace("un_","").replace("_"," "),
+             num(r["level_exclusion_hansen_df"]) if r["level_exclusion_hansen_df"] else "نامربوط",
+             pnum(r["level_instrument_diff_Hansen_p"]) if r["level_instrument_diff_Hansen_p"] else "نامربوط",
+             pnum(r["joint_AI_Wald_p"])] for r in subset],font_size=8)
         add_p(doc,"پنل "+pname+"؛ شناسه‌های D و S به‌ترتیب تفاضلی و سیستمی‌اند؛ X برون‌زایی موقت GDP و E ابزارگذاری GDP با وقفه را نشان می‌دهد.",size=8.6,color=GREY)
     add_p(doc,"در این جدول هر «p بزرگ» صرفاً نشان‌دهنده عدم رد فرض صفر آزمون متناظر است؛ AR(2)، Hansen و Difference-in-Hansen به تنهایی شناسایی علّی را تأیید نمی‌کنند.")
     doc.add_page_break()  # Start a cohesive two-table appendix on a fresh page.
