@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import csv
 import hashlib
+import json
 import os
 import re
 import shutil
@@ -74,6 +75,9 @@ def verify():
     original_sha = "4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434"
     if hashlib.sha256(data.read_bytes()).hexdigest() != original_sha:
         raise RuntimeError("Original 30-country Excel hash differs. Do not publish.")
+    strict=json.loads((REP/"STRICT_STATA_RERUN_RECEIPT_20261017.json").read_text(encoding="utf-8"))
+    if strict["status"]!="STRICT_STATA_BASELINE_RERUN_VERIFIED" or strict["baseline_gmm_estimates"]!=16 or strict["exit_code"]!=0:
+        raise RuntimeError("Strict real Stata rerun has not passed independent verification")
     l = (REP / "STATA_REAL_alternative_associational_FE_20261017.log").read_text()
     if "ALTERNATIVE_SUCCESS_COUNT=24" not in l or "ALTERNATIVE_FAILURE_COUNT=0" not in l:
         raise RuntimeError("New FE log does not attest to 24 successful fits")
@@ -191,6 +195,7 @@ def create_docx():
     heading(doc,"۱. مسئله و دامنه استنباط")
     add_p(doc,"موضوع فایل اولیه «اشتغال و نوآوری» است، اما داده‌های قابل دسترس، مستقیماً نرخ بیکاری و سهم صادرات فناوری پیشرفته را اندازه می‌گیرند؛ بنابراین عنوان و فرضیه‌ها در این گزارش به شاخص‌های مشاهده‌شده محدود شده‌اند. افزایش نرخ بیکاری معادل کاهش عدد اشتغال و افزایش سهم صادرات فناوری پیشرفته معادل افزایش تعداد اختراعات نیست.")
     add_p(doc,"فرضیه اول: ضرایب شرطی لگاریتم سرمایه‌گذاری و پتنت AI در معادله سهم صادرات فناوری پیشرفته با صفر تفاوت دارند. فرضیه دوم: همین ضرایب در معادله نرخ بیکاری با صفر تفاوت دارند. فرضیه مشترک در هر معادله نیز برابر صفر بودن هم‌زمان دو ضریب AI است.")
+    add_p(doc,"کنترل بازتولید: اجرای مستقل و سخت‌گیرانه Stata/MP 17 پس از اصلاح اسکریپت‌ها دوباره انجام شد؛ ۱۶ مدل اصلی از ۱۶ مدل، هر ۱۰ آزمون IPS/Fisher پیش از تخمین و ۱۶ فایل واقعی .ster تأیید شدند. رسید محاسبات و سه لاگ جدید در پیوست نتایج است.",size=9,color=TEAL)
     heading(doc,"۲. منشأ، نمونه و متغیرها")
     add_p(doc,"داده‌های این نسخه طبق تأیید صاحب پروژه توسط استاد ارائه و از طریق بهاره در سه پیوست ایمیل ۳۰ سپتامبر ۲۰۲۶ شامل فایل Excel پنل، فرهنگ داده و متن روش تحقیق ارسال شده‌اند. فایل اصلی ۱۹٬۹۰۱ بایت، بدون تغییر و با هش ثبت‌شده در پیوست بازتولید حفظ شده است. ۳۰ کشور و ۹ سال به‌صورت متوازن حضور دارند و داده گمشده و ردیف تکراری کشور–سال مشاهده نشد.")
     tab(doc,["متغیر","تعریف عملیاتی و واحد","نقش"],[
@@ -224,6 +229,8 @@ def create_docx():
          "ناسازگاری دو آزمون" if (float(v["IPS_p"])<.05)!=(float(v["Fisher_ADF_P_p"])<.05) else "عدم رد ریشه واحد"]
         for v in pre],font_size=8.5)
     add_p(doc,"فرض صفر IPS و Fisher وجود ریشه واحد در همه مقاطع است. T=۹ و احتمال وابستگی مقطعی، توان و اندازه آزمون را محدود می‌کند. عدم رد ریشه واحد، تأیید قطعی نامانایی نیست. آزمون همبستگی pairwise و VIF نیز اجرا شد؛ میانگین VIF در رگرسیون‌های کمکی ۲٫۰۴ گزارش شده است. VIF تجمیعی معیار کامل هم‌خطی «درون‌کشوری» نیست.")
+    heading(doc,"۴-الف. تعیین مشخصه مرجع برای تفسیر",level=2)
+    add_p(doc,"در گزارش دو معادله، مشخصات S23_E تا سال ۲۰۲۴ تنها به‌عنوان مرجع شفاف مقایسه معرفی می‌شوند: کل نمونه استاد حفظ شده، GDP Growth درون‌زا ابزارگذاری شده، پنجره وقفه محدود و ابزارها فروکاسته شده‌اند. مشخصه مرجع پس از مشاهده شبکه نتایج برای ساده‌سازی ارائه انتخاب شده، نه به‌عنوان مدل پیش‌ثبت‌شده از ابتدای تحقیق یا تنها مدل صحیح؛ همه مدل‌های جایگزین و نتیجه‌های نامطلوب نیز گزارش می‌شوند.")
     heading(doc,"۵. گزارش تشخیصی GMM مطابق درخواست استاد")
     add_p(doc,"جدول زیر چهار نمونه از هشت مشخصه سیستمی اصلاح‌شده را نشان می‌دهد. جزئیات همه ۱۶ مشخصه در فایل CSV پیوست وجود دارد. کدهای S23_E به ابزارگذاری رشد اقتصادی به عنوان متغیر درون‌زا و وقفه گسترده اشاره می‌کنند.")
     diag={r["model"]:r for r in csv_rows("PROFESSOR_POST_ESTIMATION_20261017.csv")}
