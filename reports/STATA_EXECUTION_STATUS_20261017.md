@@ -1,3 +1,7 @@
+**LATER SAME-DAY UPDATE:** The early 'Stata unavailable' status below is superseded. Authentic Stata/MP 17 subsequently ran successfully on Winlator; 16 GMM fits and 64 coefficient rows, full logs and diagnostic exports were saved. [Read the authoritative executed-results report](STATA_REAL_EXECUTION_FINAL_20261017_FA.md). Scientific validation remains pending.
+
+---
+
 # AI investment & patents: actual execution status (2026-10-17)
 
 ## What was executed
