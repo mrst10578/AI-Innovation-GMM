@@ -1,0 +1,1096 @@
+------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/09_influence_china_usa.log
+  log type:  text
+ opened on:  17 Oct 2026, 09:44:22
+
+. display as result "INFLUENCE_STARTED=" c(current_date) " " c(current_time)
+INFLUENCE_STARTED=17 Oct 2026 09:44:22
+
+. capture noisily do "stata/01_environment_and_data.do"
+
+. * Read unmodified data; validate panel; create analysis variables.
+. version 16.0
+
+. set more off
+
+. capture confirm file "data/processed/stata_ready.dta"
+
+. if _rc {
+.     display as text "Stata-ready DTA not found; import the original, unchanged research workbook."
+.     capture confirm file "data/raw/AI_Balanced_Panel (1).xlsx"
+.     if _rc {
+.         display as error "Neither processed DTA nor original Excel file is present."
+.         exit 601
+.     }
+.     capture noisily import excel using "data/raw/AI_Balanced_Panel (1).xlsx", sheet("Sheet1") firstrow clear
+.     if _rc {
+.         display as error "Original Excel import failed in Stata."
+.         exit _rc
+.     }
+.     isid ISO3 Year
+.     capture mkdir "data/processed"
+.     save "data/processed/stata_ready.dta", replace
+.     display as result "STATA_WORKBOOK_IMPORT_OK"
+. }
+
+. else use "data/processed/stata_ready.dta", clear
+
+. foreach v in ISO3 Year AI_Investment AI_Patents HighTech_Exports GDP_Growth Unemployment {
+  2.     capture confirm variable `v'
+  3.     if _rc {
+  4.         display as error "Missing required column: `v'"
+  5.         exit 111
+  6.     }
+  7. }
+
+. isid ISO3 Year
+
+. assert inrange(Year,2016,2024)
+
+. assert !missing(ISO3,Year,AI_Investment,AI_Patents,HighTech_Exports,GDP_Growth,Unemployment)
+
+. assert AI_Investment >= 0 & AI_Patents >= 0
+
+. assert HighTech_Exports > 0
+
+. assert inrange(Unemployment,0,100)
+
+. encode ISO3, gen(panel_id)
+
+. xtset panel_id Year
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+
+. bysort panel_id (Year): assert _N == 9
+
+. egen tag_country = tag(panel_id)
+
+. quietly count if tag_country
+
+. assert r(N) == 30
+
+. assert _N == 270
+
+. drop tag_country
+
+. gen double ln_ai_investment = ln(1 + AI_Investment)
+
+. gen double ln_ai_patents = ln(1 + AI_Patents)
+
+. label variable ln_ai_investment "ln(1 + recorded nominal AI investment)"
+
+. label variable ln_ai_patents "ln(1 + recorded AI patent applications)"
+
+. forvalues yy=2017/2024 {
+  2.     gen byte yr`yy' = Year == `yy'
+  3. }
+
+. display as result "SOURCE AUDIT PASS: 30 countries, 270 rows, 2016-2024. No imputation."
+SOURCE AUDIT PASS: 30 countries, 270 rows, 2016-2024. No imputation.
+
+. tab Year
+
+       Year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2016 |         30       11.11       11.11
+       2017 |         30       11.11       22.22
+       2018 |         30       11.11       33.33
+       2019 |         30       11.11       44.44
+       2020 |         30       11.11       55.56
+       2021 |         30       11.11       66.67
+       2022 |         30       11.11       77.78
+       2023 |         30       11.11       88.89
+       2024 |         30       11.11      100.00
+------------+-----------------------------------
+      Total |        270      100.00
+
+. xtdescribe
+
+panel_id:  1, 2, ..., 30                                     n =         30
+    Year:  2016, 2017, ..., 2024                             T =          9
+           Delta(Year) = 1 unit
+           Span(Year)  = 9 periods
+           (panel_id*Year uniquely identifies each observation)
+
+Distribution of T_i:   min      5%     25%       50%       75%     95%     max
+                         9       9       9         9         9       9       9
+
+     Freq.  Percent    Cum. |  Pattern
+ ---------------------------+-----------
+       30    100.00  100.00 |  111111111
+ ---------------------------+-----------
+       30    100.00         |  XXXXXXXXX
+
+. 
+end of do-file
+
+. local rc=_rc
+
+. if `rc' {
+.     display as error "INFLUENCE_SOURCE_CHECK_FAILED rc=`rc'"
+.     log close
+.     exit `rc'
+. }
+
+. capture which xtabond2
+
+. if _rc {
+.     display as error "XTABOND2_UNAVAILABLE"
+.     log close
+.     exit 499
+. }
+
+. postfile loo str28 model str12 dropped str22 outcome double cutoff rc N Ng instruments sargan_p hansen_p ar1_p ar2_p l
+> ag_b inv_b patent_b gdp_b using "outputs/stata/influence_v1.dta", replace
+(file outputs/stata/influence_v1.dta not found)
+
+. local successes=0
+
+. local fails=0
+
+. foreach dep in HighTech_Exports Unemployment {
+  2.     local short "hi"
+  3.     if "`dep'"=="Unemployment" local short "un"
+  4.     foreach cutoff in 2024 2023 {
+  5.         local td "yr2017-yr2024"
+  6.         if `cutoff'==2023 local td "yr2017-yr2023"
+  7.         foreach drop in CHN USA BOTH {
+  8.             preserve
+  9.             keep if Year<=`cutoff'
+ 10.             if "`drop'"=="CHN" drop if ISO3=="CHN"
+ 11.             if "`drop'"=="USA" drop if ISO3=="USA"
+ 12.             if "`drop'"=="BOTH" drop if inlist(ISO3,"CHN","USA")
+ 13.             xtset panel_id Year
+ 14.             local tag "`short'_`cutoff'_`drop'"
+ 15.             display as result "INFLUENCE_ATTEMPT=`tag'"
+ 16.             quietly count
+ 17.             display as result "INFLUENCE_INPUT_N=" r(N)
+ 18.             capture noisily xtabond2 `dep' L.`dep' ln_ai_investment ln_ai_patents GDP_Growth `td', ///
+>                 gmmstyle(L.`dep', laglimits(1 1) collapse) ///
+>                 gmmstyle(ln_ai_investment ln_ai_patents, laglimits(2 2) collapse) ///
+>                 ivstyle(GDP_Growth `td', equation(both)) twostep robust small
+ 19.             local rc=_rc
+ 20.             if `rc' {
+ 21.                 local fails=`fails'+1
+ 22.                 display as error "INFLUENCE_FAILED=`tag' rc=`rc'"
+ 23.                 post loo ("`tag'") ("`drop'") ("`dep'") (`cutoff') (`rc') (.) (.) (.) (.) (.) (.) (.) (.) (.) (.) (
+> .)
+ 24.             }
+ 25.             else {
+ 26.                 local successes=`successes'+1
+ 27.                 post loo ("`tag'") ("`drop'") ("`dep'") (`cutoff') (0) (e(N)) (e(N_g)) (e(j)) (e(sarganp)) (e(hanse
+> np)) (e(ar1p)) (e(ar2p)) (_b[L.`dep']) (_b[ln_ai_investment]) (_b[ln_ai_patents]) (_b[GDP_Growth])
+ 28.                 display as result "INFLUENCE_FITTED=`tag' Ng=" e(N_g) " inst=" e(j) " Hansen=" e(hansenp) " AR2=" e
+> (ar2p)
+ 29.                 estimates save "outputs/stata/influence_`tag'.ster", replace
+ 30.             }
+ 31.             restore
+ 32.         }
+ 33.     }
+ 34. }
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=hi_2024_CHN
+INFLUENCE_INPUT_N=261
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       232
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 28)     =    973.08                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |              Corrected
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |    1.00777   .1326325     7.60   0.000     .7360848    1.279455
+                 |
+ln_ai_investment |   -.162098   .4000578    -0.41   0.688    -.9815793    .6573833
+   ln_ai_patents |  -.0954402   .3657206    -0.26   0.796     -.844585    .6537045
+      GDP_Growth |   .0588364   .0663623     0.89   0.383    -.0771007    .1947735
+          yr2017 |  -1.836315   1.026992    -1.79   0.085    -3.940013    .2673841
+          yr2018 |  -1.044088   .7831338    -1.33   0.193    -2.648265    .5600886
+          yr2019 |  -.4412842   .6771191    -0.65   0.520      -1.8283    .9457314
+          yr2021 |  -1.058207   .9130594    -1.16   0.256    -2.928525      .81211
+          yr2022 |   .2924872   .8604411     0.34   0.736    -1.470046    2.055021
+          yr2023 |  -.2832862    .667083    -0.42   0.674    -1.649744    1.083171
+          yr2024 |   .1856479   .7045229     0.26   0.794    -1.257502    1.628798
+           _cons |   2.212305   2.810138     0.79   0.438    -3.544001    7.968611
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.HighTech_Exports collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.HighTech_Exports collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.49  Pr > z =  0.013
+Arellano-Bond test for AR(2) in first differences: z =  -0.68  Pr > z =  0.497
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   7.20  Prob > chi2 =  0.066
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   3.96  Prob > chi2 =  0.266
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   3.96  Prob > chi2 =  0.266
+  gmm(L.HighTech_Exports, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.20  Prob > chi2 =  0.654
+    Difference (null H = exogenous): chi2(2)    =   3.76  Prob > chi2 =  0.153
+
+INFLUENCE_FITTED=hi_2024_CHN Ng=29 inst=15 Hansen=.26557753 AR2=.4971707
+(note: file outputs/stata/influence_hi_2024_CHN.ster not found)
+file outputs/stata/influence_hi_2024_CHN.ster saved
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=hi_2024_USA
+INFLUENCE_INPUT_N=261
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2018 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       232
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 28)     =   1188.36                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |              Corrected
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .9717975   .1315077     7.39   0.000     .7024161    1.241179
+                 |
+ln_ai_investment |  -.1492799   .4060645    -0.37   0.716    -.9810653    .6825055
+   ln_ai_patents |   .0194755   .2478847     0.08   0.938    -.4882933    .5272444
+      GDP_Growth |   .0830786   .0698895     1.19   0.245    -.0600836    .2262408
+          yr2017 |  -.5872376   .4157526    -1.41   0.169    -1.438868     .264393
+          yr2019 |   .3659998   .5253647     0.70   0.492     -.710161    1.442161
+          yr2020 |   1.120068   .7419079     1.51   0.142    -.3996618    2.639797
+          yr2021 |  -.1882601   .8886523    -0.21   0.834    -2.008582    1.632062
+          yr2022 |    1.07351   1.010438     1.06   0.297    -.9962781    3.143298
+          yr2023 |   .5156638   .5887762     0.88   0.389    -.6903895    1.721717
+          yr2024 |   1.323562   .7266949     1.82   0.079    -.1650055    2.812129
+           _cons |   .9713312   2.095491     0.46   0.647    -3.321087     5.26375
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.HighTech_Exports collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.HighTech_Exports collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.38  Pr > z =  0.017
+Arellano-Bond test for AR(2) in first differences: z =  -0.84  Pr > z =  0.400
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   6.81  Prob > chi2 =  0.078
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   2.82  Prob > chi2 =  0.421
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   2.82  Prob > chi2 =  0.421
+  gmm(L.HighTech_Exports, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.26  Prob > chi2 =  0.610
+    Difference (null H = exogenous): chi2(2)    =   2.55  Prob > chi2 =  0.279
+
+INFLUENCE_FITTED=hi_2024_USA Ng=29 inst=15 Hansen=.42092071 AR2=.39972265
+(note: file outputs/stata/influence_hi_2024_USA.ster not found)
+file outputs/stata/influence_hi_2024_USA.ster saved
+(0 observations deleted)
+(18 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=hi_2024_BOTH
+INFLUENCE_INPUT_N=252
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2019 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       224
+Time variable : Year                            Number of groups   =        28
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 27)     =   1396.63                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |              Corrected
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |    .992342    .114933     8.63   0.000     .7565189    1.228165
+                 |
+ln_ai_investment |  -.1389748   .3871484    -0.36   0.722    -.9333377    .6553881
+   ln_ai_patents |   .0480403   .4020883     0.12   0.906    -.7769767    .8730573
+      GDP_Growth |   .0685292   .0655137     1.05   0.305    -.0658938    .2029522
+          yr2017 |  -1.185422   .6644323    -1.78   0.086    -2.548724     .177881
+          yr2018 |  -.5549892   .5172523    -1.07   0.293    -1.616303    .5063247
+          yr2020 |   .5228415   .6601128     0.79   0.435     -.831598    1.877281
+          yr2021 |  -.6762911   .5786939    -1.17   0.253    -1.863673    .5110906
+          yr2022 |   .7026028   .6937879     1.01   0.320    -.7209324    2.126138
+          yr2023 |   .1345252   .4449625     0.30   0.765    -.7784623    1.047513
+          yr2024 |   .7547882    .623168     1.21   0.236    -.5238468    2.033423
+           _cons |   .9640608    2.59582     0.37   0.713    -4.362122    6.290243
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.HighTech_Exports collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.HighTech_Exports collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.41  Pr > z =  0.016
+Arellano-Bond test for AR(2) in first differences: z =  -0.69  Pr > z =  0.487
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   7.17  Prob > chi2 =  0.067
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   3.10  Prob > chi2 =  0.376
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   3.10  Prob > chi2 =  0.376
+  gmm(L.HighTech_Exports, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.10  Prob > chi2 =  0.746
+    Difference (null H = exogenous): chi2(2)    =   3.00  Prob > chi2 =  0.223
+
+INFLUENCE_FITTED=hi_2024_BOTH Ng=28 inst=15 Hansen=.37582994 AR2=.48737598
+(note: file outputs/stata/influence_hi_2024_BOTH.ster not found)
+file outputs/stata/influence_hi_2024_BOTH.ster saved
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=hi_2023_CHN
+INFLUENCE_INPUT_N=232
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2022 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       203
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 28)     =    367.67                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .9602122   .1273705     7.54   0.000     .6993056    1.221119
+                 |
+ln_ai_investment |  -.6356934    .807583    -0.79   0.438    -2.289952    1.018565
+   ln_ai_patents |  -.1364052   .3940908    -0.35   0.732    -.9436636    .6708532
+      GDP_Growth |   .0395863   .0771575     0.51   0.612    -.1184637    .1976362
+          yr2017 |  -3.189762   1.713455    -1.86   0.073    -6.699614     .320091
+          yr2018 |   -2.26043    1.50596    -1.50   0.145    -5.345249    .8243889
+          yr2019 |  -1.420014   1.103628    -1.29   0.209    -3.680693    .8406644
+          yr2020 |   -.993299   1.051413    -0.94   0.353    -3.147022    1.160424
+          yr2021 |  -1.108845   .5140424    -2.16   0.040    -2.161813   -.0558766
+          yr2023 |  -1.067503   .8267593    -1.29   0.207    -2.761043    .6260364
+           _cons |   7.033408   6.179628     1.14   0.265    -5.624987     19.6918
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.HighTech_Exports collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.HighTech_Exports collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.31  Pr > z =  0.021
+Arellano-Bond test for AR(2) in first differences: z =  -0.18  Pr > z =  0.857
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   9.37  Prob > chi2 =  0.025
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   3.70  Prob > chi2 =  0.296
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   3.70  Prob > chi2 =  0.296
+  gmm(L.HighTech_Exports, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   1.73  Prob > chi2 =  0.188
+    Difference (null H = exogenous): chi2(2)    =   1.97  Prob > chi2 =  0.373
+
+INFLUENCE_FITTED=hi_2023_CHN Ng=29 inst=14 Hansen=.29564994 AR2=.8572164
+(note: file outputs/stata/influence_hi_2023_CHN.ster not found)
+file outputs/stata/influence_hi_2023_CHN.ster saved
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=hi_2023_USA
+INFLUENCE_INPUT_N=232
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       203
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 28)     =    567.55                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .9701367   .1294854     7.49   0.000     .7048979    1.235375
+                 |
+ln_ai_investment |  -.2098418   .6814698    -0.31   0.760    -1.605769    1.186086
+   ln_ai_patents |  -.0030371   .2775339    -0.01   0.991    -.5715394    .5654652
+      GDP_Growth |   .0671377   .0785261     0.85   0.400    -.0937158    .2279912
+          yr2017 |  -1.694432   1.138267    -1.49   0.148    -4.026065    .6372014
+          yr2018 |  -1.041231   .9293233    -1.12   0.272    -2.944863    .8624015
+          yr2019 |  -.3156809   .7506335    -0.42   0.677    -1.853284    1.221922
+          yr2021 |  -.7955111   .9717642    -0.82   0.420     -2.78608    1.195058
+          yr2022 |   .4182081    .982719     0.43   0.674      -1.5948    2.431217
+          yr2023 |  -.3505698   .7285272    -0.48   0.634     -1.84289    1.141751
+           _cons |   2.338823   4.511816     0.52   0.608    -6.903213    11.58086
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.HighTech_Exports collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.HighTech_Exports collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.20  Pr > z =  0.028
+Arellano-Bond test for AR(2) in first differences: z =  -0.11  Pr > z =  0.912
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =  12.16  Prob > chi2 =  0.007
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   4.22  Prob > chi2 =  0.238
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   4.22  Prob > chi2 =  0.238
+  gmm(L.HighTech_Exports, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   2.42  Prob > chi2 =  0.120
+    Difference (null H = exogenous): chi2(2)    =   1.80  Prob > chi2 =  0.406
+
+INFLUENCE_FITTED=hi_2023_USA Ng=29 inst=14 Hansen=.23840234 AR2=.91199363
+(note: file outputs/stata/influence_hi_2023_USA.ster not found)
+file outputs/stata/influence_hi_2023_USA.ster saved
+(30 observations deleted)
+(16 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=hi_2023_BOTH
+INFLUENCE_INPUT_N=224
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2022 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       196
+Time variable : Year                            Number of groups   =        28
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 27)     =    691.92                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+HighTech_Exports | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+HighTech_Exports |
+             L1. |   .9724488   .1216673     7.99   0.000      .722808     1.22209
+                 |
+ln_ai_investment |  -.3412637   .5588356    -0.61   0.547      -1.4879    .8053722
+   ln_ai_patents |   .0203186   .3443135     0.06   0.953    -.6861543    .7267915
+      GDP_Growth |   .0524525   .0678531     0.77   0.446    -.0867705    .1916755
+          yr2017 |  -2.480209   1.363256    -1.82   0.080     -5.27738    .3169615
+          yr2018 |  -1.771878   1.153712    -1.54   0.136    -4.139101    .5953441
+          yr2019 |  -.9754788   .8414135    -1.16   0.256    -2.701917    .7509592
+          yr2020 |  -.7047749   .9044806    -0.78   0.443    -2.560616    1.151066
+          yr2021 |  -1.215108   .5275176    -2.30   0.029    -2.297485   -.1327316
+          yr2023 |  -.9524351   .8486348    -1.12   0.272     -2.69369    .7888197
+           _cons |   3.664488   3.664366     1.00   0.326     -3.85417    11.18315
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.HighTech_Exports collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.HighTech_Exports collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.23  Pr > z =  0.026
+Arellano-Bond test for AR(2) in first differences: z =  -0.07  Pr > z =  0.943
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =  11.94  Prob > chi2 =  0.008
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   3.73  Prob > chi2 =  0.292
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   3.73  Prob > chi2 =  0.292
+  gmm(L.HighTech_Exports, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   2.77  Prob > chi2 =  0.096
+    Difference (null H = exogenous): chi2(2)    =   0.96  Prob > chi2 =  0.618
+
+INFLUENCE_FITTED=hi_2023_BOTH Ng=28 inst=14 Hansen=.29232255 AR2=.94317532
+(note: file outputs/stata/influence_hi_2023_BOTH.ster not found)
+file outputs/stata/influence_hi_2023_BOTH.ster saved
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=un_2024_CHN
+INFLUENCE_INPUT_N=261
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       232
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 28)     =    504.90                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.085023   .1206416     8.99   0.000     .8378997    1.332146
+                 |
+ln_ai_investment |   .0288373   .1854191     0.16   0.878    -.3509766    .4086512
+   ln_ai_patents |   .0711232   .1612716     0.44   0.663    -.2592268    .4014731
+      GDP_Growth |  -.0144524   .0582034    -0.25   0.806    -.1336768    .1047719
+          yr2017 |  -1.483893   .5196164    -2.86   0.008    -2.548279   -.4195071
+          yr2018 |  -1.440399   .4958821    -2.90   0.007    -2.456168   -.4246309
+          yr2019 |  -.9365528   .4755151    -1.97   0.059    -1.910601    .0374958
+          yr2021 |  -1.012507    .714596    -1.42   0.168    -2.476291    .4512764
+          yr2022 |  -1.920352   .5358818    -3.58   0.001    -3.018056   -.8226482
+          yr2023 |  -.8930566   .3247489    -2.75   0.010    -1.558275   -.2278386
+          yr2024 |  -.6263176   .3104845    -2.02   0.053    -1.262316     .009681
+           _cons |  -.3832429   2.214484    -0.17   0.864    -4.919408    4.152922
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.21  Pr > z =  0.027
+Arellano-Bond test for AR(2) in first differences: z =   0.15  Pr > z =  0.884
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   2.06  Prob > chi2 =  0.560
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   1.88  Prob > chi2 =  0.598
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   1.88  Prob > chi2 =  0.598
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.47  Prob > chi2 =  0.495
+    Difference (null H = exogenous): chi2(2)    =   1.41  Prob > chi2 =  0.493
+
+INFLUENCE_FITTED=un_2024_CHN Ng=29 inst=15 Hansen=.59753488 AR2=.88357314
+(note: file outputs/stata/influence_un_2024_CHN.ster not found)
+file outputs/stata/influence_un_2024_CHN.ster saved
+(0 observations deleted)
+(9 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=un_2024_USA
+INFLUENCE_INPUT_N=261
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2018 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       232
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 28)     =    132.05                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.046853   .2051857     5.10   0.000     .6265493    1.467157
+                 |
+ln_ai_investment |   .1906472   .2144563     0.89   0.382    -.2486465     .629941
+   ln_ai_patents |   -.011406     .18013    -0.06   0.950    -.3803856    .3575736
+      GDP_Growth |  -.0337765   .0566962    -0.60   0.556    -.1499134    .0823604
+          yr2017 |   .0058569   .1815043     0.03   0.974    -.3659379    .3776517
+          yr2019 |   .4172231   .2360549     1.77   0.088    -.0663134    .9007596
+          yr2020 |   .9572006   .5390798     1.78   0.087    -.1470543    2.061455
+          yr2021 |   .4634895   .4749328     0.98   0.337    -.5093663    1.436345
+          yr2022 |  -.6591243   .3190105    -2.07   0.048    -1.312588   -.0056608
+          yr2023 |   .2503484   .4048862     0.62   0.541    -.5790233     1.07972
+          yr2024 |   .4318688   .5089154     0.85   0.403     -.610597    1.474335
+           _cons |  -1.950296   2.369854    -0.82   0.417    -6.804721    2.904129
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.07  Pr > z =  0.038
+Arellano-Bond test for AR(2) in first differences: z =  -0.49  Pr > z =  0.623
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   5.05  Prob > chi2 =  0.168
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   2.48  Prob > chi2 =  0.479
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   2.48  Prob > chi2 =  0.479
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.56  Prob > chi2 =  0.456
+    Difference (null H = exogenous): chi2(2)    =   1.93  Prob > chi2 =  0.382
+
+INFLUENCE_FITTED=un_2024_USA Ng=29 inst=15 Hansen=.47850852 AR2=.62280129
+(note: file outputs/stata/influence_un_2024_USA.ster not found)
+file outputs/stata/influence_un_2024_USA.ster saved
+(0 observations deleted)
+(18 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2024
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=un_2024_BOTH
+INFLUENCE_INPUT_N=252
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       224
+Time variable : Year                            Number of groups   =        28
+Number of instruments = 15                      Obs per group: min =         8
+F(11, 27)     =    150.82                                      avg =      8.00
+Prob > F      =     0.000                                      max =         8
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.127559   .1533966     7.35   0.000     .8128149    1.442302
+                 |
+ln_ai_investment |    .193309   .1988576     0.97   0.340    -.2147132    .6013311
+   ln_ai_patents |   .0295544   .1805858     0.16   0.871    -.3409771    .4000859
+      GDP_Growth |  -.0204439   .0688746    -0.30   0.769    -.1617628    .1208751
+          yr2017 |  -1.184375   .5737167    -2.06   0.049    -2.361545   -.0072058
+          yr2018 |   -1.14484   .5206731    -2.20   0.037    -2.213173   -.0765067
+          yr2019 |  -.6647517   .5153993    -1.29   0.208    -1.722264    .3927602
+          yr2021 |  -.7189903   .8234329    -0.87   0.390    -2.408535    .9705544
+          yr2022 |  -1.831794   .6146745    -2.98   0.006    -3.093002   -.5705857
+          yr2023 |  -.7551864   .3874958    -1.95   0.062    -1.550262    .0398894
+          yr2024 |  -.5408165    .367789    -1.47   0.153    -1.295457    .2138242
+           _cons |  -1.704714   2.310122    -0.74   0.467    -6.444693    3.035266
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023 yr2024
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -2.15  Pr > z =  0.032
+Arellano-Bond test for AR(2) in first differences: z =  -0.37  Pr > z =  0.708
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   4.26  Prob > chi2 =  0.235
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   2.08  Prob > chi2 =  0.556
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   2.08  Prob > chi2 =  0.556
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.39  Prob > chi2 =  0.533
+    Difference (null H = exogenous): chi2(2)    =   1.69  Prob > chi2 =  0.429
+
+INFLUENCE_FITTED=un_2024_BOTH Ng=28 inst=15 Hansen=.5561361 AR2=.70771872
+(note: file outputs/stata/influence_un_2024_BOTH.ster not found)
+file outputs/stata/influence_un_2024_BOTH.ster saved
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=un_2023_CHN
+INFLUENCE_INPUT_N=232
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2022 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       203
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 28)     =    781.02                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |    1.06747   .3254588     3.28   0.003     .4007978    1.734142
+                 |
+ln_ai_investment |  -.0273115    .347852    -0.08   0.938     -.739854    .6852309
+   ln_ai_patents |   .1236852   .2574461     0.48   0.635    -.4036693    .6510397
+      GDP_Growth |  -.0255417   .0701372    -0.36   0.718    -.1692113    .1181279
+          yr2017 |   .3628061   .4083111     0.89   0.382    -.4735813    1.199194
+          yr2018 |   .4144538   .4168571     0.99   0.329    -.4394394    1.268347
+          yr2019 |    .845031   .5030736     1.68   0.104    -.1854685     1.87553
+          yr2020 |   1.791091   .8334066     2.15   0.040     .0839348    3.498247
+          yr2021 |   .8603669   .2456896     3.50   0.002     .3570946    1.363639
+          yr2023 |    .974316   .5558094     1.75   0.091    -.1642081     2.11284
+           _cons |   -2.00054   6.364741    -0.31   0.756    -15.03812    11.03704
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -1.98  Pr > z =  0.047
+Arellano-Bond test for AR(2) in first differences: z =   0.46  Pr > z =  0.642
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   1.56  Prob > chi2 =  0.668
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   2.66  Prob > chi2 =  0.448
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   2.66  Prob > chi2 =  0.448
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.17  Prob > chi2 =  0.682
+    Difference (null H = exogenous): chi2(2)    =   2.49  Prob > chi2 =  0.288
+
+INFLUENCE_FITTED=un_2023_CHN Ng=29 inst=14 Hansen=.44767959 AR2=.64248272
+(note: file outputs/stata/influence_un_2023_CHN.ster not found)
+file outputs/stata/influence_un_2023_CHN.ster saved
+(30 observations deleted)
+(8 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=un_2023_USA
+INFLUENCE_INPUT_N=232
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       203
+Time variable : Year                            Number of groups   =        29
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 28)     =    316.46                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.182975   .2881462     4.11   0.000     .5927339    1.773215
+                 |
+ln_ai_investment |   .2237447   .3646145     0.61   0.544    -.5231342    .9706236
+   ln_ai_patents |   .1248968    .205239     0.61   0.548    -.2955161    .5453098
+      GDP_Growth |  -.0327009      .0631    -0.52   0.608    -.1619554    .0965536
+          yr2017 |  -1.089849    .584216    -1.87   0.073    -2.286561    .1068633
+          yr2018 |  -1.057603   .5165171    -2.05   0.050     -2.11564    .0004348
+          yr2019 |  -.6485157   .4710848    -1.38   0.180    -1.613489    .3164577
+          yr2021 |   -.804854   .9084118    -0.89   0.383    -2.665651    1.055943
+          yr2022 |  -1.757187   .7689866    -2.29   0.030    -3.332384   -.1819893
+          yr2023 |  -.6738525   .3526468    -1.91   0.066    -1.396217    .0485117
+           _cons |  -2.861909   4.781394    -0.60   0.554    -12.65615    6.932332
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -1.90  Pr > z =  0.057
+Arellano-Bond test for AR(2) in first differences: z =   0.01  Pr > z =  0.991
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   2.69  Prob > chi2 =  0.442
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   4.23  Prob > chi2 =  0.238
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   4.23  Prob > chi2 =  0.238
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   1.41  Prob > chi2 =  0.235
+    Difference (null H = exogenous): chi2(2)    =   2.82  Prob > chi2 =  0.244
+
+INFLUENCE_FITTED=un_2023_USA Ng=29 inst=14 Hansen=.23753129 AR2=.99125442
+(note: file outputs/stata/influence_un_2023_USA.ster not found)
+file outputs/stata/influence_un_2023_USA.ster saved
+(30 observations deleted)
+(16 observations deleted)
+
+Panel variable: panel_id (strongly balanced)
+ Time variable: Year, 2016 to 2023
+         Delta: 1 unit
+INFLUENCE_ATTEMPT=un_2023_BOTH
+INFLUENCE_INPUT_N=224
+Favoring space over speed. To switch, type or click on mata: mata set matafavor speed, perm.
+yr2020 dropped due to collinearity
+Warning: Two-step estimated covariance matrix of moments is singular.
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.
+  Difference-in-Sargan/Hansen statistics may be negative.
+
+Dynamic panel-data estimation, two-step system GMM
+------------------------------------------------------------------------------
+Group variable: panel_id                        Number of obs      =       196
+Time variable : Year                            Number of groups   =        28
+Number of instruments = 14                      Obs per group: min =         7
+F(10, 27)     =    296.95                                      avg =      7.00
+Prob > F      =     0.000                                      max =         7
+----------------------------------------------------------------------------------
+                 |              Corrected
+    Unemployment | Coefficient  std. err.      t    P>|t|     [95% conf. interval]
+-----------------+----------------------------------------------------------------
+    Unemployment |
+             L1. |   1.252193   .3678327     3.40   0.002      .497463    2.006924
+                 |
+ln_ai_investment |   .2772258   .3829244     0.72   0.475    -.5084703    1.062922
+   ln_ai_patents |   .2297716   .2710727     0.85   0.404    -.3264236    .7859667
+      GDP_Growth |  -.0070835   .0854585    -0.08   0.935    -.1824299     .168263
+          yr2017 |  -1.299597    .748799    -1.74   0.094    -2.836006    .2368113
+          yr2018 |  -1.259728   .6586911    -1.91   0.066    -2.611251    .0917939
+          yr2019 |  -.7992512   .5303949    -1.51   0.143    -1.887532    .2890292
+          yr2021 |   -1.17819    1.23554    -0.95   0.349    -3.713308    1.356928
+          yr2022 |  -2.040886   .9933843    -2.05   0.050    -4.079142   -.0026296
+          yr2023 |  -.7820494   .4273133    -1.83   0.078    -1.658824     .094725
+           _cons |  -4.148156   5.916898    -0.70   0.489    -16.28863    7.992316
+----------------------------------------------------------------------------------
+Instruments for first differences equation
+  Standard
+    D.(GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023)
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    L2.(ln_ai_investment ln_ai_patents) collapsed
+    L.L.Unemployment collapsed
+Instruments for levels equation
+  Standard
+    GDP_Growth yr2017 yr2018 yr2019 yr2020 yr2021 yr2022 yr2023
+    _cons
+  GMM-type (missing=0, separate instruments for each period unless collapsed)
+    DL.(ln_ai_investment ln_ai_patents) collapsed
+    D.L.Unemployment collapsed
+------------------------------------------------------------------------------
+Arellano-Bond test for AR(1) in first differences: z =  -1.90  Pr > z =  0.058
+Arellano-Bond test for AR(2) in first differences: z =   0.08  Pr > z =  0.937
+------------------------------------------------------------------------------
+Sargan test of overid. restrictions: chi2(3)    =   2.19  Prob > chi2 =  0.534
+  (Not robust, but not weakened by many instruments.)
+Hansen test of overid. restrictions: chi2(3)    =   2.13  Prob > chi2 =  0.546
+  (Robust, but weakened by many instruments.)
+
+Difference-in-Hansen tests of exogeneity of instrument subsets:
+  GMM instruments for levels
+    Hansen test excluding group:     chi2(0)    =   0.00  Prob > chi2 =      .
+    Difference (null H = exogenous): chi2(3)    =   2.13  Prob > chi2 =  0.546
+  gmm(L.Unemployment, collapse lag(1 1))
+    Hansen test excluding group:     chi2(1)    =   0.55  Prob > chi2 =  0.460
+    Difference (null H = exogenous): chi2(2)    =   1.58  Prob > chi2 =  0.453
+
+INFLUENCE_FITTED=un_2023_BOTH Ng=28 inst=14 Hansen=.54618011 AR2=.93723973
+(note: file outputs/stata/influence_un_2023_BOTH.ster not found)
+file outputs/stata/influence_un_2023_BOTH.ster saved
+
+. postclose loo
+
+. preserve
+
+. use "outputs/stata/influence_v1.dta", clear
+
+. export delimited using "outputs/stata/influence_v1.csv", replace
+(file outputs/stata/influence_v1.csv not found)
+file outputs/stata/influence_v1.csv saved
+
+. quietly count
+
+. display as result "INFLUENCE_ROWS=" r(N)
+INFLUENCE_ROWS=12
+
+. restore
+
+. display as result "INFLUENCE_FITS=" `successes' " INFLUENCE_FAILURES=" `fails'
+INFLUENCE_FITS=12 INFLUENCE_FAILURES=0
+
+. display as text "All influence variants remain scientific HOLD."
+All influence variants remain scientific HOLD.
+
+. display as result "INFLUENCE_FINISHED=" c(current_date) " " c(current_time)
+INFLUENCE_FINISHED=17 Oct 2026 09:44:59
+
+. log close
+      name:  <unnamed>
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/09_influence_china_usa.log
+  log type:  text
+ closed on:  17 Oct 2026, 09:44:59
+------------------------------------------------------------------------------------------------------------------------
