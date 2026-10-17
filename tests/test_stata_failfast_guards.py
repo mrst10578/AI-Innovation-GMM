@@ -42,3 +42,18 @@ def test_report_contains_all_requested_statistics_and_professor_data_provenance(
     for item in ['"Sargan p"','"Hansen p"','"AR(1) p"','"AR(2) p"','"مشاهده"',
                  "توسط استاد ارائه","SE "]:
         assert item in generator
+
+def test_sensitivity_batches_reject_partial_completion():
+    stress=(D/"08_instrument_stress.do").read_text(encoding="utf-8")
+    assert "STRICT_STRESS_GMM_INCOMPLETE" in stress
+    assert "if `fit_count' != 16 | `failed_count' != 0" in stress
+    influence=(D/"09_influence_china_usa.do").read_text(encoding="utf-8")
+    assert "STRICT_COUNTRY_INFLUENCE_INCOMPLETE" in influence
+    assert "if `successes' != 12 | `fails' != 0" in influence
+
+def test_reference_model_analysis_is_not_mislabeled_causal():
+    source=(ROOT/"docs/PROFESSOR_SUPPLIED_DATA_POLICY_FA.md").read_text(encoding="utf-8")
+    rationale=(ROOT/"docs/REFERENCE_MODEL_RATIONALE_FA.md").read_text(encoding="utf-8")
+    assert "داده" in source and "استاد" in source
+    assert "hi_2024_S23_E" in rationale and "un_2024_S23_E" in rationale
+    assert "شناسایی" in rationale and "علّی" in rationale
