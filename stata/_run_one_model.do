@@ -35,6 +35,8 @@ foreach cutoff in 2024 2023 {
     foreach system in system difference {
         foreach steps in onestep twostep {
             local eqopts ""
+            local stepopts ""
+            if "`steps'" == "twostep" local stepopts "twostep"
             local instruments "ivstyle(GDP_Growth `td', equation(both))"
             if "`system'" == "difference" {
                 local eqopts "noleveleq"
@@ -44,14 +46,15 @@ foreach cutoff in 2024 2023 {
             capture noisily xtabond2 `outcome' L.`outcome' ln_ai_investment ln_ai_patents GDP_Growth `td', ///
                 gmmstyle(L.`outcome', laglimits(1 1) collapse) ///
                 gmmstyle(ln_ai_investment ln_ai_patents, laglimits(2 2) collapse) ///
-                `instruments' `eqopts' `steps' robust small
+                `instruments' `eqopts' `stepopts' robust small
             local rc = _rc
             if `rc' {
                 display as error "MODEL_FAILED outcome=`slug' cutoff=`cutoff' system=`system' step=`steps' rc=`rc'"
             }
             else {
                 local successful_gmm = `successful_gmm' + 1
-                local ident "`slug'_`system'_`steps'_`cutoff'"
+                local idprefix = substr("`slug'",1,2)
+                local ident "`idprefix'_`system'_`steps'_`cutoff'"
                 estimates store `ident'
                 estimates save "outputs/stata/`ident'.ster", replace
                 display as result "MODEL_EXECUTED_BUT_NOT_YET_VALIDATED `ident'"
