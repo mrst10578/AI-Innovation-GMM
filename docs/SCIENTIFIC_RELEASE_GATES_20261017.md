@@ -1,6 +1,19 @@
 # SCIENTIFIC RELEASE GATES: HOLD / NOT PROFESSOR-READY
 Date: 2026-10-17
 
+## Independent World Bank source check (same day update)
+
+An additional **read-only comparison of all 810 supplied country-year values** with live official World Bank API series was performed. The API reported source update `2026-10-08`, **after** the 2026-09-30 Bahar email. The untouched supplied panel has:
+- `GDP_Growth` / NY.GDP.MKTP.KD.ZG: **270/270** within absolute 0.001
+- `Unemployment` / SL.UEM.TOTL.ZS: **270/270** within absolute 0.001
+- `HighTech_Exports` / TX.VAL.TECH.MF.ZS: **253/270** within absolute 0.001; **17 mismatches**, largest France 2020 difference 1.3482 percentage points
+
+Reproducible independent script: `src/python/verify_wdi_reference.py`. Frozen 810-row detailed audit: `reports/WDI_REFERENCE_ROW_COMPARISON_20261017.csv`; metadata and 17 discrepancy records: `reports/WDI_REFERENCE_RECONCILIATION_20261017.json`. Two additional Python tests make **12 passing offline quality tests**. These findings substantiate the provenance of the 3 World Bank fields far more strongly than before, but **do not prove the cause of 17 revision differences**, and **do not resolve upstream version/field/units for the two AI series**. Never silently overwrite the original workbook.
+
+The Mikhak PDF/DOCX review now includes these findings and an all-17 discrepancies appendix. **68 authentic Stata fitted comparisons** are archived (44 GMM and 24 FE/OLS benchmarks); this number does not imply scientific identifiability. The remaining blocked release gates are mainly raw AI-series provenance and credible identification.
+
+---
+
 ## Executive decision
 
 **NO-GO for final scientific submission** at this stage. Real Stata execution and QA are successful, but those technical results cannot establish source provenance or credible causal identification. A scientific manuscript cannot honestly be called "flawless"; the target is fully disclosed methods, verifiable source lineage, reproducible code and defensible conclusions.
@@ -10,7 +23,7 @@ Date: 2026-10-17
 - 30-country, 270-row supplied panel preserved with original workbook SHA256 `4f9bf76658d1f495d3eb3e39b226bb5ba6ac39446b35e41bfce4a2aab65d0434`.
 - 44 successful real Stata GMM fits (16 baseline, 16 prespecified lag/GDP classifications, 12 CHN/USA leave-out), 176 individual coefficient/SE/CI rows and 16 post-fit joint hypothesis/persistence tests.
 - Revised lag window eliminated the previously printed singular moment-covariance warnings, and restored positive overidentification degrees of freedom, but this does NOT prove instrument validity.
-- 10 Python data/evidence consistency tests passed; raw Stata and independent R outputs labelled separately. PR #2 remains draft/unmerged.
+- 12 Python data/evidence consistency tests passed; raw Stata and independent R outputs labelled separately. PR #2 remains draft/unmerged.
 
 ## Gate 1. Original data provenance: BLOCKED (highest priority)
 
