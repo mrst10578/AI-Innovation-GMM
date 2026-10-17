@@ -97,7 +97,7 @@ def add_p(doc, txt="", *, style=None, color=None, bold=False, size=10, after=5, 
     p.paragraph_format.space_after=Pt(after)
     p.paragraph_format.line_spacing=1.23
     if keep_next: p.paragraph_format.keep_with_next = True
-    set_font(p.add_run(txt), size=size, color=color, bold=bold)
+    set_font(p.add_run(txt), name="Mikhak SemiBold" if size==13 else "Mikhak", size=size, color=color, bold=bold)
     return p
 
 def heading(doc, title, level=1):
@@ -127,7 +127,7 @@ def tab(doc, headers, rows, widths=None, font_size=8):
         c.text=""
         shade(c)
         p=rtl_paragraph(c.paragraphs[0])
-        set_font(p.add_run(str(h)),size=font_size,bold=True,color=RGBColor(255,255,255))
+        set_font(p.add_run(str(h)),name="Mikhak Medium",size=font_size,bold=False,color=RGBColor(255,255,255))
         c.vertical_alignment=WD_CELL_VERTICAL_ALIGNMENT.CENTER
     for j, values in enumerate(rows):
         cells=t.add_row().cells
@@ -137,7 +137,7 @@ def tab(doc, headers, rows, widths=None, font_size=8):
             p=rtl_paragraph(c.paragraphs[0])
             p.paragraph_format.space_after=Pt(1)
             p.paragraph_format.space_before=Pt(1)
-            set_font(p.add_run(str(v)),size=font_size)
+            set_font(p.add_run(str(v)),name="Mikhak Medium",size=font_size)
             c.vertical_alignment=WD_CELL_VERTICAL_ALIGNMENT.CENTER
     t.rows[0]._tr.get_or_add_trPr().append(OxmlElement("w:tblHeader"))
     doc.add_paragraph()
@@ -173,7 +173,7 @@ def create_docx():
     for a in ("ascii","hAnsi","eastAsia","cs"):rfonts.set(qn("w:"+a),"Mikhak")
     add_p(doc,"گزارش پژوهشی | نسخه قابل بازبینی استاد",size=10,bold=True,color=TEAL,after=18)
     add_p(doc,"رابطه سرمایه‌گذاری و ثبت اختراعات هوش مصنوعی با سهم صادرات فناوری پیشرفته و نرخ بیکاری",size=19,bold=True,color=BLUE,after=10)
-    add_p(doc,"تحلیل داده‌های تابلویی ۳۰ کشور، ۲۰۱۶ تا ۲۰۲۴",size=13,bold=True,color=TEAL,after=10)
+    add_p(doc,"تحلیل داده‌های تابلویی ۳۰ کشور، ۲۰۱۶ تا ۲۰۲۴",size=13,bold=False,color=TEAL,after=10)
     add_p(doc,"داده: فایل اصلی ارسال‌شده در ایمیل ۳۰ سپتامبر ۲۰۲۶ | نرم‌افزار: Stata/MP 17 و xtabond2",size=9,color=GREY,after=12)
     add_p(doc,"وضعیت علمی: تخمین‌ها و آزمون‌ها اجرا شده‌اند؛ شناسایی علّی و اصالت کامل زنجیره منبع AI هنوز تأیید نشده است. این سند برای بررسی استاد تهیه شده، نه ادعای اثبات رابطه علّی.",size=10,bold=True,color=BLUE,after=18)
     heading(doc,"چکیده")
