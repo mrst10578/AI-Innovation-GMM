@@ -24,9 +24,10 @@ if _rc {
     log close master
     exit 499
 }
-display as text "xtabond2 found at: " "stata/xtabond2"
+display as text "XTABOND2_PACKAGE_VERIFIED"
 capture noisily do "stata/02_pre_estimation.do"
 if _rc display as error "Pre-estimation script returned code " _rc
+postfile ai_post str36 model str24 status double rc N Ng instruments sargan_p hansen_p ar1_p ar2_p using "outputs/stata/gmm_diagnostics.dta", replace
 capture noisily do "stata/03_hightech_models.do"
 local rc1 = _rc
 if `rc1' display as error "HighTech model script failed: rc=`rc1'"
