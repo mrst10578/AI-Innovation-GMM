@@ -70,4 +70,7 @@ display as result "INFLUENCE_FITS=" `successes' " INFLUENCE_FAILURES=" `fails'
 display as text "All influence variants remain scientific HOLD."
 display as result "INFLUENCE_FINISHED=" c(current_date) " " c(current_time)
 log close
-if `successes'==0 exit 459
+if `successes' != 12 | `fails' != 0 {
+    display as error "STRICT_COUNTRY_INFLUENCE_INCOMPLETE: expected 12, got `successes', failures `fails'"
+    exit 459
+}
