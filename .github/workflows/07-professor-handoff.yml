@@ -1,0 +1,65 @@
+name: Persian professor research handoff (audited, noncausal)
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feat/stata-estimation-audit-20261017
+    paths:
+      - 'src/python/build_professor_manuscript.py'
+      - 'src/python/package_professor_deliverables.py'
+      - 'src/python/professor_diagnostics_tables.py'
+      - 'reports/**'
+      - 'stata/12_associational_fe.do'
+      - '.github/workflows/07-professor-handoff.yml'
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install actual Persian Mikhak typography and PDF engine
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libreoffice-writer poppler-utils fontconfig >/tmp/ai-font-engine.log
+          mkdir -p ~/.local/share/fonts/mikhak
+          for w in Regular Medium SemiBold Bold; do
+            curl --fail --location --silent --show-error --retry 3 --output "$HOME/.local/share/fonts/mikhak/Mikhak-${w}.ttf" "https://raw.githubusercontent.com/aminabedi68/Mikhak/master/fonts/ttf/Mikhak-${w}.ttf"
+          done
+          fc-cache -f ~/.local/share/fonts/mikhak
+          fc-match Mikhak | grep -i Mikhak
+      - name: Install Python reproducibility dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-python.txt python-docx pytest
+      - name: Validate immutable source and archived Stata estimates
+        run: |
+          python -m pytest -q
+          python -m src.python.professor_diagnostics_tables
+      - name: Produce Persian professor-review DOCX and embedded-Mikhak PDF
+        run: |
+          python -m src.python.build_professor_manuscript
+          test -s dist/AI_GMM_Professor_Review_FA.docx
+          test -s dist/AI_GMM_Professor_Review_FA.pdf
+          pdffonts dist/AI_GMM_Professor_Review_FA.pdf | grep 'Mikhak-Regular'
+          pdffonts dist/AI_GMM_Professor_Review_FA.pdf | grep 'Mikhak-Bold'
+          pdfinfo dist/AI_GMM_Professor_Review_FA.pdf | grep 'Pages:'
+      - name: Assemble professor handoff package with file hashes
+        run: |
+          python -m src.python.package_professor_deliverables
+          unzip -t dist/AI_GMM_Professor_Handoff_20261017.zip | tail -2
+          sha256sum dist/*
+      - name: Upload complete handoff, Word and PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI-GMM-Persian-Professor-Review-20261017
+          path: |
+            dist/AI_GMM_Professor_Review_FA.docx
+            dist/AI_GMM_Professor_Review_FA.pdf
+            dist/AI_GMM_Professor_Handoff_20261017.zip
+          if-no-files-found: error
+          retention-days: 30
