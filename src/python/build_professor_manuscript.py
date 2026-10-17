@@ -91,11 +91,11 @@ def set_font(run, name="Mikhak", size=10, bold=None, color=None):
         rfonts.set(qn("w:"+x), name)
     return run
 
-def add_p(doc, txt="", *, style=None, color=None, bold=False, size=10, after=5, keep_next=False):
+def add_p(doc, txt="", *, style=None, color=None, bold=False, size=10, after=4, keep_next=False):
     p=doc.add_paragraph(style=style)
     rtl_paragraph(p)
     p.paragraph_format.space_after=Pt(after)
-    p.paragraph_format.line_spacing=1.23
+    p.paragraph_format.line_spacing=1.17
     if keep_next: p.paragraph_format.keep_with_next = True
     set_font(p.add_run(txt), name="Mikhak SemiBold" if size==13 else "Mikhak", size=size, color=color, bold=bold)
     return p
@@ -103,8 +103,8 @@ def add_p(doc, txt="", *, style=None, color=None, bold=False, size=10, after=5, 
 def heading(doc, title, level=1):
     p=doc.add_paragraph()
     rtl_paragraph(p)
-    p.paragraph_format.space_before=Pt(14 if level==1 else 9)
-    p.paragraph_format.space_after=Pt(7)
+    p.paragraph_format.space_before=Pt(12 if level==1 else 8)
+    p.paragraph_format.space_after=Pt(6)
     p.paragraph_format.keep_with_next=True
     set_font(p.add_run(title), name="Mikhak", size=14 if level==1 else 11, bold=True if level==1 else False, color=BLUE if level==1 else TEAL)
     return p
@@ -157,8 +157,8 @@ def create_docx():
     sec=doc.sections[0]
     sec.page_width=Cm(21)
     sec.page_height=Cm(29.7)
-    sec.top_margin=Cm(2)
-    sec.bottom_margin=Cm(1.85)
+    sec.top_margin=Cm(1.8)
+    sec.bottom_margin=Cm(1.7)
     sec.left_margin=Cm(2)
     sec.right_margin=Cm(2)
     page_field(sec)
