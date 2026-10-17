@@ -1,0 +1,276 @@
+------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/11_joint_ai_and_persistence.log
+  log type:  text
+ opened on:  17 Oct 2026, 09:49:01
+
+. postfile wald str32 model double rc joint_ai_p joint_ai_F persistence_equal1_p persistence_equal1_F nobs groups instru
+> ments using "outputs/stata/stress_joint_restrictions.dta", replace
+(file outputs/stata/stress_joint_restrictions.dta not found)
+
+. local opened=0
+
+. local missingfits=0
+
+. foreach dep in HighTech_Exports Unemployment {
+  2.     local short "hi"
+  3.     if "`dep'"=="Unemployment" local short "un"
+  4.     foreach cutoff in 2024 2023 {
+  5.         foreach spec in D23_X D23_E S23_X S23_E {
+  6.             local ident "`short'_`cutoff'_`spec'"
+  7.             capture noisily estimates use "outputs/stata/stress_`ident'.ster"
+  8.             if _rc {
+  9.                 local missingfits=`missingfits'+1
+ 10.                 post wald ("`ident'") (601) (.) (.) (.) (.) (.) (.) (.)
+ 11.                 display as error "WALD_MISSING_ESTIMATE `ident'"
+ 12.             }
+ 13.             else {
+ 14.                 local opened=`opened'+1
+ 15.                 local n=e(N)
+ 16.                 local ng=e(N_g)
+ 17.                 local k=e(j)
+ 18.                 local jointp=.
+ 19.                 local jointF=.
+ 20.                 local persistp=.
+ 21.                 local persistF=.
+ 22.                 capture noisily test ln_ai_investment ln_ai_patents
+ 23.                 local rcj=_rc
+ 24.                 if !`rcj' {
+ 25.                     local jointp=r(p)
+ 26.                     capture local jointF=r(F)
+ 27.                     if missing(`jointF') capture local jointF=r(chi2)
+ 28.                 }
+ 29.                 capture noisily test L.`dep'=1
+ 30.                 local rcp=_rc
+ 31.                 if !`rcp' {
+ 32.                     local persistp=r(p)
+ 33.                     capture local persistF=r(F)
+ 34.                     if missing(`persistF') capture local persistF=r(chi2)
+ 35.                 }
+ 36.                 post wald ("`ident'") (max(`rcj',`rcp')) (`jointp') (`jointF') (`persistp') (`persistF') (`n') (`ng
+> ') (`k')
+ 37.                 display as result "STRESS_WALD=`ident' pAI=`jointp' pLAG_EQ1=`persistp' joint_rc=`rcj' lag_rc=`rcp'
+> "
+ 38.             }
+ 39.         }
+ 40.     }
+ 41. }
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    1.20
+            Prob > F =    0.3165
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    30) =    0.02
+            Prob > F =    0.8883
+STRESS_WALD=hi_2024_D23_X pAI=.3164924523775668 pLAG_EQ1=.8882973377807974 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    0.32
+            Prob > F =    0.7306
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    30) =    0.28
+            Prob > F =    0.5994
+STRESS_WALD=hi_2024_D23_E pAI=.7305587214858873 pLAG_EQ1=.5994304082153397 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    0.25
+            Prob > F =    0.7814
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    29) =    0.06
+            Prob > F =    0.8147
+STRESS_WALD=hi_2024_S23_X pAI=.7814048279002506 pLAG_EQ1=.8147235881975137 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    0.37
+            Prob > F =    0.6958
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    29) =    0.09
+            Prob > F =    0.7665
+STRESS_WALD=hi_2024_S23_E pAI=.6957754078340928 pLAG_EQ1=.766485375148899 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    2.20
+            Prob > F =    0.1278
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    30) =    0.10
+            Prob > F =    0.7550
+STRESS_WALD=hi_2023_D23_X pAI=.1278213195830796 pLAG_EQ1=.7549534747896758 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    1.49
+            Prob > F =    0.2418
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    30) =    0.05
+            Prob > F =    0.8240
+STRESS_WALD=hi_2023_D23_E pAI=.2417612794873311 pLAG_EQ1=.8239987351295578 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    0.14
+            Prob > F =    0.8714
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    29) =    0.04
+            Prob > F =    0.8425
+STRESS_WALD=hi_2023_S23_X pAI=.8714351606069907 pLAG_EQ1=.8425380552089751 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    0.38
+            Prob > F =    0.6868
+
+ ( 1)  L.HighTech_Exports = 1
+
+       F(  1,    29) =    0.00
+            Prob > F =    0.9917
+STRESS_WALD=hi_2023_S23_E pAI=.6867876189217043 pLAG_EQ1=.9916537777019253 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    0.16
+            Prob > F =    0.8494
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    30) =    0.03
+            Prob > F =    0.8629
+STRESS_WALD=un_2024_D23_X pAI=.8494066919792426 pLAG_EQ1=.8629279316162801 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    1.25
+            Prob > F =    0.2998
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    30) =    0.13
+            Prob > F =    0.7161
+STRESS_WALD=un_2024_D23_E pAI=.2997942900878505 pLAG_EQ1=.7160901547998756 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    0.06
+            Prob > F =    0.9399
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    29) =    0.04
+            Prob > F =    0.8446
+STRESS_WALD=un_2024_S23_X pAI=.9398695803494281 pLAG_EQ1=.8445827180384119 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    1.01
+            Prob > F =    0.3755
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    29) =    2.12
+            Prob > F =    0.1563
+STRESS_WALD=un_2024_S23_E pAI=.3755134982212054 pLAG_EQ1=.1563286110832606 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    1.15
+            Prob > F =    0.3308
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    30) =    0.33
+            Prob > F =    0.5709
+STRESS_WALD=un_2023_D23_X pAI=.3307977396992129 pLAG_EQ1=.5709300043204046 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    30) =    1.56
+            Prob > F =    0.2269
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    30) =    0.03
+            Prob > F =    0.8610
+STRESS_WALD=un_2023_D23_E pAI=.2268680012362825 pLAG_EQ1=.8609826117030632 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    0.16
+            Prob > F =    0.8563
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    29) =    0.12
+            Prob > F =    0.7363
+STRESS_WALD=un_2023_S23_X pAI=.8563187981877264 pLAG_EQ1=.7362952029780168 joint_rc=0 lag_rc=0
+
+ ( 1)  ln_ai_investment = 0
+ ( 2)  ln_ai_patents = 0
+
+       F(  2,    29) =    0.45
+            Prob > F =    0.6447
+
+ ( 1)  L.Unemployment = 1
+
+       F(  1,    29) =    0.51
+            Prob > F =    0.4809
+STRESS_WALD=un_2023_S23_E pAI=.6447305536469464 pLAG_EQ1=.4809424937115675 joint_rc=0 lag_rc=0
+
+. postclose wald
+
+. preserve
+
+. use "outputs/stata/stress_joint_restrictions.dta", clear
+
+. export delimited using "outputs/stata/stress_joint_restrictions.csv", replace
+(file outputs/stata/stress_joint_restrictions.csv not found)
+file outputs/stata/stress_joint_restrictions.csv saved
+
+. quietly count
+
+. display as result "WALD_RECORDS=" r(N)
+WALD_RECORDS=16
+
+. restore
+
+. display as result "WALD_ESTIMATES_OPENED=" `opened' " MISSING=" `missingfits'
+WALD_ESTIMATES_OPENED=16 MISSING=0
+
+. log close
+      name:  <unnamed>
+       log:  D:\AI_Innovation_Stata_Ready\outputs/stata/11_joint_ai_and_persistence.log
+  log type:  text
+ closed on:  17 Oct 2026, 09:49:07
+------------------------------------------------------------------------------------------------------------------------
