@@ -1,0 +1,151 @@
+Independent R pgmm execution; NOT Stata; not a causal validation
+R: R version 4.3.3 (2024-02-29) plm: 2.6.3 
+Run input: data/processed/panel_for_r.csv rows 270 
+
+RUN: HighTech_Exports__2024__d__onestep 
+Groups 30 instrument columns 11 AR1 p 0.04089088 AR2 p NaN Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                            Estimate Std. Error     z-value  Pr(>|z|)
+lag(HighTech_Exports, 1)  0.11199617  3.1443603  0.03561811 0.9715869
+ln_ai_investment         -4.90748416 10.7690530 -0.45570248 0.6486039
+ln_ai_patents             0.92704751  8.4385913  0.10985809 0.9125219
+GDP_Growth               -0.01907177  0.6109343 -0.03121739 0.9750962
+
+RUN: HighTech_Exports__2024__d__twosteps 
+Groups 30 instrument columns 11 AR1 p 0.6049093 AR2 p 0.5812211 Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                            Estimate Std. Error     z-value  Pr(>|z|)
+lag(HighTech_Exports, 1)  0.11199617  3.1443603  0.03561811 0.9715869
+ln_ai_investment         -4.90748416 10.7690530 -0.45570248 0.6486039
+ln_ai_patents             0.92704751  8.4385913  0.10985809 0.9125219
+GDP_Growth               -0.01907177  0.6109343 -0.03121739 0.9750962
+
+RUN: HighTech_Exports__2024__ld__onestep 
+Groups 30 instrument columns 16 AR1 p 0.007003194 AR2 p 0.2335294 Sargan p 0.003734523 
+NOTE: Sargan here is NOT a robust Hansen test.
+                            Estimate Std. Error   z-value     Pr(>|z|)
+lag(HighTech_Exports, 1)  1.06536726 0.10343620 10.299752 7.064295e-25
+ln_ai_investment         -0.52861067 0.42179096 -1.253253 2.101138e-01
+ln_ai_patents            -0.06492095 0.21889493 -0.296585 7.667834e-01
+GDP_Growth                0.15347197 0.07355755  2.086420 3.694055e-02
+
+RUN: HighTech_Exports__2024__ld__twosteps 
+Groups 30 instrument columns 16 AR1 p 0.0374857 AR2 p 0.2774821 Sargan p 0.6370006 
+NOTE: Sargan here is NOT a robust Hansen test.
+                            Estimate Std. Error    z-value     Pr(>|z|)
+lag(HighTech_Exports, 1)  0.98562893 0.12493891  7.8888867 3.048942e-15
+ln_ai_investment         -0.23690204 0.39124579 -0.6055069 5.448422e-01
+ln_ai_patents            -0.06477582 0.22187541 -0.2919468 7.703273e-01
+GDP_Growth                0.10152876 0.07347672  1.3817813 1.670389e-01
+
+RUN: HighTech_Exports__2023__d__onestep 
+Groups 30 instrument columns 10 AR1 p 0.005302319 AR2 p 0.3967156 Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                           Estimate Std. Error    z-value  Pr(>|z|)
+lag(HighTech_Exports, 1)  1.5368406  1.7790410  0.8638590 0.3876654
+ln_ai_investment         -1.7626581  3.7876036 -0.4653756 0.6416625
+ln_ai_patents             3.1170720  2.7669221  1.1265485 0.2599334
+GDP_Growth                0.1951421  0.3136688  0.6221278 0.5338578
+
+RUN: HighTech_Exports__2023__d__twosteps 
+Groups 30 instrument columns 10 AR1 p 0.1563449 AR2 p 0.6696475 Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                           Estimate Std. Error    z-value  Pr(>|z|)
+lag(HighTech_Exports, 1)  1.5368406  1.7790410  0.8638590 0.3876654
+ln_ai_investment         -1.7626581  3.7876036 -0.4653756 0.6416625
+ln_ai_patents             3.1170720  2.7669221  1.1265485 0.2599334
+GDP_Growth                0.1951421  0.3136688  0.6221278 0.5338578
+
+RUN: HighTech_Exports__2023__ld__onestep 
+Groups 30 instrument columns 15 AR1 p 0.01189069 AR2 p 0.5224991 Sargan p 0.02305762 
+NOTE: Sargan here is NOT a robust Hansen test.
+                           Estimate Std. Error    z-value     Pr(>|z|)
+lag(HighTech_Exports, 1)  0.9963442 0.07895657 12.6188890 1.661488e-36
+ln_ai_investment         -0.7006684 0.58947771 -1.1886258 2.345869e-01
+ln_ai_patents            -0.1437133 0.27995580 -0.5133428 6.077116e-01
+GDP_Growth                0.1693310 0.10012944  1.6911209 9.081372e-02
+
+RUN: HighTech_Exports__2023__ld__twosteps 
+Groups 30 instrument columns 15 AR1 p 0.01641438 AR2 p 0.7239781 Sargan p 0.4279348 
+NOTE: Sargan here is NOT a robust Hansen test.
+                            Estimate Std. Error    z-value     Pr(>|z|)
+lag(HighTech_Exports, 1)  0.96461264 0.12195786  7.9093932 2.586465e-15
+ln_ai_investment         -0.54601178 0.72542127 -0.7526823 4.516408e-01
+ln_ai_patents            -0.04353221 0.27434548 -0.1586766 8.739237e-01
+GDP_Growth                0.09148996 0.08188766  1.1172619 2.638823e-01
+
+RUN: Unemployment__2024__d__onestep 
+Groups 30 instrument columns 11 AR1 p 0.9091412 AR2 p 0.9149715 Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                         Estimate  Std. Error     z-value  Pr(>|z|)
+lag(Unemployment, 1)  38.38036980 11162.75343 0.003438253 0.9972567
+ln_ai_investment      10.80486817  3365.26577 0.003210703 0.9974382
+ln_ai_patents        114.24758571 34116.70049 0.003348729 0.9973281
+GDP_Growth             0.07963835    31.00812 0.002568306 0.9979508
+
+RUN: Unemployment__2024__d__twosteps 
+Groups 30 instrument columns 11 AR1 p 0.9972571 AR2 p 0.9973232 Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                         Estimate  Std. Error     z-value  Pr(>|z|)
+lag(Unemployment, 1)  38.38037001 11162.75359 0.003438253 0.9972567
+ln_ai_investment      10.80486823  3365.26581 0.003210703 0.9974382
+ln_ai_patents        114.24758635 34116.70098 0.003348729 0.9973281
+GDP_Growth             0.07963836    31.00812 0.002568306 0.9979508
+
+RUN: Unemployment__2024__ld__onestep 
+Groups 30 instrument columns 16 AR1 p 0.01154199 AR2 p 0.7900487 Sargan p 0.05526886 
+NOTE: Sargan here is NOT a robust Hansen test.
+                        Estimate Std. Error    z-value     Pr(>|z|)
+lag(Unemployment, 1)  1.11928202 0.15809258  7.0799151 1.442428e-12
+ln_ai_investment      0.17830462 0.32663579  0.5458821 5.851470e-01
+ln_ai_patents         0.04002663 0.12872121  0.3109560 7.558341e-01
+GDP_Growth           -0.01937731 0.04630026 -0.4185142 6.755712e-01
+
+RUN: Unemployment__2024__ld__twosteps 
+Groups 30 instrument columns 16 AR1 p 0.02133829 AR2 p 0.9706322 Sargan p 0.6039941 
+NOTE: Sargan here is NOT a robust Hansen test.
+                        Estimate Std. Error    z-value     Pr(>|z|)
+lag(Unemployment, 1)  1.04195382 0.07207973 14.4555733 2.311967e-47
+ln_ai_investment      0.03167199 0.19837966  0.1596534 8.731541e-01
+ln_ai_patents         0.03925756 0.16864565  0.2327813 8.159312e-01
+GDP_Growth           -0.02359291 0.05060432 -0.4662233 6.410557e-01
+
+RUN: Unemployment__2023__d__onestep 
+Groups 30 instrument columns 10 AR1 p 0.5059761 AR2 p 0.7905704 Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                         Estimate Std. Error     z-value  Pr(>|z|)
+lag(Unemployment, 1)  1.950986522  5.7144160  0.34141486 0.7327913
+ln_ai_investment      0.848471938  6.0486565  0.14027445 0.8884432
+ln_ai_patents         1.957432231  5.9143669  0.33096226 0.7406730
+GDP_Growth           -0.003315118  0.1116429 -0.02969395 0.9763111
+
+RUN: Unemployment__2023__d__twosteps 
+Groups 30 instrument columns 10 AR1 p 0.8191177 AR2 p 0.8709332 Sargan p 0 
+NOTE: Sargan here is NOT a robust Hansen test.
+                         Estimate Std. Error     z-value  Pr(>|z|)
+lag(Unemployment, 1)  1.950986522  5.7144160  0.34141486 0.7327913
+ln_ai_investment      0.848471938  6.0486565  0.14027445 0.8884432
+ln_ai_patents         1.957432231  5.9143669  0.33096226 0.7406730
+GDP_Growth           -0.003315118  0.1116429 -0.02969395 0.9763111
+
+RUN: Unemployment__2023__ld__onestep 
+Groups 30 instrument columns 15 AR1 p 0.004481781 AR2 p 0.8396728 Sargan p 0.1213903 
+NOTE: Sargan here is NOT a robust Hansen test.
+                        Estimate Std. Error    z-value     Pr(>|z|)
+lag(Unemployment, 1)  1.08190138 0.18140230  5.9640995 2.459867e-09
+ln_ai_investment      0.07084654 0.40361033  0.1755320 8.606616e-01
+ln_ai_patents         0.07005450 0.09120825  0.7680719 4.424444e-01
+GDP_Growth           -0.01690186 0.04712503 -0.3586600 7.198495e-01
+
+RUN: Unemployment__2023__ld__twosteps 
+Groups 30 instrument columns 15 AR1 p 0.01235352 AR2 p 0.6474122 Sargan p 0.3825837 
+NOTE: Sargan here is NOT a robust Hansen test.
+                        Estimate Std. Error    z-value     Pr(>|z|)
+lag(Unemployment, 1)  1.04501127  0.1166566  8.9580115 3.305860e-19
+ln_ai_investment     -0.03321415  0.1899156 -0.1748890 8.611669e-01
+ln_ai_patents         0.09296663  0.1734536  0.5359739 5.919766e-01
+GDP_Growth           -0.03184482  0.0563212 -0.5654144 5.717919e-01
+
+Records written: 64 
+WARNING: no difference-in-Hansen nor independently validated robust Hansen result supplied.
+Panel dimensions and weak identification require critical review.
