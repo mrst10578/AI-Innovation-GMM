@@ -34,6 +34,7 @@ files=[
  "reports/CSET_REFERENCE_COMPARISON_20261017.json",
  "docs/PROFESSOR_RERUN_RUBRIC_AND_SOURCE_FREEZE_20261017.md",
  "docs/SCIENTIFIC_RELEASE_GATES_20261017.md",
+ "docs/FINAL_HANDOFF_STATUS_FA.md",
  "stata/01_environment_and_data.do",
  "stata/02_pre_estimation.do",
  "stata/03_hightech_models.do",
