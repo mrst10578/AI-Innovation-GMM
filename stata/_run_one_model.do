@@ -58,7 +58,9 @@ foreach cutoff in 2024 2023 {
                 local successful_gmm = `successful_gmm' + 1
                 local verdict "UNVALIDATED"
                 if missing(e(j),e(N_g),e(ar2p),e(hansenp)) local verdict "DIAGNOSTIC_HOLD"
-                else if e(j)>=e(N_g) | e(ar2p)<0.05 | e(hansenp)<0.05 | e(hansenp)>0.95 local verdict "DIAGNOSTIC_HOLD"
+                if !missing(e(j),e(N_g),e(ar2p),e(hansenp)) {
+                    if e(j)>=e(N_g) | e(ar2p)<0.05 | e(hansenp)<0.05 | e(hansenp)>0.95 local verdict "DIAGNOSTIC_HOLD"
+                }
                 post ai_post ("`ident'") ("`verdict'") (0) (e(N)) (e(N_g)) (e(j)) (e(sarganp)) (e(hansenp)) (e(ar1p)) (e(ar2p))
                 display as result "DIAGNOSTIC_STATUS=`verdict' Hansen=" e(hansenp) " AR2=" e(ar2p) " instruments=" e(j)
                 estimates store `ident'
