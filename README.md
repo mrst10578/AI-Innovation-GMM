@@ -1,5 +1,15 @@
 # AI Investment & Patents
 
+## گزارش‌های فارسی آماده استاد
+
+متن گزارش‌های پژوهش با زبان روشن و طبیعی، عنوان‌های فارسی، جدول‌های خوانا و فونت میخک تنظیم شده است. تمام آمار، ضرایب و مقدارهای احتمال از خروجی‌های واقعی پژوهش آمده‌اند. فایل‌های اجرایی و اسناد محاسبات نیز در پوشه‌های تخصصی پروژه نگهداری می‌شوند.
+
+- [گزارش کامل پژوهش هوش مصنوعی و شاخص‌های اقتصادی](reports/گزارش پژوهش هوش مصنوعی و شاخص‌های اقتصادی.md)
+- [خلاصه یافته‌های پژوهش](reports/خلاصه یافته‌های پژوهش.md)
+- [دریافت نسخه‌های Word و PDF و بسته گزارش‌ها](https://github.com/mrst10578/AI-Innovation-GMM/actions/runs/39029852180)
+
+فایل‌های تحویلی با نام‌های فارسی شامل **گزارش پژوهش هوش مصنوعی و شاخص‌های اقتصادی**، **خلاصه یافته‌های پژوهش** و **گزارش‌های پژوهش هوش مصنوعی** هستند.
+
 ## Current review status (2026-10-17)
 
 **Source decision:** The user confirms Bahar conveyed that the dataset came from the professor. We therefore retain exactly this instructor-supplied 30-country Excel for all estimations; other CSET releases and later WDI values are read-only comparisons, never replacement observations. See [supervisor source policy](docs/PROFESSOR_SUPPLIED_DATA_POLICY_FA.md). Exact upstream AI series transformations remain a documentation limitation, not a demand to change the professor's data. [Reference-model rationale](docs/REFERENCE_MODEL_RATIONALE_FA.md).
