@@ -1,3 +1,16 @@
+# Latest verified status: ACTUAL STATA RUN COMPLETE (2026-10-17)
+
+- Real Stata/MP 17 under Winlator on tablet was controlled through Wireless ADB. The complete entry point returned **0**.
+- **16/16 actual GMM estimations executed**, and 16 actual Stata estimate files were reloaded for **64 coefficient rows**.
+- Two outcome logs, complete master log, diagnostics CSV, coefficient CSV, and four exploratory FE residual CD statistics are stored in the `reports/` folder.
+- **Scientific validation is NOT complete:** eight difference-GMM runs have `chi2(0)` Hansen/Sargan degrees of freedom, all GMM fits warn of singular covariance of moments, and system-GMM identifying assumptions still require review.
+- Full current report: [STATA_REAL_EXECUTION_FINAL_20261017_FA.md](../reports/STATA_REAL_EXECUTION_FINAL_20261017_FA.md).
+- Draft PR #2 must not be merged solely on runtime success.
+
+---
+
+## Archived earlier project status (superseded by evidence above)
+
 # Project status (post-Dropbox import)
 
 Project: `AI-Innovation-GMM`. Dataset scope is restricted to this study.
