@@ -85,4 +85,7 @@ display as result "STRESS_FITS=" `fit_count' " STRESS_FAILURES=" `failed_count'
 display as text "Every model remains scientific HOLD until independently assessed."
 display as result "STATA_SENSITIVITY_ROUND2_FINISHED " c(current_date) " " c(current_time)
 log close
-if `fit_count'==0 exit 459
+if `fit_count' != 16 | `failed_count' != 0 {
+    display as error "STRICT_STRESS_GMM_INCOMPLETE: expected 16, got `fit_count', failures `failed_count'"
+    exit 459
+}
