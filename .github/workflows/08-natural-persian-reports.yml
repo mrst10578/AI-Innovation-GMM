@@ -1,0 +1,65 @@
+name: "گزارش‌های فارسی پژوهش"
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feat/stata-estimation-audit-20261017
+    paths:
+      - 'src/python/build_natural_persian_reports.py'
+      - '.github/workflows/08-natural-persian-reports.yml'
+      - 'reports/STATA_REAL_*.csv'
+      - 'reports/PROFESSOR_*.csv'
+      - 'reports/WDI_REFERENCE_RECONCILIATION_20261017.json'
+jobs:
+  write-professor-reports:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout research
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Persian font and document conversion
+        run: |
+          sudo apt-get update -qq
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y -qq libreoffice-writer poppler-utils fontconfig >/tmp/professor-doc-deps.txt
+          mkdir -p ~/.local/share/fonts/mikhak
+          for weight in Regular Medium SemiBold Bold; do
+            curl --fail --silent --show-error --location --retry 3 \
+              --output "$HOME/.local/share/fonts/mikhak/Mikhak-${weight}.ttf" \
+              "https://raw.githubusercontent.com/aminabedi68/Mikhak/master/fonts/ttf/Mikhak-${weight}.ttf"
+          done
+          fc-cache -f ~/.local/share/fonts/mikhak
+      - name: Check authentic research tables
+        run: |
+          python -m pip install --quiet -r requirements-python.txt python-docx pytest
+          python -m pytest -q
+      - name: Write natural Persian teacher reports
+        run: |
+          python -m src.python.build_natural_persian_reports
+          test -s "dist/گزارش پژوهش هوش مصنوعی و شاخص‌های اقتصادی.pdf"
+          test -s "dist/خلاصه یافته‌های پژوهش.pdf"
+          test -s "dist/گزارش‌های پژوهش هوش مصنوعی.zip"
+          for filename in "dist/گزارش پژوهش هوش مصنوعی و شاخص‌های اقتصادی.pdf" "dist/خلاصه یافته‌های پژوهش.pdf"; do
+            pdffonts "$filename" | grep 'Mikhak-Regular'
+            pdffonts "$filename" | grep 'Mikhak-Bold'
+          done
+          unzip -t "dist/گزارش‌های پژوهش هوش مصنوعی.zip" | tail -2
+          pdfinfo "dist/گزارش پژوهش هوش مصنوعی و شاخص‌های اقتصادی.pdf" | grep 'Pages:'
+          pdfinfo "dist/خلاصه یافته‌های پژوهش.pdf" | grep 'Pages:'
+      - name: Publish Persian-titled reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: "گزارش‌های آماده استاد"
+          path: |
+            dist/گزارش پژوهش هوش مصنوعی و شاخص‌های اقتصادی.docx
+            dist/گزارش پژوهش هوش مصنوعی و شاخص‌های اقتصادی.pdf
+            dist/خلاصه یافته‌های پژوهش.docx
+            dist/خلاصه یافته‌های پژوهش.pdf
+            dist/گزارش‌های پژوهش هوش مصنوعی.zip
+          if-no-files-found: error
+          retention-days: 30
